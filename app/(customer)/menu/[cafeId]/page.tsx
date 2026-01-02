@@ -242,15 +242,16 @@ export default function CustomerMenuPage() {
                                             {itemsInCategory.length} Items
                                         </span>
                                     </div>
-                                    <div className="flex flex-row overflow-x-auto gap-6 pb-6 pt-2 px-2 no-scrollbar snap-x snap-mandatory">
+                                    <div className="flex flex-row overflow-x-auto gap-5 pb-10 pt-4 px-4 no-scrollbar snap-x snap-mandatory -mx-6">
                                         {itemsInCategory.map(item => (
-                                            <MenuCard
-                                                key={item.id}
-                                                item={item}
-                                                onAdd={() => addItem(item)}
-                                                onRemove={() => removeItem(item.id)}
-                                                quantity={items.find(i => i.id === item.id)?.quantity || 0}
-                                            />
+                                            <div key={item.id} className="pl-6 first:pl-6 last:pr-6">
+                                                <MenuCard
+                                                    item={item}
+                                                    onAdd={() => addItem(item)}
+                                                    onRemove={() => removeItem(item.id)}
+                                                    quantity={items.find(i => i.id === item.id)?.quantity || 0}
+                                                />
+                                            </div>
                                         ))}
                                     </div>
                                 </section>
