@@ -227,20 +227,22 @@ export default function CustomerMenuPage() {
                         </button>
                     </div>
                 ) : selectedCategory === 'All' ? (
-                    <div className="space-y-16">
+                    <div className="space-y-12">
                         {categories.filter(c => c !== 'All').map(cat => {
                             const itemsInCategory = menuItems?.filter(item => item.category === cat)
                             if (!itemsInCategory?.length) return null
 
                             return (
-                                <section key={cat} className="space-y-8">
-                                    <div className="flex items-center gap-4">
-                                        <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white">
+                                <section key={cat} className="space-y-6">
+                                    <div className="flex items-center justify-between px-2">
+                                        <h2 className="text-2xl font-black italic uppercase tracking-tighter text-white">
                                             {cat}
                                         </h2>
-                                        <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent" />
+                                        <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                                            {itemsInCategory.length} Items
+                                        </span>
                                     </div>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pb-4">
+                                    <div className="flex flex-row overflow-x-auto gap-6 pb-6 pt-2 px-2 no-scrollbar snap-x snap-mandatory">
                                         {itemsInCategory.map(item => (
                                             <MenuCard
                                                 key={item.id}
@@ -256,7 +258,7 @@ export default function CustomerMenuPage() {
                         })}
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div className="flex flex-col gap-6">
                         {filteredItems?.map(item => (
                             <MenuCard
                                 key={item.id}
