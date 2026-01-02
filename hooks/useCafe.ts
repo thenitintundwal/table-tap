@@ -33,8 +33,7 @@ export function useCafe() {
             const { data: { user } } = await supabase.auth.getUser()
             if (!user) throw new Error('Not authenticated')
 
-            const { data, error } = await supabase
-                .from('cafes')
+            const { data, error } = await (supabase.from('cafes') as any)
                 .insert({
                     ...newCafe,
                     owner_id: user.id
@@ -52,8 +51,7 @@ export function useCafe() {
 
     const updateCafe = useMutation({
         mutationFn: async (updatedCafe: CafeUpdate & { id: string }) => {
-            const { data, error } = await supabase
-                .from('cafes')
+            const { data, error } = await (supabase.from('cafes') as any)
                 .update(updatedCafe as any)
                 .eq('id', updatedCafe.id)
                 .select()
