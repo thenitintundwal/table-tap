@@ -43,8 +43,7 @@ export function useItemRatings(itemId: string) {
     return useQuery({
         queryKey: ['item-ratings', itemId],
         queryFn: async () => {
-            const { data, error } = await supabase
-                .from('ratings')
+            const { data, error } = await (supabase.from('ratings') as any)
                 .select('*')
                 .eq('menu_item_id', itemId)
                 .order('created_at', { ascending: false })
@@ -60,8 +59,7 @@ export function useItemStats(itemId: string) {
     return useQuery({
         queryKey: ['item-rating-stats', itemId],
         queryFn: async () => {
-            const { data, error } = await supabase
-                .from('ratings')
+            const { data, error } = await (supabase.from('ratings') as any)
                 .select('rating')
                 .eq('menu_item_id', itemId)
 

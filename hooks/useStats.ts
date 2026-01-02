@@ -22,18 +22,18 @@ export function useStats(cafeId?: string) {
                 recentResult
             ] = await Promise.all([
                 // Efficiently get revenue (only statuses that matter)
-                supabase.from('orders').select('total_amount').eq('cafe_id', cafeId).eq('status', 'completed'),
+                (supabase.from('orders') as any).select('total_amount').eq('cafe_id', cafeId).eq('status', 'completed'),
                 // Exact counts for stats cards
-                supabase.from('orders').select('*', { count: 'exact', head: true }).eq('cafe_id', cafeId).in('status', ['pending', 'preparing']),
-                supabase.from('orders').select('*', { count: 'exact', head: true }).eq('cafe_id', cafeId),
-                supabase.from('menu_items').select('*', { count: 'exact', head: true }).eq('cafe_id', cafeId),
+                (supabase.from('orders') as any).select('*', { count: 'exact', head: true }).eq('cafe_id', cafeId).in('status', ['pending', 'preparing']),
+                (supabase.from('orders') as any).select('*', { count: 'exact', head: true }).eq('cafe_id', cafeId),
+                (supabase.from('menu_items') as any).select('*', { count: 'exact', head: true }).eq('cafe_id', cafeId),
                 // Data for charts
-                supabase.from('orders').select('created_at, total_amount, status').eq('cafe_id', cafeId).gte('created_at', sevenDaysAgo.toISOString()).order('created_at', { ascending: true }),
+                (supabase.from('orders') as any).select('created_at, total_amount, status').eq('cafe_id', cafeId).gte('created_at', sevenDaysAgo.toISOString()).order('created_at', { ascending: true }),
                 // Recent activity list
-                supabase.from('orders').select('*').eq('cafe_id', cafeId).order('created_at', { ascending: false }).limit(5)
+                (supabase.from('orders') as any).select('*').eq('cafe_id', cafeId).order('created_at', { ascending: false }).limit(5)
             ])
 
-            const totalRevenue = revenueResult.data?.reduce((sum, o: any) => sum + Number(o.total_amount), 0) || 0
+            const totalRevenue = revenueResult.data?.reduce((sum: number, o: any) => sum + Number(o.total_amount), 0) || 0
 
             // Aggregate chart data
             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']

@@ -11,8 +11,7 @@ export function useOrders(cafeId?: string) {
         queryKey: ['orders', cafeId],
         queryFn: async () => {
             if (!cafeId) return []
-            const { data, error } = await supabase
-                .from('orders')
+            const { data, error } = await (supabase.from('orders') as any)
                 .select(`
           *,
           order_items (
