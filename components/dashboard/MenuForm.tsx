@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-import { Loader2, Plus, Image as ImageIcon, X } from 'lucide-react'
+import { Loader2, Plus, Image as ImageIcon, X, Trash2 } from 'lucide-react'
 import { MenuItem } from '@/types'
 
 const menuItemSchema = z.object({
@@ -64,6 +64,14 @@ export default function MenuForm({ onSubmit, initialData, onClose }: MenuFormPro
         }
     }
 
+    const handleRemoveImage = (e: React.MouseEvent) => {
+        e.stopPropagation()
+        setImageFile(null)
+        setImagePreview(null)
+        // We'll handle the empty string as a signal to remove the image in the parent component if necessary
+        // or just rely on the API update.
+    }
+
     const handleFormSubmit: SubmitHandler<MenuItemFormValues> = async (data) => {
         setLoading(true)
         try {
@@ -100,7 +108,16 @@ export default function MenuForm({ onSubmit, initialData, onClose }: MenuFormPro
                         >
                             <div className="w-full h-40 bg-white/5 border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center gap-2 overflow-hidden hover:border-orange-500/50 transition-all">
                                 {imagePreview ? (
-                                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                    <>
+                                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                        <button
+                                            type="button"
+                                            onClick={handleRemoveImage}
+                                            className="absolute top-2 right-2 p-2 bg-black/50 hover:bg-red-500/80 rounded-full text-white backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </>
                                 ) : (
                                     <>
                                         <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-zinc-400 group-hover:scale-110 transition-transform">

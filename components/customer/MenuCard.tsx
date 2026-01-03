@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { MenuItem } from '@/types'
-import { Plus, Minus, Info, Star } from 'lucide-react'
+import { Plus, Minus, Star } from 'lucide-react'
 import { useItemStats } from '@/hooks/useRatings'
 import ItemReviewsModal from './ItemReviewsModal'
 
@@ -20,73 +20,81 @@ export default function MenuCard({ item, onAdd, onRemove, quantity }: MenuCardPr
 
     return (
         <>
-            <div className={`backdrop-blur-xl bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/10 flex flex-row h-40 w-full sm:w-[400px] flex-shrink-0 snap-center group ${!item.is_available ? 'grayscale opacity-75' : ''}`}>
-                {/* Image Section */}
-                <div className="w-40 h-full bg-zinc-800 relative overflow-hidden flex-shrink-0">
-                    {item.image_url ? (
-                        <img src={item.image_url} alt={item.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center text-zinc-700 group-hover:scale-110 transition-transform duration-700">
-                            <Info className="w-10 h-10" />
-                        </div>
-                    )}
-                    {!item.is_available && (
-                        <div className="absolute inset-0 bg-black/60 backdrop-blur-[4px] flex items-center justify-center">
-                            <span className="bg-black/40 border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-xl backdrop-blur-md">
-                                Sold Out
-                            </span>
-                        </div>
-                    )}
+            <div className="flex justify-between gap-4 py-6 border-b border-white/5 last:border-0 group bg-transparent">
+                {/* Left Side: Image */}
+                <div className="relative w-32 h-32 flex-shrink-0">
+                    <div className="w-full h-full rounded-2xl overflow-hidden bg-zinc-800 border border-white/5">
+                        {item.image_url ? (
+                            <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center text-zinc-700 bg-white/5">
+                                <span className="text-xs">No Image</span>
+                            </div>
+                        )}
+                        {!item.is_available && (
+                            <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px] flex items-center justify-center">
+                                <span className="text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1 border border-white/20 rounded-lg bg-black/40">
+                                    Sold Out
+                                </span>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
-                {/* Content Section */}
-                <div className="flex-1 p-5 flex flex-col justify-between min-w-0 bg-gradient-to-br from-white/[0.02] to-transparent">
-                    <div className="space-y-1">
+                {/* Right Side: Content & Actions */}
+                <div className="flex-1 flex flex-col justify-between min-w-0">
+                    <div>
                         <div className="flex items-start justify-between gap-2">
-                            <h3 className="text-lg font-black text-white truncate group-hover:text-orange-500 transition-colors leading-tight italic uppercase tracking-tighter">{item.name}</h3>
+                            <h3 className="text-lg font-bold text-white group-hover:text-orange-500 transition-colors leading-tight">{item.name}</h3>
                         </div>
-                        <p className="text-zinc-500 text-[11px] line-clamp-2 font-medium leading-relaxed">{item.description}</p>
-                    </div>
 
-                    <div className="flex items-center justify-between gap-3 pt-2">
-                        <div className="flex flex-col">
-                            <span className="text-orange-500 font-black text-xl italic tracking-tighter">
+                        <p className="text-zinc-500 text-sm line-clamp-2 leading-relaxed mt-1 mb-3">{item.description}</p>
+
+                        <div className="flex items-center gap-2">
+                            <span className="text-white font-bold text-base">
                                 ${item.price.toFixed(2)}
                             </span>
                             <button
                                 onClick={(e) => { e.stopPropagation(); count > 0 && setShowReviews(true); }}
-                                className={`flex items-center gap-1 mt-1 transition-colors ${count > 0
-                                    ? 'text-orange-500/60 hover:text-orange-500'
-                                    : 'text-zinc-700 cursor-default'
+                                className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${count > 0
+                                    ? 'bg-green-900/40 text-green-400'
+                                    : 'bg-white/5 text-zinc-500 cursor-default'
                                     }`}
                             >
                                 <Star className={`w-3 h-3 ${count > 0 ? 'fill-current' : ''}`} />
-                                <span className="text-[10px] font-black uppercase tracking-widest">{average > 0 ? average.toFixed(1) : 'New'}</span>
+                                <span className="text-[10px] font-bold">{average > 0 ? average.toFixed(1) : 'No ratings'}</span>
                             </button>
                         </div>
+                    </div>
 
-                        <div className="flex items-center gap-2.5">
+                    {/* Add Button Area on the Right */}
+                    <div className="flex justify-end mt-2">
+                        <div className="w-24">
                             {quantity > 0 && item.is_available ? (
-                                <>
+                                <div className="flex items-center justify-between bg-zinc-900 border border-white/10 rounded-lg shadow-xl overflow-hidden h-9">
                                     <button
                                         onClick={(e) => { e.stopPropagation(); onRemove(); }}
-                                        className="w-9 h-9 rounded-2xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all active:scale-90 border border-white/5 shadow-inner"
+                                        className="w-8 h-full flex items-center justify-center hover:bg-white/5 text-white active:bg-white/10 transition-colors"
                                     >
-                                        <Minus className="w-4 h-4 text-white" />
+                                        <Minus className="w-3.5 h-3.5" />
                                     </button>
-                                    <span className="text-base font-black text-orange-500 min-w-[20px] text-center italic">{quantity}</span>
-                                </>
-                            ) : null}
-                            <button
-                                onClick={(e) => { e.stopPropagation(); onAdd(); }}
-                                disabled={!item.is_available}
-                                className={`w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg transition-all active:scale-95 border-t border-white/20 ${item.is_available
-                                    ? 'bg-orange-500 hover:bg-orange-600 shadow-orange-500/20'
-                                    : 'bg-white/5 cursor-not-allowed opacity-50'
-                                    }`}
-                            >
-                                <Plus className="w-6 h-6 text-white" />
-                            </button>
+                                    <span className="font-bold text-orange-500 text-sm">{quantity}</span>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); onAdd(); }}
+                                        className="w-8 h-full flex items-center justify-center hover:bg-white/5 text-white active:bg-white/10 transition-colors"
+                                    >
+                                        <Plus className="w-3.5 h-3.5" />
+                                    </button>
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); onAdd(); }}
+                                    disabled={!item.is_available}
+                                    className={`w-full bg-white text-black font-extrabold text-sm py-2 rounded-lg shadow-lg shadow-black/20 uppercase tracking-wide hover:bg-zinc-100 active:scale-95 transition-all ${!item.is_available ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                >
+                                    Add
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
