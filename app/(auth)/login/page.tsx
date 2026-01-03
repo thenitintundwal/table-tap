@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { Coffee, Lock, Mail, Loader2, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 export default function LoginPage() {
     const router = useRouter()
@@ -45,22 +46,29 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6 text-white font-sans">
+        <div className="min-h-screen bg-background flex items-center justify-center p-6 text-foreground font-sans relative transition-colors duration-300">
+            {/* Theme Toggle */}
+            <div className="absolute top-6 right-6">
+                <div className="bg-white/50 dark:bg-black/50 backdrop-blur-md p-1 rounded-2xl border border-black/5 dark:border-white/5 shadow-sm">
+                    <ThemeToggle />
+                </div>
+            </div>
+
             <div className="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
                 {/* Brand Logo */}
                 <div className="flex flex-col items-center justify-center mb-10">
                     <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-orange-500/20 mb-6 rotate-3 hover:rotate-6 transition-transform duration-300">
                         <Coffee className="w-8 h-8 text-white" />
                     </div>
-                    <h1 className="text-3xl font-black italic uppercase tracking-tighter text-white">
+                    <h1 className="text-3xl font-black italic uppercase tracking-tighter text-foreground">
                         TableTap
                     </h1>
                     <p className="text-zinc-500 text-sm font-medium mt-2">admin portal</p>
                 </div>
 
-                <div className="bg-zinc-900/50 backdrop-blur-xl border border-white/5 rounded-[2.5rem] p-8 sm:p-10 shadow-2xl">
+                <div className="bg-white/80 dark:bg-zinc-900/50 backdrop-blur-xl border border-black/5 dark:border-white/5 rounded-[2.5rem] p-8 sm:p-10 shadow-2xl transition-colors duration-300">
                     <div className="mb-8 text-center sm:text-left">
-                        <h2 className="text-2xl font-bold text-white mb-2">Welcome back</h2>
+                        <h2 className="text-2xl font-bold text-foreground mb-2">Welcome back</h2>
                         <p className="text-zinc-500 text-sm">Please enter your details to sign in.</p>
                     </div>
 
@@ -69,7 +77,7 @@ export default function LoginPage() {
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold uppercase tracking-wider text-zinc-500 ml-4">Email</label>
                                 <div className="relative group">
-                                    <div className="absolute left-0 inset-y-0 w-12 flex items-center justify-center text-zinc-600 group-focus-within:text-orange-500 transition-colors">
+                                    <div className="absolute left-0 inset-y-0 w-12 flex items-center justify-center text-zinc-400 group-focus-within:text-orange-500 transition-colors">
                                         <Mail className="w-5 h-5" />
                                     </div>
                                     <input
@@ -77,7 +85,7 @@ export default function LoginPage() {
                                         placeholder="you@email.com"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full bg-black/40 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-white placeholder:text-zinc-700 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent transition-all font-medium"
+                                        className="w-full bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent transition-all font-medium"
                                         required
                                     />
                                 </div>
@@ -85,7 +93,7 @@ export default function LoginPage() {
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold uppercase tracking-wider text-zinc-500 ml-4">Password</label>
                                 <div className="relative group">
-                                    <div className="absolute left-0 inset-y-0 w-12 flex items-center justify-center text-zinc-600 group-focus-within:text-orange-500 transition-colors">
+                                    <div className="absolute left-0 inset-y-0 w-12 flex items-center justify-center text-zinc-400 group-focus-within:text-orange-500 transition-colors">
                                         <Lock className="w-5 h-5" />
                                     </div>
                                     <input
@@ -93,7 +101,7 @@ export default function LoginPage() {
                                         placeholder="••••••••"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full bg-black/40 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-white placeholder:text-zinc-700 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent transition-all font-medium"
+                                        className="w-full bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent transition-all font-medium"
                                         required
                                     />
                                 </div>
@@ -102,11 +110,11 @@ export default function LoginPage() {
 
                         <div className="flex items-center justify-between text-xs px-2">
                             <label className="flex items-center gap-2 cursor-pointer group">
-                                <div className="w-4 h-4 rounded border border-zinc-700 bg-black/40 flex items-center justify-center transition-colors group-hover:border-zinc-500">
+                                <div className="w-4 h-4 rounded border border-zinc-300 dark:border-zinc-700 bg-black/5 dark:bg-black/40 flex items-center justify-center transition-colors group-hover:border-zinc-400 dark:group-hover:border-zinc-500">
                                     <input type="checkbox" className="hidden peer" />
                                     <div className="w-2 h-2 bg-orange-500 rounded-sm opacity-0 peer-checked:opacity-100 transition-opacity" />
                                 </div>
-                                <span className="text-zinc-500 font-medium group-hover:text-zinc-400 transition-colors">Remember me</span>
+                                <span className="text-zinc-500 font-medium group-hover:text-zinc-700 dark:group-hover:text-zinc-400 transition-colors">Remember me</span>
                             </label>
                             <button type="button" className="text-orange-500 font-bold hover:text-orange-400 transition-colors">
                                 Forgot password?
@@ -127,16 +135,16 @@ export default function LoginPage() {
                     </form>
 
                     <div className="my-8 flex items-center gap-4">
-                        <div className="h-px bg-white/10 flex-1" />
-                        <span className="text-xs text-zinc-600 font-bold uppercase tracking-widest">Or continue with</span>
-                        <div className="h-px bg-white/10 flex-1" />
+                        <div className="h-px bg-black/5 dark:bg-white/10 flex-1" />
+                        <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest">Or continue with</span>
+                        <div className="h-px bg-black/5 dark:bg-white/10 flex-1" />
                     </div>
 
                     <button
                         type="button"
                         onClick={handleGoogleLogin}
                         disabled={googleLoading}
-                        className="w-full bg-white hover:bg-zinc-200 text-black p-4 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all active:scale-95 disabled:opacity-70"
+                        className="w-full bg-white dark:bg-white text-black hover:bg-zinc-50 dark:hover:bg-zinc-200 border border-black/5 p-4 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all active:scale-95 disabled:opacity-70 shadow-sm"
                     >
                         {googleLoading ? (
                             <Loader2 className="w-5 h-5 animate-spin text-zinc-600" />
@@ -176,7 +184,7 @@ export default function LoginPage() {
                 </div>
 
                 <div className="text-center">
-                    <p className="text-zinc-600 text-[10px] font-bold uppercase tracking-widest">
+                    <p className="text-zinc-400 dark:text-zinc-600 text-[10px] font-bold uppercase tracking-widest">
                         © {new Date().getFullYear()} TableTap Inc. All rights reserved.
                     </p>
                 </div>
