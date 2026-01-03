@@ -80,8 +80,8 @@ function QRCodeContent() {
         <div className="flex flex-col gap-8 animate-in fade-in duration-700">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">QR Codes</h1>
-                    <p className="text-zinc-500 mt-1">Generate and manage QR codes for your tables.</p>
+                    <h1 className="text-3xl font-bold tracking-tight text-foreground">QR Codes</h1>
+                    <p className="text-zinc-500 dark:text-zinc-400 mt-1">Generate and manage QR codes for your tables.</p>
                 </div>
                 <button
                     onClick={addTable}
@@ -93,8 +93,8 @@ function QRCodeContent() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {Array.from({ length: tableCount }, (_, i) => i + 1).map((table) => (
-                    <div key={table} className="bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col items-center group relative hover:bg-white/[0.07] transition-all">
-                        <div id={`qr-table-${table}`} className="bg-white p-4 rounded-2xl shadow-xl mb-6 group-hover:scale-105 transition-transform duration-500">
+                    <div key={table} className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-3xl p-8 flex flex-col items-center group relative hover:bg-zinc-50 dark:hover:bg-white/[0.07] transition-all shadow-sm dark:shadow-none">
+                        <div id={`qr-table-${table}`} className="bg-white p-4 rounded-2xl shadow-xl dark:shadow-none mb-6 group-hover:scale-105 transition-transform duration-500 border border-zinc-100 dark:border-none">
                             {origin && (
                                 <QRCode
                                     value={`${origin}/menu/${cafe?.id}?table=${table}`}
@@ -105,27 +105,27 @@ function QRCodeContent() {
                             )}
                         </div>
 
-                        <h3 className="text-xl font-bold mb-1">Table {table}</h3>
+                        <h3 className="text-xl font-bold mb-1 text-foreground">Table {table}</h3>
                         <p className="text-zinc-500 text-sm mb-6 font-mono">T-00{table}</p>
 
                         <div className="flex items-center gap-3 w-full">
                             <button
                                 onClick={() => downloadSVG(table)}
-                                className="flex-1 bg-white/5 hover:bg-white/10 p-2 rounded-xl flex items-center justify-center gap-2 transition-all border border-white/5"
+                                className="flex-1 bg-zinc-100 dark:bg-white/5 hover:bg-zinc-200 dark:hover:bg-white/10 p-2 rounded-xl flex items-center justify-center gap-2 transition-all border border-zinc-200 dark:border-white/5"
                             >
-                                <Download className="w-4 h-4 text-zinc-400" />
-                                <span className="text-xs font-semibold">SVG</span>
+                                <Download className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
+                                <span className="text-xs font-semibold text-foreground dark:text-zinc-300">SVG</span>
                             </button>
                             <button
                                 onClick={() => printQR(table)}
-                                className="flex-1 bg-white/5 hover:bg-white/10 p-2 rounded-xl flex items-center justify-center gap-2 transition-all border border-white/5"
+                                className="flex-1 bg-zinc-100 dark:bg-white/5 hover:bg-zinc-200 dark:hover:bg-white/10 p-2 rounded-xl flex items-center justify-center gap-2 transition-all border border-zinc-200 dark:border-white/5"
                             >
-                                <Printer className="w-4 h-4 text-zinc-400" />
-                                <span className="text-xs font-semibold">Print</span>
+                                <Printer className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
+                                <span className="text-xs font-semibold text-foreground dark:text-zinc-300">Print</span>
                             </button>
                             <button
                                 onClick={removeTable}
-                                className="p-2 hover:bg-red-500/10 text-zinc-600 hover:text-red-400 rounded-xl transition-all"
+                                className="p-2 hover:bg-red-500/10 text-zinc-400 hover:text-red-500 dark:hover:text-red-400 rounded-xl transition-all"
                             >
                                 <Trash2 className="w-4 h-4" />
                             </button>

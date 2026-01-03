@@ -233,36 +233,30 @@ export default function CustomerMenuPage() {
                             if (!itemsInCategory?.length) return null
 
                             return (
-                                {
-                                    categories.filter(c => c !== 'All').map(cat => {
-                                        const itemsInCategory = menuItems?.filter(item => item.category === cat)
-                                        if (!itemsInCategory?.length) return null
-
-                                        return (
-                                            <section key={cat} className="space-y-6">
-                                                <div className="flex items-center justify-between px-2">
-                                                    <h2 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">
-                                                        {cat}
-                                                    </h2>
-                                                    <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/5">
-                                                        {itemsInCategory.length} Items
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-col gap-0 px-2">
-                                                    {itemsInCategory.map(item => (
-                                                        <MenuCard
-                                                            key={item.id}
-                                                            item={item}
-                                                            onAdd={() => addItem(item)}
-                                                            onRemove={() => removeItem(item.id)}
-                                                            quantity={items.find(i => i.id === item.id)?.quantity || 0}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </section>
-                                        )
-                                    })
-                                }
+                                <section key={cat} className="space-y-6">
+                                    <div className="flex items-center justify-between px-2">
+                                        <h2 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">
+                                            {cat}
+                                        </h2>
+                                        <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                                            {itemsInCategory.length} Items
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-col gap-0 px-2">
+                                        {itemsInCategory.map(item => (
+                                            <MenuCard
+                                                key={item.id}
+                                                item={item}
+                                                onAdd={() => addItem(item)}
+                                                onRemove={() => removeItem(item.id)}
+                                                quantity={items.find(i => i.id === item.id)?.quantity || 0}
+                                            />
+                                        ))}
+                                    </div>
+                                </section>
+                            )
+                        })
+                        }
                     </div>
                 ) : (
                     <div className="flex flex-col gap-6">

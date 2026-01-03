@@ -18,6 +18,8 @@ import Link from 'next/link'
 import { useCafe } from '@/hooks/useCafe'
 import { useOrderRealtime } from '@/hooks/useOrderRealtime'
 
+import { ThemeToggle } from '@/components/ThemeToggle'
+
 export default function DashboardLayout({
     children,
 }: {
@@ -57,13 +59,13 @@ export default function DashboardLayout({
     ]
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-white flex">
+        <div className="min-h-screen bg-background text-foreground flex transition-colors duration-300">
             {/* Sidebar */}
             <aside
                 className={`${isSidebarOpen ? 'w-64' : 'w-20'
-                    } border-r border-white/5 bg-black/50 backdrop-blur-xl transition-all duration-300 flex flex-col z-50`}
+                    } border-r border-black/5 dark:border-white/5 bg-zinc-50/50 dark:bg-black/50 backdrop-blur-xl transition-all duration-300 flex flex-col z-50`}
             >
-                <div className="h-16 flex items-center px-6 border-b border-white/5">
+                <div className="h-16 flex items-center px-6 border-b border-black/5 dark:border-white/5">
                     <div className="flex items-center gap-3 overflow-hidden">
                         <div className="min-w-[32px] h-8 bg-orange-500 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/20">
                             <Coffee className="w-5 h-5 text-white" />
@@ -81,7 +83,7 @@ export default function DashboardLayout({
                                 href={item.href}
                                 className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all group ${isActive
                                     ? 'bg-orange-500/10 text-orange-500'
-                                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                                    : 'text-zinc-500 dark:text-zinc-400 hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
                                     }`}
                             >
                                 <item.icon className={`w-5 h-5 ${isActive ? 'text-orange-500' : 'group-hover:scale-110 transition-transform'}`} />
@@ -92,10 +94,10 @@ export default function DashboardLayout({
                     })}
                 </nav>
 
-                <div className="p-4 border-t border-white/5">
+                <div className="p-4 border-t border-black/5 dark:border-white/5">
                     <button
                         onClick={handleSignOut}
-                        className="flex items-center gap-3 w-full px-3 py-3 rounded-xl text-zinc-400 hover:text-red-400 hover:bg-red-500/5 transition-all group"
+                        className="flex items-center gap-3 w-full px-3 py-3 rounded-xl text-zinc-500 dark:text-zinc-400 hover:text-red-500/80 hover:bg-red-500/5 transition-all group"
                     >
                         <LogOut className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
                         {isSidebarOpen && <span className="font-medium">Sign Out</span>}
@@ -105,21 +107,23 @@ export default function DashboardLayout({
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-                <header className="h-16 border-b border-white/5 bg-black/20 backdrop-blur-md px-8 flex items-center justify-between">
+                <header className="h-16 border-b border-black/5 dark:border-white/5 bg-white/50 dark:bg-black/20 backdrop-blur-md px-8 flex items-center justify-between">
                     <div className="flex items-center gap-4 text-sm text-zinc-500">
                         Dashboard <ChevronRight className="w-4 h-4" />
-                        <span className="text-zinc-200">
+                        <span className="text-foreground">
                             {navigation.find(n => n.href === pathname)?.name || 'Overview'}
                         </span>
                     </div>
                     <div className="flex items-center gap-4">
-                        <div className="text-right">
-                            <p className="text-xs text-zinc-500 leading-none">Logged in as</p>
-                            <p className="text-sm font-medium text-zinc-300">{user.email}</p>
+                        <div className="text-right hidden sm:block">
+                            <p className="text-xs text-zinc-500 leading-none mb-1">Logged in as</p>
+                            <p className="text-sm font-medium text-foreground">{user.email}</p>
                         </div>
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-zinc-800 to-zinc-700 border border-white/10 flex items-center justify-center font-bold text-zinc-400 shadow-inner">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-zinc-200 to-zinc-100 dark:from-zinc-800 dark:to-zinc-700 border border-black/5 dark:border-white/10 flex items-center justify-center font-bold text-zinc-500 dark:text-zinc-400 shadow-inner">
                             {user.email?.[0].toUpperCase()}
                         </div>
+                        <div className="h-8 w-px bg-black/5 dark:bg-white/5 mx-2" />
+                        <ThemeToggle />
                     </div>
                 </header>
 

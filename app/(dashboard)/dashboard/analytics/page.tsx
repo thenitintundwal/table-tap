@@ -31,32 +31,32 @@ function AnalyticsContent() {
     return (
         <div className="flex flex-col gap-8 animate-in fade-in duration-700">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
+                <h1 className="text-3xl font-bold tracking-tight text-foreground">Analytics</h1>
                 <p className="text-zinc-500 mt-1">Discover insights about your cafe's performance.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, i) => (
-                    <div key={i} className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:bg-white/[0.07] transition-all">
+                    <div key={i} className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-6 rounded-2xl hover:bg-zinc-50 dark:hover:bg-white/[0.07] transition-all shadow-sm dark:shadow-none">
                         <div className="flex items-center justify-between mb-4">
-                            <div className={`p-3 rounded-xl bg-black/40 ${stat.color}`}>
-                                <stat.icon className="w-6 h-6" />
+                            <div className={`p-3 rounded-xl bg-zinc-100 dark:bg-black/40 ${stat.color.replace('text-', 'bg-').replace('500', '500/10')} dark:bg-transparent`}>
+                                <stat.icon className={`w-6 h-6 ${stat.color}`} />
                             </div>
-                            <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">
+                            <span className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
                                 {stat.trend}
                             </span>
                         </div>
-                        <p className="text-zinc-400 text-sm font-medium">{stat.label}</p>
-                        <p className="text-2xl font-bold mt-1 tracking-tight">{stat.value}</p>
+                        <p className="text-zinc-500 dark:text-zinc-400 text-sm font-medium">{stat.label}</p>
+                        <p className="text-2xl font-bold mt-1 tracking-tight text-foreground">{stat.value}</p>
                     </div>
                 ))}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-white/5 border border-white/10 p-8 rounded-3xl h-[450px] flex flex-col">
+                <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-8 rounded-3xl h-[450px] flex flex-col shadow-sm dark:shadow-none">
                     <div className="flex items-center justify-between mb-8">
-                        <h3 className="text-lg font-bold">Revenue Trend</h3>
-                        <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest">Last 7 Days</span>
+                        <h3 className="text-lg font-bold text-foreground">Revenue Trend</h3>
+                        <span className="text-xs text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-widest">Last 7 Days</span>
                     </div>
                     <div className="flex-1 -ml-6">
                         <ResponsiveContainer width="100%" height="100%">
@@ -67,9 +67,9 @@ function AnalyticsContent() {
                                         <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff05" />
-                                <XAxis dataKey="name" stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} />
-                                <YAxis stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#88888820" />
+                                <XAxis dataKey="name" stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
+                                <YAxis stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
                                 <Tooltip
                                     contentStyle={{ backgroundColor: '#18181b', border: '1px solid #ffffff10', borderRadius: '12px', fontSize: '12px' }}
                                     itemStyle={{ color: '#f97316' }}
@@ -80,22 +80,22 @@ function AnalyticsContent() {
                     </div>
                 </div>
 
-                <div className="bg-white/5 border border-white/10 p-8 rounded-3xl h-[450px] flex flex-col">
+                <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-8 rounded-3xl h-[450px] flex flex-col shadow-sm dark:shadow-none">
                     <div className="flex items-center justify-between mb-8">
-                        <h3 className="text-lg font-bold">Order Volume</h3>
+                        <h3 className="text-lg font-bold text-foreground">Order Volume</h3>
                         <div className="flex items-center gap-2">
                             <div className="flex items-center gap-1.5">
                                 <div className="w-2 h-2 rounded-full bg-orange-500" />
-                                <span className="text-[10px] text-zinc-500 font-bold uppercase">Orders</span>
+                                <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-bold uppercase">Orders</span>
                             </div>
                         </div>
                     </div>
                     <div className="flex-1 -ml-6">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={statsData?.chartData}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff05" />
-                                <XAxis dataKey="name" stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} />
-                                <YAxis stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#88888820" />
+                                <XAxis dataKey="name" stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
+                                <YAxis stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
                                 <Tooltip
                                     contentStyle={{ backgroundColor: '#18181b', border: '1px solid #ffffff10', borderRadius: '12px', fontSize: '12px' }}
                                     cursor={{ fill: '#ffffff05' }}
