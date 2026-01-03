@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase/client'
 import { Coffee, ShoppingCart, Search, ArrowRight, Loader2, ChevronLeft, Clock, CheckCircle2, Star } from 'lucide-react'
 import MenuCard from '@/components/customer/MenuCard'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import RatingModal from '@/components/customer/RatingModal'
 import { useCart } from '@/context/CartContext'
 import { MenuItem, Cafe } from '@/types'
@@ -163,21 +164,20 @@ export default function CustomerMenuPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-white pb-32">
+        <div className="min-h-screen bg-background text-foreground pb-32 transition-colors duration-300">
             {/* Header */}
-            <div className="sticky top-0 z-40 bg-black/60 backdrop-blur-xl border-b border-white/5 px-6 py-4 flex items-center justify-between">
+            <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b dark:border-white/5 border-black/5 px-6 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20">
                         <Coffee className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                        <h1 className="font-bold text-lg leading-none truncate max-w-[150px]">{cafe?.name || 'Cafe Menu'}</h1>
-                        {tableNumber && <p className="text-zinc-500 text-[10px] mt-1 uppercase tracking-widest font-black">Table {tableNumber}</p>}
+                        <h1 className="font-bold text-lg leading-none truncate max-w-[150px] text-foreground">{cafe?.name || 'Cafe Menu'}</h1>
+                        {tableNumber && <p className="text-muted-foreground text-[10px] mt-1 uppercase tracking-widest font-black">Table {tableNumber}</p>}
                     </div>
                 </div>
-                <div className="text-right">
-                    <p className="text-zinc-500 text-[8px] uppercase font-black tracking-tighter leading-none mb-1">Powering by</p>
-                    <p className="text-[10px] font-black text-orange-500 italic uppercase">TableTap</p>
+                <div className="flex items-center gap-3">
+                    <ThemeToggle />
                 </div>
             </div>
 
@@ -191,7 +191,7 @@ export default function CustomerMenuPage() {
                             placeholder="Search your favorites..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-[2rem] pl-16 pr-8 py-5 text-white focus:outline-none focus:ring-4 focus:ring-orange-500/10 transition-all placeholder:text-zinc-700 shadow-inner text-lg font-medium"
+                            className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-[2rem] pl-16 pr-8 py-5 text-foreground focus:outline-none focus:ring-4 focus:ring-orange-500/10 transition-all placeholder:text-zinc-500 shadow-inner text-lg font-medium"
                         />
                     </div>
 
@@ -233,29 +233,36 @@ export default function CustomerMenuPage() {
                             if (!itemsInCategory?.length) return null
 
                             return (
-                                <section key={cat} className="space-y-6">
-                                    <div className="flex items-center justify-between px-2">
-                                        <h2 className="text-2xl font-black italic uppercase tracking-tighter text-white">
-                                            {cat}
-                                        </h2>
-                                        <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/5">
-                                            {itemsInCategory.length} Items
-                                        </span>
-                                    </div>
-                                    <div className="flex flex-col gap-0 px-2">
-                                        {itemsInCategory.map(item => (
-                                            <MenuCard
-                                                key={item.id}
-                                                item={item}
-                                                onAdd={() => addItem(item)}
-                                                onRemove={() => removeItem(item.id)}
-                                                quantity={items.find(i => i.id === item.id)?.quantity || 0}
-                                            />
-                                        ))}
-                                    </div>
-                                </section>
-                            )
-                        })}
+                                {
+                                    categories.filter(c => c !== 'All').map(cat => {
+                                        const itemsInCategory = menuItems?.filter(item => item.category === cat)
+                                        if (!itemsInCategory?.length) return null
+
+                                        return (
+                                            <section key={cat} className="space-y-6">
+                                                <div className="flex items-center justify-between px-2">
+                                                    <h2 className="text-2xl font-black italic uppercase tracking-tighter text-foreground">
+                                                        {cat}
+                                                    </h2>
+                                                    <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                                                        {itemsInCategory.length} Items
+                                                    </span>
+                                                </div>
+                                                <div className="flex flex-col gap-0 px-2">
+                                                    {itemsInCategory.map(item => (
+                                                        <MenuCard
+                                                            key={item.id}
+                                                            item={item}
+                                                            onAdd={() => addItem(item)}
+                                                            onRemove={() => removeItem(item.id)}
+                                                            quantity={items.find(i => i.id === item.id)?.quantity || 0}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </section>
+                                        )
+                                    })
+                                }
                     </div>
                 ) : (
                     <div className="flex flex-col gap-6">

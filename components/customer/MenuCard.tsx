@@ -20,14 +20,14 @@ export default function MenuCard({ item, onAdd, onRemove, quantity }: MenuCardPr
 
     return (
         <>
-            <div className="flex justify-between gap-4 py-6 border-b border-white/5 last:border-0 group bg-transparent">
+            <div className="flex justify-between gap-4 py-6 border-b border-black/5 dark:border-white/5 last:border-0 group bg-transparent">
                 {/* Left Side: Image */}
                 <div className="relative w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0">
-                    <div className="w-full h-full rounded-2xl overflow-hidden bg-zinc-800 border border-white/5">
+                    <div className="w-full h-full rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 border border-black/5 dark:border-white/5">
                         {item.image_url ? (
                             <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
                         ) : (
-                            <div className="w-full h-full flex items-center justify-center text-zinc-700 bg-white/5">
+                            <div className="w-full h-full flex items-center justify-center text-zinc-400 dark:text-zinc-700 bg-black/5 dark:bg-white/5">
                                 <span className="text-xs">No Image</span>
                             </div>
                         )}
@@ -45,20 +45,20 @@ export default function MenuCard({ item, onAdd, onRemove, quantity }: MenuCardPr
                 <div className="flex-1 flex flex-col justify-between min-w-0">
                     <div>
                         <div className="flex items-start justify-between gap-2">
-                            <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-orange-500 transition-colors leading-tight">{item.name}</h3>
+                            <h3 className="text-base sm:text-lg font-bold text-foreground group-hover:text-orange-500 transition-colors leading-tight">{item.name}</h3>
                         </div>
 
                         <p className="text-zinc-500 text-xs sm:text-sm line-clamp-2 leading-relaxed mt-1 mb-2 sm:mb-3">{item.description}</p>
 
                         <div className="flex items-center gap-2">
-                            <span className="text-white font-bold text-sm sm:text-base">
+                            <span className="text-foreground font-bold text-sm sm:text-base">
                                 ${item.price.toFixed(2)}
                             </span>
                             <button
                                 onClick={(e) => { e.stopPropagation(); count > 0 && setShowReviews(true); }}
                                 className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${count > 0
                                     ? 'bg-green-900/40 text-green-400'
-                                    : 'bg-white/5 text-zinc-500 cursor-default'
+                                    : 'bg-black/5 dark:bg-white/5 text-zinc-400 dark:text-zinc-500 cursor-default'
                                     }`}
                             >
                                 <Star className={`w-3 h-3 ${count > 0 ? 'fill-current' : ''}`} />
@@ -71,17 +71,17 @@ export default function MenuCard({ item, onAdd, onRemove, quantity }: MenuCardPr
                     <div className="flex justify-end mt-2">
                         <div className="w-24">
                             {quantity > 0 && item.is_available ? (
-                                <div className="flex items-center justify-between bg-zinc-900 border border-white/10 rounded-lg shadow-xl overflow-hidden h-9">
+                                <div className="flex items-center justify-between bg-zinc-100 dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-lg shadow-xl overflow-hidden h-9">
                                     <button
                                         onClick={(e) => { e.stopPropagation(); onRemove(); }}
-                                        className="w-8 h-full flex items-center justify-center hover:bg-white/5 text-white active:bg-white/10 transition-colors"
+                                        className="w-8 h-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 text-foreground active:bg-black/10 dark:active:bg-white/10 transition-colors"
                                     >
                                         <Minus className="w-3.5 h-3.5" />
                                     </button>
                                     <span className="font-bold text-orange-500 text-sm">{quantity}</span>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); onAdd(); }}
-                                        className="w-8 h-full flex items-center justify-center hover:bg-white/5 text-white active:bg-white/10 transition-colors"
+                                        className="w-8 h-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 text-foreground active:bg-black/10 dark:active:bg-white/10 transition-colors"
                                     >
                                         <Plus className="w-3.5 h-3.5" />
                                     </button>
@@ -90,7 +90,7 @@ export default function MenuCard({ item, onAdd, onRemove, quantity }: MenuCardPr
                                 <button
                                     onClick={(e) => { e.stopPropagation(); onAdd(); }}
                                     disabled={!item.is_available}
-                                    className={`w-full bg-white text-black font-extrabold text-sm py-2 rounded-lg shadow-lg shadow-black/20 uppercase tracking-wide hover:bg-zinc-100 active:scale-95 transition-all ${!item.is_available ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    className={`w-full bg-foreground text-background font-extrabold text-sm py-2 rounded-lg shadow-lg shadow-black/20 uppercase tracking-wide hover:opacity-90 active:scale-95 transition-all ${!item.is_available ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 >
                                     Add
                                 </button>
