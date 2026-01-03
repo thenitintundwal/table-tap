@@ -22,7 +22,7 @@ export default function MenuCard({ item, onAdd, onRemove, quantity }: MenuCardPr
         <>
             <div className="flex justify-between gap-4 py-6 border-b border-white/5 last:border-0 group bg-transparent">
                 {/* Left Side: Image */}
-                <div className="relative w-32 h-32 flex-shrink-0">
+                <div className="relative w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0">
                     <div className="w-full h-full rounded-2xl overflow-hidden bg-zinc-800 border border-white/5">
                         {item.image_url ? (
                             <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
@@ -33,7 +33,7 @@ export default function MenuCard({ item, onAdd, onRemove, quantity }: MenuCardPr
                         )}
                         {!item.is_available && (
                             <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px] flex items-center justify-center">
-                                <span className="text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1 border border-white/20 rounded-lg bg-black/40">
+                                <span className="text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 sm:px-2 sm:py-1 border border-white/20 rounded-lg bg-black/40">
                                     Sold Out
                                 </span>
                             </div>
@@ -45,13 +45,13 @@ export default function MenuCard({ item, onAdd, onRemove, quantity }: MenuCardPr
                 <div className="flex-1 flex flex-col justify-between min-w-0">
                     <div>
                         <div className="flex items-start justify-between gap-2">
-                            <h3 className="text-lg font-bold text-white group-hover:text-orange-500 transition-colors leading-tight">{item.name}</h3>
+                            <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-orange-500 transition-colors leading-tight">{item.name}</h3>
                         </div>
 
-                        <p className="text-zinc-500 text-sm line-clamp-2 leading-relaxed mt-1 mb-3">{item.description}</p>
+                        <p className="text-zinc-500 text-xs sm:text-sm line-clamp-2 leading-relaxed mt-1 mb-2 sm:mb-3">{item.description}</p>
 
                         <div className="flex items-center gap-2">
-                            <span className="text-white font-bold text-base">
+                            <span className="text-white font-bold text-sm sm:text-base">
                                 ${item.price.toFixed(2)}
                             </span>
                             <button

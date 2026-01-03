@@ -71,6 +71,10 @@ ALTER TABLE ratings ENABLE ROW LEVEL SECURITY;
 -- RLS Policies for cafes
 CREATE POLICY "Cafe owners can view their own cafes" ON cafes
   FOR SELECT USING (auth.uid() = owner_id);
+
+-- ADDED: Allow public to view cafes (for Menu page)
+CREATE POLICY "Anyone can view cafes" ON cafes
+  FOR SELECT USING (true);
 CREATE POLICY "Cafe owners can insert their own cafes" ON cafes
   FOR INSERT WITH CHECK (auth.uid() = owner_id);
 CREATE POLICY "Cafe owners can update their own cafes" ON cafes
