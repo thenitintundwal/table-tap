@@ -26,6 +26,21 @@ export default function LoginPage() {
         if (error) {
             alert(error.message)
         } else {
+            const { data: userData } = await supabase.auth.getUser()
+            const email = userData.user?.email
+
+            if (email) {
+                const { data: adminData } = await supabase
+                    .from('super_admins')
+                    .select('email')
+                    .eq('email', email)
+                    .maybeSingle()
+
+                if (adminData) {
+                    router.push('/admin')
+                    return
+                }
+            }
             router.push('/dashboard')
         }
         setLoading(false)

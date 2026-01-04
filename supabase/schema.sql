@@ -135,3 +135,31 @@ CREATE POLICY "Authenticated users can update" ON storage.objects FOR UPDATE
 
 CREATE POLICY "Authenticated users can delete" ON storage.objects FOR DELETE
   USING (bucket_id = 'menu-images' AND auth.role() = 'authenticated');
+
+-- Subscription Management
+ALTER TABLE cafes ADD COLUMN subscription_plan TEXT DEFAULT 'basic' CHECK (subscription_plan IN ('basic', 'pro'));
+
+-- Super Admins table
+CREATE TABLE super_admins (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  email TEXT UNIQUE NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- RLS for super_admins (read-only for everyone to check status, restricted insert/update)
+ALTER TABLE super_admins ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can read super_admins" ON super_admins
+  FOR SELECT USING (true); -- Need public read to check if user is admin in client
+
+-- Admin Policies for Cafes
+CREATE POLICY "Super admins can manage all cafes" ON cafes
+  FOR ALL USING (
+    EXISTS (SELECT 1 FROM super_admins WHERE email = auth.email())
+  );
+
+-- Admin Policies for Menu Items
+CREATE POLICY "Super admins can manage all menu items" ON menu_items
+  FOR ALL USING (
+    EXISTS (SELECT 1 FROM super_admins WHERE email = auth.email())
+  );

@@ -6,13 +6,14 @@ import { useStats } from '@/hooks/useStats'
 import { useCafe } from '@/hooks/useCafe'
 import { formatDistanceToNow } from 'date-fns'
 import RevenueChart from '@/components/dashboard/RevenueChart'
+import FeatureGuard from '@/components/dashboard/FeatureGuard'
 
 function DashboardContent() {
     const { cafe } = useCafe()
     const { data: statsData, isLoading } = useStats(cafe?.id)
 
     const stats = [
-        { label: 'Total Revenue', value: `$${statsData?.totalRevenue?.toFixed(2) || '0.00'}`, icon: TrendingUp, color: 'text-emerald-500', trend: 'Monthly' },
+        { label: 'Total Revenue', value: `$${statsData?.totalRevenue?.toFixed(2) || '0.00'}`, icon: TrendingUp, color: 'text-emerald-500', trend: 'Monthly', requiredPlan: 'pro' },
         { label: 'Active Orders', value: statsData?.activeOrders.toString() || '0', icon: ShoppingBag, color: 'text-orange-500', trend: 'Live' },
         { label: 'Total Orders', value: statsData?.totalOrders.toString() || '0', icon: Users, color: 'text-blue-500', trend: 'Overall' },
         { label: 'Menu Items', value: statsData?.menuItemsCount.toString() || '0', icon: Coffee, color: 'text-purple-500', trend: 'Active' },
@@ -47,23 +48,31 @@ function DashboardContent() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, i) => (
-                    <div key={i} className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-6 rounded-2xl hover:bg-zinc-50 dark:hover:bg-white/[0.07] transition-all group relative overflow-hidden shadow-sm dark:shadow-none">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className={`p-3 rounded-xl bg-zinc-100 dark:bg-black/40 ${stat.color.replace('text-', 'bg-').replace('500', '500/10')} dark:bg-transparent`}>
-                                <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                    <FeatureGuard
+                        key={i}
+                        mode="blur"
+                        minimal={true}
+                        requiredPlan={stat.requiredPlan as any || 'basic'}
+                        featureName={stat.label}
+                    >
+                        <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-6 rounded-2xl hover:bg-zinc-50 dark:hover:bg-white/[0.07] transition-all group relative overflow-hidden shadow-sm dark:shadow-none h-full">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className={`p-3 rounded-xl bg-zinc-100 dark:bg-black/40 ${stat.color.replace('text-', 'bg-').replace('500', '500/10')} dark:bg-transparent`}>
+                                    <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                                </div>
+                                <div className={`text-xs font-medium px-2 py-1 rounded-full bg-zinc-100 dark:bg-white/5 ${stat.trend === 'Live' ? 'text-orange-600 dark:text-orange-500' : 'text-emerald-600 dark:text-emerald-500'
+                                    }`}>
+                                    {stat.trend}
+                                </div>
                             </div>
-                            <div className={`text-xs font-medium px-2 py-1 rounded-full bg-zinc-100 dark:bg-white/5 ${stat.trend === 'Live' ? 'text-orange-600 dark:text-orange-500' : 'text-emerald-600 dark:text-emerald-500'
-                                }`}>
-                                {stat.trend}
+                            <div>
+                                <p className="text-zinc-500 dark:text-zinc-400 text-sm font-medium">{stat.label}</p>
+                                <p className="text-2xl font-bold mt-1 tracking-tight text-foreground">{stat.value}</p>
                             </div>
+                            {/* Hover bar */}
+                            <div className={`absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-500 bg-gradient-to-r from-transparent via-orange-500/50 to-transparent`} />
                         </div>
-                        <div>
-                            <p className="text-zinc-500 dark:text-zinc-400 text-sm font-medium">{stat.label}</p>
-                            <p className="text-2xl font-bold mt-1 tracking-tight text-foreground">{stat.value}</p>
-                        </div>
-                        {/* Hover bar */}
-                        <div className={`absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-500 bg-gradient-to-r from-transparent via-orange-500/50 to-transparent`} />
-                    </div>
+                    </FeatureGuard>
                 ))}
             </div>
 
@@ -77,7 +86,9 @@ function DashboardContent() {
                         </button>
                     </div>
                     <div className="flex-1 min-h-[300px]">
-                        {statsData?.chartData && <RevenueChart data={statsData.chartData} />}
+                        <FeatureGuard mode="blur" featureName="Revenue Analytics">
+                            {statsData?.chartData && <RevenueChart data={statsData.chartData} />}
+                        </FeatureGuard>
                     </div>
                 </div>
 
@@ -118,7 +129,31 @@ function DashboardContent() {
     )
 }
 
+import { useAdmin } from '@/hooks/useAdmin'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+
 export default function DashboardPage() {
+    const { isAdmin, isLoading: isAdminLoading } = useAdmin()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!isAdminLoading && isAdmin) {
+            router.push('/admin')
+        }
+    }, [isAdmin, isAdminLoading, router])
+
+    if (isAdminLoading) {
+        return (
+            <div className="flex h-[60vh] flex-col items-center justify-center gap-4">
+                <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+                <p className="text-zinc-500 text-sm animate-pulse">Checking permissions...</p>
+            </div>
+        )
+    }
+
+    if (isAdmin) return null
+
     return (
         <CafeGuard>
             <DashboardContent />

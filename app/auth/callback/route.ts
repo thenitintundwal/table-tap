@@ -8,7 +8,19 @@ export async function GET(request: Request) {
 
     if (code) {
         const supabase = await createClient()
-        await supabase.auth.exchangeCodeForSession(code)
+        const { data: { user } } = await supabase.auth.exchangeCodeForSession(code)
+
+        if (user) {
+            const { data: adminData } = await supabase
+                .from('super_admins')
+                .select('email')
+                .eq('email', user.email!)
+                .maybeSingle()
+
+            if (adminData) {
+                return NextResponse.redirect(`${requestUrl.origin}/admin`)
+            }
+        }
     }
 
     // URL to redirect to after sign in process completes

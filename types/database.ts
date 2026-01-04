@@ -17,6 +17,7 @@ export interface Database {
                     description: string | null
                     logo_url: string | null
                     created_at: string
+                    subscription_plan: 'basic' | 'pro' | null
                 }
                 Insert: {
                     id?: string
@@ -25,6 +26,7 @@ export interface Database {
                     description?: string | null
                     logo_url?: string | null
                     created_at?: string
+                    subscription_plan?: 'basic' | 'pro' | null
                 }
                 Update: {
                     id?: string
@@ -32,6 +34,24 @@ export interface Database {
                     name?: string
                     description?: string | null
                     logo_url?: string | null
+                    created_at?: string
+                    subscription_plan?: 'basic' | 'pro' | null
+                }
+            }
+            super_admins: {
+                Row: {
+                    id: string
+                    email: string
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    email: string
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    email?: string
                     created_at?: string
                 }
             }

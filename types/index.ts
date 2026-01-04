@@ -5,6 +5,7 @@ export interface Cafe {
     description?: string
     logo_url?: string
     created_at: string
+    subscription_plan?: 'basic' | 'pro'
 }
 
 export interface MenuItem {
