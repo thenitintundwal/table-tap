@@ -15,7 +15,7 @@ function MenuContent() {
     const [editingItem, setEditingItem] = useState<MenuItem | null>(null)
     const [searchQuery, setSearchQuery] = useState('')
 
-    const { menuItems, isLoading: isMenuLoading, addItem, updateItem, deleteItem, uploadImage } = useMenu(cafe?.id)
+    const { menuItems, isLoading: isMenuLoading, addItem, updateItem, deleteItem, uploadImage, categories } = useMenu(cafe?.id)
 
     const filteredItems = menuItems?.filter(item =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -177,6 +177,7 @@ function MenuContent() {
                     onClose={() => setIsFormOpen(false)}
                     onSubmit={handleSubmit}
                     initialData={editingItem}
+                    categories={categories}
                 />
             )}
         </div>

@@ -21,10 +21,11 @@ export type MenuItemFormValues = z.infer<typeof menuItemSchema>
 interface MenuFormProps {
     onSubmit: (values: MenuItemFormValues, imageFile?: File | null) => Promise<void>
     initialData?: MenuItem | null
+    categories?: string[]
     onClose: () => void
 }
 
-export default function MenuForm({ onSubmit, initialData, onClose }: MenuFormProps) {
+export default function MenuForm({ onSubmit, initialData, categories = [], onClose }: MenuFormProps) {
     const [loading, setLoading] = useState(false)
     const [imageFile, setImageFile] = useState<File | null>(null)
     const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image_url || null)
@@ -42,6 +43,7 @@ export default function MenuForm({ onSubmit, initialData, onClose }: MenuFormPro
         register,
         handleSubmit,
         reset,
+        setValue,
         formState: { errors },
     } = useForm<MenuItemFormValues>({
         resolver: zodResolver(menuItemSchema),
@@ -68,8 +70,6 @@ export default function MenuForm({ onSubmit, initialData, onClose }: MenuFormPro
         e.stopPropagation()
         setImageFile(null)
         setImagePreview(null)
-        // We'll handle the empty string as a signal to remove the image in the parent component if necessary
-        // or just rely on the API update.
     }
 
     const handleFormSubmit: SubmitHandler<MenuItemFormValues> = async (data) => {
@@ -172,12 +172,35 @@ export default function MenuForm({ onSubmit, initialData, onClose }: MenuFormPro
 
                         <div className="space-y-1">
                             <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider ml-1">Category</label>
-                            <input
-                                {...register('category')}
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all placeholder:text-zinc-600"
-                                placeholder="Coffee"
-                            />
+                            <div className="relative">
+                                <input
+                                    {...register('category')}
+                                    list="categories-list"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all placeholder:text-zinc-600"
+                                    placeholder="Select or type..."
+                                />
+                                <datalist id="categories-list">
+                                    {categories.map(cat => (
+                                        <option key={cat} value={cat} />
+                                    ))}
+                                </datalist>
+                            </div>
                             {errors.category && <p className="text-red-400 text-xs mt-1 ml-1">{errors.category.message}</p>}
+
+                            {categories.length > 0 && (
+                                <div className="flex flex-wrap gap-2 pt-2">
+                                    {categories.slice(0, 6).map(cat => (
+                                        <button
+                                            key={cat}
+                                            type="button"
+                                            onClick={() => setValue('category', cat, { shouldValidate: true })}
+                                            className="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 hover:bg-orange-500 text-zinc-400 hover:text-white transition-all border border-white/5"
+                                        >
+                                            {cat}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
 

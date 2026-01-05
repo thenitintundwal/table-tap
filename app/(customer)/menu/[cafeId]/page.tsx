@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { useParams, useSearchParams } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase/client'
-import { Coffee, ShoppingCart, Search, ArrowRight, Loader2, ChevronLeft, Clock, CheckCircle2, Star } from 'lucide-react'
+import { Coffee, ShoppingCart, Search, ArrowRight, Loader2, ChevronLeft, Clock, CheckCircle2, Star, Plus, Minus } from 'lucide-react'
 import MenuCard from '@/components/customer/MenuCard'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import RatingModal from '@/components/customer/RatingModal'
@@ -329,8 +329,22 @@ export default function CustomerMenuPage() {
                                 {items.map(item => (
                                     <div key={item.id} className="flex items-center justify-between group">
                                         <div className="flex items-center gap-5">
-                                            <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center font-black text-orange-500 border border-white/5 text-lg">
-                                                {item.quantity}
+                                            <div className="flex items-center gap-3 bg-white/5 rounded-2xl p-1 border border-white/5">
+                                                <button
+                                                    onClick={() => removeItem(item.id)}
+                                                    className="w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl transition-colors"
+                                                >
+                                                    <Minus className="w-4 h-4" />
+                                                </button>
+                                                <div className="font-black text-orange-500 w-6 text-center text-lg">
+                                                    {item.quantity}
+                                                </div>
+                                                <button
+                                                    onClick={() => addItem(item)}
+                                                    className="w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/10 rounded-xl transition-colors"
+                                                >
+                                                    <Plus className="w-4 h-4" />
+                                                </button>
                                             </div>
                                             <div>
                                                 <p className="font-bold text-lg text-white group-hover:text-orange-500 transition-colors leading-tight">{item.name}</p>

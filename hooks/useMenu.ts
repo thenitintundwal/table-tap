@@ -27,6 +27,8 @@ export function useMenu(cafeId?: string) {
         enabled: !!cafeId,
     })
 
+    const categories = Array.from(new Set(menuItems?.map(item => item.category) || [])).sort()
+
     const addItem = useMutation({
         mutationFn: async (newItem: MenuItemInsert) => {
             const { data, error } = await (supabase.from('menu_items') as any)
@@ -102,5 +104,6 @@ export function useMenu(cafeId?: string) {
         updateItem,
         deleteItem,
         uploadImage,
+        categories,
     }
 }
