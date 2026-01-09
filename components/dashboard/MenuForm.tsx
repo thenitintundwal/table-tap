@@ -11,6 +11,7 @@ const menuItemSchema = z.object({
     name: z.string().min(1, 'Name is required'),
     description: z.string(),
     price: z.number().min(0, 'Price must be positive'),
+    cost_price: z.number().min(0, 'Cost must be positive').optional(),
     category: z.string().min(1, 'Category is required'),
     is_available: z.boolean(),
     image_url: z.string(),
@@ -34,6 +35,7 @@ export default function MenuForm({ onSubmit, initialData, categories = [], onClo
         name: initialData?.name || '',
         description: initialData?.description || '',
         price: initialData?.price || 0,
+        cost_price: initialData?.cost_price || 0,
         category: initialData?.category || '',
         is_available: initialData?.is_available ?? true,
         image_url: initialData?.image_url || '',
@@ -171,37 +173,49 @@ export default function MenuForm({ onSubmit, initialData, categories = [], onClo
                         </div>
 
                         <div className="space-y-1">
-                            <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider ml-1">Category</label>
-                            <div className="relative">
-                                <input
-                                    {...register('category')}
-                                    list="categories-list"
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all placeholder:text-zinc-600"
-                                    placeholder="Select or type..."
-                                />
-                                <datalist id="categories-list">
-                                    {categories.map(cat => (
-                                        <option key={cat} value={cat} />
-                                    ))}
-                                </datalist>
-                            </div>
-                            {errors.category && <p className="text-red-400 text-xs mt-1 ml-1">{errors.category.message}</p>}
-
-                            {categories.length > 0 && (
-                                <div className="flex flex-wrap gap-2 pt-2">
-                                    {categories.slice(0, 6).map(cat => (
-                                        <button
-                                            key={cat}
-                                            type="button"
-                                            onClick={() => setValue('category', cat, { shouldValidate: true })}
-                                            className="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 hover:bg-orange-500 text-zinc-400 hover:text-white transition-all border border-white/5"
-                                        >
-                                            {cat}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
+                            <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider ml-1">Cost Price ($)</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                {...register('cost_price', { valueAsNumber: true })}
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-zinc-600"
+                                placeholder="1.20"
+                            />
+                            {errors.cost_price && <p className="text-red-400 text-xs mt-1 ml-1">{errors.cost_price.message}</p>}
                         </div>
+                    </div>
+
+                    <div className="space-y-1">
+                        <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider ml-1">Category</label>
+                        <div className="relative">
+                            <input
+                                {...register('category')}
+                                list="categories-list"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all placeholder:text-zinc-600"
+                                placeholder="Select or type..."
+                            />
+                            <datalist id="categories-list">
+                                {categories.map(cat => (
+                                    <option key={cat} value={cat} />
+                                ))}
+                            </datalist>
+                        </div>
+                        {errors.category && <p className="text-red-400 text-xs mt-1 ml-1">{errors.category.message}</p>}
+
+                        {categories.length > 0 && (
+                            <div className="flex flex-wrap gap-2 pt-2">
+                                {categories.slice(0, 6).map(cat => (
+                                    <button
+                                        key={cat}
+                                        type="button"
+                                        onClick={() => setValue('category', cat, { shouldValidate: true })}
+                                        className="text-[10px] px-2.5 py-1 rounded-lg bg-white/5 hover:bg-orange-500 text-zinc-400 hover:text-white transition-all border border-white/5"
+                                    >
+                                        {cat}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/5">

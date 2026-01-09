@@ -19,7 +19,9 @@ function SettingsContent() {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        logo_url: ''
+        logo_url: '',
+        telegram_bot_token: '',
+        telegram_chat_id: ''
     })
 
     useEffect(() => {
@@ -27,7 +29,9 @@ function SettingsContent() {
             setFormData({
                 name: cafe.name || '',
                 description: cafe.description || '',
-                logo_url: cafe.logo_url || ''
+                logo_url: cafe.logo_url || '',
+                telegram_bot_token: cafe.telegram_bot_token || '',
+                telegram_chat_id: cafe.telegram_chat_id || ''
             })
         }
     }, [cafe])
@@ -128,6 +132,73 @@ function SettingsContent() {
                             </button>
                         </div>
                     </form>
+                </div>
+
+                {/* Telegram Notifications Settings */}
+                <div className="lg:col-span-2 space-y-6">
+                    <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-3xl p-8 shadow-sm">
+                        <div className="flex items-center gap-3 mb-8">
+                            <div className="p-2 bg-blue-500/10 rounded-lg">
+                                <Globe className="w-5 h-5 text-blue-500" />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-foreground">Telegram Notifications</h3>
+                                <p className="text-sm text-zinc-500 font-medium mt-0.5">Receive real-time order alerts via Telegram Bot.</p>
+                            </div>
+                        </div>
+
+                        <div className="space-y-6">
+                            <div className="space-y-2">
+                                <label className="text-sm font-black uppercase tracking-widest text-zinc-500 pl-1">
+                                    Telegram Bot Token
+                                </label>
+                                <input
+                                    type="password"
+                                    value={formData.telegram_bot_token}
+                                    onChange={(e) => setFormData({ ...formData, telegram_bot_token: e.target.value })}
+                                    className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-2xl px-5 py-4 text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
+                                    placeholder="e.g. 1234567890:ABCdefGHI..."
+                                />
+                                <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest pl-1">
+                                    Get this from @BotFather on Telegram
+                                </p>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-black uppercase tracking-widest text-zinc-500 pl-1">
+                                    Telegram Chat ID
+                                </label>
+                                <input
+                                    type="text"
+                                    value={formData.telegram_chat_id}
+                                    onChange={(e) => setFormData({ ...formData, telegram_chat_id: e.target.value })}
+                                    className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-2xl px-5 py-4 text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
+                                    placeholder="e.g. -100123456789"
+                                />
+                                <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest pl-1">
+                                    Use @userinfobot to find your Chat ID
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="mt-10 flex justify-between items-center bg-blue-500/5 p-6 rounded-2xl border border-blue-500/10">
+                            <p className="text-xs text-blue-600 dark:text-blue-400/80 font-medium leading-relaxed max-w-[70%]">
+                                Make sure to start the bot and send /start to it before saving these settings.
+                            </p>
+                            <button
+                                onClick={handleSave}
+                                disabled={updateCafe.isPending}
+                                className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs flex items-center gap-2 transition-all shadow-lg shadow-blue-500/20 active:scale-95 disabled:opacity-50"
+                            >
+                                {updateCafe.isPending ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <Save className="w-4 h-4" />
+                                )}
+                                <span>Save Telegram</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Subscription Sidebar */}

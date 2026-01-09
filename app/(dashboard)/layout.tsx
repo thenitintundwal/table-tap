@@ -16,7 +16,9 @@ import {
     Lock as LockIcon,
     Menu,
     X,
-    Settings
+    Settings,
+    LayoutGrid,
+    FileText
 } from 'lucide-react'
 import Link from 'next/link'
 import { useCafe } from '@/hooks/useCafe'
@@ -36,7 +38,7 @@ export default function DashboardLayout({
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
     const { cafe } = useCafe()
-    useOrderRealtime(cafe?.id)
+    useOrderRealtime(cafe || undefined)
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -57,9 +59,13 @@ export default function DashboardLayout({
 
     const navigation = [
         { name: 'Overview', href: '/dashboard', icon: LayoutDashboard, plan: 'basic' },
+        { name: 'POS (Tables)', href: '/dashboard/pos', icon: UtensilsCrossed, plan: 'basic' },
         { name: 'Orders', href: '/dashboard/orders', icon: ShoppingBag, plan: 'basic' },
         { name: 'Menu Items', href: '/dashboard/menu', icon: UtensilsCrossed, plan: 'basic' },
         { name: 'QR Codes', href: '/dashboard/qr-code', icon: QrCode, plan: 'basic' },
+        { name: 'Services (Hub)', href: '/dashboard/services', icon: LayoutGrid, plan: 'basic' },
+        { name: 'Invoices & Accounts', href: '/dashboard/billing', icon: FileText, plan: 'pro' },
+        { name: 'Payroll & HR', href: '/dashboard/payroll', icon: Users, plan: 'pro' },
         { name: 'Analytics', href: '/dashboard/analytics', icon: TrendingUp, plan: 'pro' },
         { name: 'Settings', href: '/dashboard/settings', icon: Settings, plan: 'basic' },
     ]
