@@ -94,12 +94,27 @@ export function useInventory(cafeId?: string) {
         }
     }
 
-    const adjustStock = async (id: string, adjustment: number) => {
+    const adjustStock = async (id: string, adjustment: number, notes?: string) => {
         const item = items.find(i => i.id === id)
         if (!item) return
 
         const newQuantity = Math.max(0, Number(item.quantity) + adjustment)
-        return updateItem(id, { quantity: newQuantity })
+        const result = await updateItem(id, { quantity: newQuantity })
+
+        if (result.success && cafeId) {
+            // Log the manual adjustment
+            await (supabase.from('inventory_logs') as any).insert({
+                cafe_id: cafeId,
+                inventory_item_id: id,
+                change_amount: adjustment,
+                previous_quantity: item.quantity,
+                new_quantity: newQuantity,
+                type: adjustment > 0 ? 'purchase' : 'adjustment',
+                notes: notes || 'Manual adjustment'
+            })
+        }
+
+        return result
     }
 
     return {

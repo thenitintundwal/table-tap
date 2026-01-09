@@ -28,35 +28,35 @@ function ServiceCard({ title, description, icon: Icon, color, status, href }: Se
     return (
         <Link
             href={isLocked ? '#' : href}
-            className={`group relative overflow-hidden bg-zinc-900 border border-white/5 rounded-3xl p-6 transition-all duration-300 ${isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:bg-zinc-800/50 hover:border-white/10 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1'
+            className={`group relative overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200/50 dark:border-white/5 rounded-3xl p-8 transition-all duration-500 shadow-sm shadow-black/5 ${isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 hover:border-orange-500/30 hover:shadow-2xl hover:shadow-black/5 hover:-translate-y-1'
                 }`}
         >
-            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 duration-300 ${color.replace('text-', 'bg-').replace('500', '500/10')}`}>
-                <Icon className={`w-7 h-7 ${color}`} />
+            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 duration-500 ${color.replace('text-', 'bg-').replace('500', '500/10')}`}>
+                <Icon className={`w-8 h-8 ${color}`} />
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-bold text-white group-hover:text-orange-500 transition-colors">
+                    <h3 className="text-xl font-black text-foreground group-hover:text-orange-600 dark:group-hover:text-orange-500 transition-colors uppercase tracking-tight italic">
                         {title}
                     </h3>
                     {status === 'active' && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
-                    {status === 'coming_soon' && <Lock className="w-5 h-5 text-zinc-600" />}
+                    {status === 'coming_soon' && <Lock className="w-5 h-5 text-zinc-300 dark:text-zinc-600" />}
                 </div>
 
                 <p className="text-zinc-500 text-sm leading-relaxed font-medium min-h-[60px]">
                     {description}
                 </p>
 
-                <div className="pt-4 flex items-center text-xs font-bold uppercase tracking-widest">
+                <div className="pt-6 flex items-center text-[10px] font-black uppercase tracking-[0.2em]">
                     {status === 'active' ? (
-                        <span className="text-emerald-500 flex items-center gap-2">
+                        <span className="text-emerald-500 flex items-center gap-2 bg-emerald-50 dark:bg-emerald-500/5 px-3 py-1.5 rounded-xl border border-emerald-100 dark:border-emerald-500/10">
                             Installed
                         </span>
                     ) : status === 'coming_soon' ? (
-                        <span className="text-zinc-600">Coming Soon</span>
+                        <span className="text-zinc-400 bg-zinc-50 dark:bg-white/5 px-3 py-1.5 rounded-xl border border-zinc-100 dark:border-white/5">Coming Soon</span>
                     ) : (
-                        <span className="text-orange-500 flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+                        <span className="text-orange-500 flex items-center gap-2 group-hover:translate-x-1 transition-transform bg-orange-50 dark:bg-orange-500/5 px-4 py-2 rounded-xl border border-orange-100 dark:border-orange-500/10">
                             Launch App <ArrowRight className="w-3 h-3" />
                         </span>
                     )}
@@ -119,18 +119,18 @@ export default function ServicesPage() {
     ]
 
     return (
-        <div className="p-8 max-w-7xl mx-auto space-y-10">
-            <div className="space-y-2">
-                <h1 className="text-4xl font-black text-white italic tracking-tighter uppercase">
+        <div className="p-10 max-w-7xl mx-auto space-y-12 animate-in fade-in duration-700">
+            <div className="space-y-3">
+                <h1 className="text-5xl font-black text-foreground italic tracking-tighter uppercase">
                     Services Hub
                 </h1>
-                <p className="text-zinc-500 font-medium max-w-2xl">
+                <p className="text-zinc-500 font-medium max-w-2xl text-lg">
                     Supercharge your TableTap experience with powerful add-on modules.
                     Manage everything from stock to staff in one place.
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {services.map((service, i) => (
                     <ServiceCard key={i} {...service} />
                 ))}

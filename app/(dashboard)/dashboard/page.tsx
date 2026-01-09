@@ -55,61 +55,62 @@ function DashboardContent() {
                         requiredPlan={stat.requiredPlan as any || 'basic'}
                         featureName={stat.label}
                     >
-                        <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-6 rounded-2xl hover:bg-zinc-50 dark:hover:bg-white/[0.07] transition-all group relative overflow-hidden shadow-sm dark:shadow-none h-full">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className={`p-3 rounded-xl bg-zinc-100 dark:bg-black/40 ${stat.color.replace('text-', 'bg-').replace('500', '500/10')} dark:bg-transparent`}>
-                                    <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                        <div className="bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 p-6 rounded-[2rem] hover:shadow-xl hover:shadow-black/5 transition-all group relative overflow-hidden shadow-sm shadow-black/5 h-full">
+                            <div className="flex items-center justify-between mb-6">
+                                <div className={`p-4 rounded-2xl bg-zinc-50 dark:bg-white/5 ${stat.color.replace('text-', 'bg-').replace('500', '500/10')} dark:bg-transparent`}>
+                                    <stat.icon className={`w-7 h-7 ${stat.color}`} />
                                 </div>
-                                <div className={`text-xs font-medium px-2 py-1 rounded-full bg-zinc-100 dark:bg-white/5 ${stat.trend === 'Live' ? 'text-orange-600 dark:text-orange-500' : 'text-emerald-600 dark:text-emerald-500'
+                                <div className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full ${stat.trend === 'Live' ? 'bg-orange-500/10 text-orange-600' : 'bg-emerald-500/10 text-emerald-600'
                                     }`}>
                                     {stat.trend}
                                 </div>
                             </div>
                             <div>
-                                <p className="text-zinc-500 dark:text-zinc-400 text-sm font-medium">{stat.label}</p>
-                                <p className="text-2xl font-bold mt-1 tracking-tight text-foreground">{stat.value}</p>
+                                <p className="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">{stat.label}</p>
+                                <p className="text-3xl font-black mt-2 tracking-tight text-foreground transition-transform group-hover:scale-105 origin-left duration-300">{stat.value}</p>
                             </div>
-                            {/* Hover bar */}
-                            <div className={`absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-500 bg-gradient-to-r from-transparent via-orange-500/50 to-transparent`} />
                         </div>
                     </FeatureGuard>
                 ))}
             </div>
 
             {/* Charts / Activity Placeholders */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-8 rounded-3xl min-h-[400px] flex flex-col group relative shadow-sm dark:shadow-none">
-                    <div className="flex items-center justify-between mb-8">
-                        <h3 className="text-lg font-semibold text-foreground">Revenue Analytics</h3>
-                        <button className="text-zinc-500 dark:text-zinc-400 hover:text-foreground flex items-center gap-1 text-sm transition-colors">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-10">
+                <div className="lg:col-span-2 bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 p-8 rounded-[2.5rem] min-h-[450px] flex flex-col group relative shadow-sm shadow-black/5">
+                    <div className="flex items-center justify-between mb-10">
+                        <div>
+                            <h3 className="text-xl font-black text-foreground">Revenue Analytics</h3>
+                            <p className="text-xs text-zinc-500 font-medium">Performance over time</p>
+                        </div>
+                        <button className="text-zinc-500 dark:text-zinc-400 hover:text-orange-500 flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-all">
                             View Report <ArrowUpRight className="w-4 h-4" />
                         </button>
                     </div>
-                    <div className="flex-1 min-h-[300px]">
+                    <div className="flex-1 min-h-[350px]">
                         <FeatureGuard mode="blur" featureName="Revenue Analytics">
                             {statsData?.chartData && <RevenueChart data={statsData.chartData} />}
                         </FeatureGuard>
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-8 rounded-3xl min-h-[400px] flex flex-col group shadow-sm dark:shadow-none">
-                    <div className="flex items-center justify-between mb-8">
-                        <h3 className="text-lg font-semibold text-foreground">Recent Orders</h3>
-                        <span className="text-xs bg-orange-500/10 text-orange-600 dark:text-orange-500 px-2 py-1 rounded-lg">Real-time</span>
+                <div className="bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 p-8 rounded-[2.5rem] min-h-[450px] flex flex-col group shadow-sm shadow-black/5">
+                    <div className="flex items-center justify-between mb-10">
+                        <h3 className="text-xl font-black text-foreground">Recent Orders</h3>
+                        <span className="text-[10px] font-black uppercase tracking-widest bg-orange-500/10 text-orange-600 px-3 py-1.5 rounded-full">Real-time</span>
                     </div>
-                    <div className="flex-1 space-y-4">
+                    <div className="flex-1 space-y-6">
                         {statsData?.recentOrders.map((order: any) => (
-                            <div key={order.id} className="flex items-center gap-4 p-3 rounded-xl hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors border border-transparent hover:border-zinc-200 dark:hover:border-white/5 cursor-pointer">
-                                <div className="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-white/5 flex items-center justify-center text-xs font-bold text-zinc-500 dark:text-zinc-400">
+                            <div key={order.id} className="flex items-center gap-5 p-2 rounded-2xl hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors group/item">
+                                <div className="w-12 h-12 rounded-xl bg-zinc-100 dark:bg-white/5 flex items-center justify-center text-xs font-black text-zinc-500 group-hover/item:bg-white group-hover/item:shadow-sm transition-all">
                                     T{order.table_number}
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm font-medium text-foreground">{order.customer_name || 'Anonymous'}</p>
-                                    <p className="text-xs text-zinc-500">{formatDistanceToNow(new Date(order.created_at), { addSuffix: true })}</p>
+                                    <p className="text-sm font-bold text-foreground">{order.customer_name || 'Anonymous'}</p>
+                                    <p className="text-[10px] text-zinc-400 font-medium">{formatDistanceToNow(new Date(order.created_at), { addSuffix: true })}</p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-sm font-bold text-foreground">${Number(order.total_amount).toFixed(2)}</p>
-                                    <p className={`text-[10px] uppercase font-bold ${order.status === 'pending' ? 'text-orange-500' :
+                                    <p className="text-sm font-black text-foreground">${Number(order.total_amount).toFixed(2)}</p>
+                                    <p className={`text-[10px] uppercase font-black tracking-widest ${order.status === 'pending' ? 'text-orange-500' :
                                         order.status === 'preparing' ? 'text-blue-500' :
                                             order.status === 'completed' ? 'text-emerald-500' : 'text-red-500'
                                         }`}>{order.status}</p>
@@ -118,8 +119,8 @@ function DashboardContent() {
                         ))}
                         {statsData?.recentOrders.length === 0 && (
                             <div className="flex flex-col items-center justify-center h-full text-zinc-500 dark:text-zinc-600 opacity-50">
-                                <ShoppingBag className="w-8 h-8 mb-2" />
-                                <p className="text-sm">No recent orders</p>
+                                <ShoppingBag className="w-12 h-12 mb-3" />
+                                <p className="text-sm font-bold uppercase tracking-widest">No recent orders</p>
                             </div>
                         )}
                     </div>

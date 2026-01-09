@@ -125,9 +125,9 @@ export default function POSContent() {
     }
 
     return (
-        <div className="h-screen flex flex-col bg-zinc-950">
+        <div className="h-screen flex flex-col bg-zinc-950 dark:bg-zinc-950">
             {/* Top Bar */}
-            <div className="bg-zinc-900 border-b border-white/10 px-6 py-4 flex items-center justify-between">
+            <div className="bg-white/5 dark:bg-white/5 border-b border-black/5 dark:border-white/10 px-6 py-4 flex items-center justify-between backdrop-blur-xl">
                 <div className="flex items-center gap-6">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
@@ -166,7 +166,7 @@ export default function POSContent() {
             </div>
 
             {/* Section Tabs */}
-            <div className="bg-zinc-900/50 border-b border-white/5 px-6 py-3 flex items-center justify-between">
+            <div className="bg-black/5 dark:bg-black/20 border-b border-black/5 dark:border-white/5 px-6 py-3 flex items-center justify-between backdrop-blur-md">
                 <div className="flex items-center gap-2">
                     {sections.map(section => (
                         <button
@@ -249,8 +249,8 @@ export default function POSContent() {
             {/* Table Action Modal */}
             {selectedTable && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setSelectedTable(null)} />
-                    <div className="bg-zinc-900 border border-white/10 w-full max-w-lg rounded-3xl overflow-hidden relative z-10 animate-in fade-in zoom-in-95">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedTable(null)} />
+                    <div className="bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 w-full max-w-lg rounded-3xl overflow-hidden relative z-10 animate-in fade-in zoom-in-95 shadow-2xl">
                         <div className="p-6 border-b border-white/5 flex items-center justify-between bg-zinc-800/50">
                             <div className="flex items-center gap-4">
                                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-black ${getTableColor(selectedTable.status)}`}>

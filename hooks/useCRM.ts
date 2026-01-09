@@ -138,11 +138,26 @@ export function useCRM(cafeId?: string) {
         fetchCustomers()
     }
 
+    const fetchCustomerHistory = async (customerId: string) => {
+        const { data, error } = await supabase
+            .from('loyalty_transactions')
+            .select('*')
+            .eq('customer_id', customerId)
+            .order('created_at', { ascending: false })
+
+        if (error) {
+            console.error('Error fetching history:', error)
+            return []
+        }
+        return data as any[]
+    }
+
     return {
         customers,
         isLoading,
         refresh: fetchCustomers,
         syncCustomers,
-        redeemPoints
+        redeemPoints,
+        fetchCustomerHistory
     }
 }

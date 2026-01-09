@@ -16,34 +16,31 @@ export function useAccounts(cafeId?: string) {
             const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0]
 
             // Total Sales
-            const { data: sales } = await supabase
-                .from('invoices')
+            const { data: sales } = await (supabase.from('invoices') as any)
                 .select('total_amount')
                 .eq('cafe_id', cafeId!)
                 .eq('type', 'sales')
                 .gte('invoice_date', startOfMonth)
 
             // Total Purchase
-            const { data: purchases } = await supabase
-                .from('invoices')
+            const { data: purchases } = await (supabase.from('invoices') as any)
                 .select('total_amount')
                 .eq('cafe_id', cafeId!)
                 .eq('type', 'purchase')
                 .gte('invoice_date', startOfMonth)
 
             // Receivables (From financial_party)
-            const { data: parties } = await supabase
-                .from('financial_parties')
+            const { data: partiesData } = await (supabase.from('financial_parties') as any)
                 .select('outstanding_balance')
                 .eq('cafe_id', cafeId!)
 
             const totalSales = (sales as any[])?.reduce((sum, i) => sum + Number(i.total_amount), 0) || 0
             const totalPurchase = (purchases as any[])?.reduce((sum, i) => sum + Number(i.total_amount), 0) || 0
 
-            const receivables = (parties as any[])?.filter(p => Number(p.outstanding_balance) < 0)
+            const receivables = (partiesData as any[])?.filter(p => Number(p.outstanding_balance) < 0)
                 .reduce((sum, p) => sum + Math.abs(Number(p.outstanding_balance)), 0) || 0
 
-            const payables = (parties as any[])?.filter(p => Number(p.outstanding_balance) > 0)
+            const payables = (partiesData as any[])?.filter(p => Number(p.outstanding_balance) > 0)
                 .reduce((sum, p) => sum + Number(p.outstanding_balance), 0) || 0
 
             return {
@@ -64,14 +61,12 @@ export function useAccounts(cafeId?: string) {
         queryKey: ['accounts-trend', cafeId],
         enabled: !!cafeId,
         queryFn: async () => {
-            const { data: invoices } = await supabase
-                .from('invoices')
+            const { data: invoices } = await (supabase.from('invoices') as any)
                 .select('total_amount, type, invoice_date')
                 .eq('cafe_id', cafeId!)
                 .order('invoice_date', { ascending: true })
 
-            const { data: expenses } = await supabase
-                .from('business_expenses')
+            const { data: expenses } = await (supabase.from('business_expenses') as any)
                 .select('amount, date')
                 .eq('cafe_id', cafeId!)
                 .order('date', { ascending: true })
@@ -113,7 +108,22 @@ export function useAccounts(cafeId?: string) {
         }
     })
 
-    // 4. Mutations
+    // 4. Fetch Financial Parties (for Receivables/Payables)
+    const { data: parties, isLoading: isPartiesLoading } = useQuery({
+        queryKey: ['financial-parties', cafeId],
+        enabled: !!cafeId,
+        queryFn: async () => {
+            const { data, error } = await (supabase.from('financial_parties') as any)
+                .select('*')
+                .eq('cafe_id', cafeId!)
+                .order('outstanding_balance', { ascending: false })
+
+            if (error) throw error
+            return data as FinancialParty[]
+        }
+    })
+
+    // 5. Mutations
     const addInvoice = useMutation({
         mutationFn: async (newInvoice: Omit<Invoice, 'id' | 'created_at' | 'cafe_id'>) => {
             const { data, error } = await (supabase.from('invoices') as any)
@@ -122,11 +132,12 @@ export function useAccounts(cafeId?: string) {
                 .single()
 
             if (error) throw error
-            return data
+            return data as Invoice
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['accounts-metrics', cafeId] })
             queryClient.invalidateQueries({ queryKey: ['accounts-trend', cafeId] })
+            queryClient.invalidateQueries({ queryKey: ['financial-parties', cafeId] })
         }
     })
 
@@ -138,7 +149,7 @@ export function useAccounts(cafeId?: string) {
                 .single()
 
             if (error) throw error
-            return data
+            return data as BusinessExpense
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['accounts-metrics', cafeId] })
@@ -153,6 +164,8 @@ export function useAccounts(cafeId?: string) {
         isTrendLoading,
         ledger,
         isLedgerLoading,
+        parties,
+        isPartiesLoading,
         addInvoice,
         addExpense
     }

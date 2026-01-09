@@ -86,7 +86,7 @@ export default function DashboardLayout({
             <aside
                 className={`fixed md:sticky top-0 left-0 z-[70] md:z-50 h-screen ${isSidebarOpen ? 'w-64' : 'w-20'
                     } ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-                    } border-r border-black/5 dark:border-white/5 bg-zinc-50/50 dark:bg-black/50 backdrop-blur-xl transition-all duration-300 flex flex-col`}
+                    } border-r border-black/5 dark:border-white/5 bg-white dark:bg-zinc-950/50 backdrop-blur-xl transition-all duration-300 flex flex-col`}
             >
                 <div className="h-16 flex items-center justify-between px-6 border-b border-black/5 dark:border-white/5">
                     <div className="flex items-center gap-3 overflow-hidden">
@@ -154,7 +154,7 @@ export default function DashboardLayout({
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-                <header className="h-16 border-b border-black/5 dark:border-white/5 bg-white/50 dark:bg-black/20 backdrop-blur-md px-4 md:px-8 flex items-center justify-between z-40">
+                <header className="h-16 border-b border-black/5 dark:border-white/5 bg-white/80 dark:bg-zinc-950/50 backdrop-blur-md px-4 md:px-8 flex items-center justify-between z-40">
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => setIsMobileMenuOpen(true)}

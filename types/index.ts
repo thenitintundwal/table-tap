@@ -63,6 +63,17 @@ export interface PayrollRecord {
     created_at: string
 }
 
+export interface StaffAdvance {
+    id: string
+    cafe_id: string
+    staff_id: string
+    amount: number
+    reason: string
+    status: 'paid' | 'recovered'
+    created_at: string
+    staff?: Staff
+}
+
 export interface MenuItem {
     id: string
     cafe_id: string
@@ -98,6 +109,7 @@ export interface Customer {
     visit_count: number
     last_visit: string
     loyalty_points?: number
+    created_at: string
 }
 
 export interface OrderItem {
@@ -107,6 +119,27 @@ export interface OrderItem {
     quantity: number
     price: number
     menu_item?: MenuItem
+}
+
+export interface MenuItemIngredient {
+    id: string;
+    menu_item_id: string;
+    inventory_item_id: string;
+    quantity_required: number;
+    created_at: string;
+}
+
+export interface InventoryLog {
+    id: string;
+    cafe_id: string;
+    inventory_item_id: string;
+    change_amount: number;
+    previous_quantity: number;
+    new_quantity: number;
+    type: 'purchase' | 'sale' | 'adjustment' | 'return';
+    reference_id?: string;
+    notes?: string;
+    created_at: string;
 }
 
 export interface Rating {

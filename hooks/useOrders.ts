@@ -41,6 +41,9 @@ export function useOrders(cafeId?: string) {
         onSuccess: () => {
             queryClient.refetchQueries({ queryKey: ['orders', cafeId] })
             queryClient.refetchQueries({ queryKey: ['stats', cafeId] })
+            queryClient.invalidateQueries({ queryKey: ['accounts-metrics', cafeId] })
+            queryClient.invalidateQueries({ queryKey: ['accounts-trend', cafeId] })
+            queryClient.invalidateQueries({ queryKey: ['financial-parties', cafeId] })
         },
     })
 

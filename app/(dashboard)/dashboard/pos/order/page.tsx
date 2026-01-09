@@ -18,8 +18,9 @@ import {
 } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import { useCafe } from '@/hooks/useCafe'
-import { MenuItem } from '@/types'
+import { MenuItem, Customer } from '@/types'
 import { toast } from 'sonner'
+import { useCRM } from '@/hooks/useCRM'
 
 export default function POSOrderPage() {
     const router = useRouter()
@@ -32,6 +33,16 @@ export default function POSOrderPage() {
     const [selectedCategory, setSelectedCategory] = useState('All')
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [customerName, setCustomerName] = useState('')
+    const { customers: allCustomers } = useCRM(cafe?.id)
+    const [customerSearch, setCustomerSearch] = useState('')
+    const [showCustomerDropdown, setShowCustomerDropdown] = useState(false)
+
+    const filteredCustomers = useMemo(() => {
+        if (!customerSearch) return []
+        return allCustomers.filter(c =>
+            c.customer_name?.toLowerCase().includes(customerSearch.toLowerCase())
+        ).slice(0, 5)
+    }, [allCustomers, customerSearch])
 
     // Fetch menu items
     const { data: menuItems, isLoading: isLoadingMenu } = useQuery({
@@ -97,9 +108,9 @@ export default function POSOrderPage() {
     }
 
     return (
-        <div className="flex flex-col h-[calc(100vh-8rem)] -m-8 overflow-hidden bg-zinc-950">
+        <div className="flex flex-col h-[calc(100vh-8rem)] -m-8 overflow-hidden bg-zinc-950 dark:bg-zinc-950">
             {/* Header / Search */}
-            <div className="bg-zinc-900 border-b border-white/10 p-6 flex items-center justify-between gap-6">
+            <div className="bg-white/5 dark:bg-white/5 border-b border-black/5 dark:border-white/10 p-6 flex items-center justify-between gap-6 backdrop-blur-xl">
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => router.back()}
@@ -132,8 +143,8 @@ export default function POSOrderPage() {
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
                             className={`flex-shrink-0 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${selectedCategory === cat
-                                    ? 'bg-orange-500 text-white'
-                                    : 'bg-white/5 text-zinc-500 hover:text-white border border-white/5'
+                                ? 'bg-orange-500 text-white'
+                                : 'bg-white/5 text-zinc-500 hover:text-white border border-white/5'
                                 }`}
                         >
                             {cat}
@@ -154,7 +165,7 @@ export default function POSOrderPage() {
                                 <div
                                     key={item.id}
                                     onClick={() => addItem(item)}
-                                    className={`relative bg-zinc-900 border rounded-2xl p-4 cursor-pointer transition-all hover:border-orange-500/50 group ${quantity > 0 ? 'border-orange-500' : 'border-white/5'
+                                    className={`relative bg-white/5 dark:bg-white/5 border rounded-2xl p-4 cursor-pointer transition-all hover:border-orange-500/50 group backdrop-blur-sm ${quantity > 0 ? 'border-orange-500' : 'border-black/5 dark:border-white/5'
                                         }`}
                                 >
                                     {item.image_url ? (
@@ -184,7 +195,7 @@ export default function POSOrderPage() {
                 </div>
 
                 {/* Sidebar Cart */}
-                <div className="w-96 bg-zinc-900 border-l border-white/10 flex flex-col">
+                <div className="w-96 bg-black/20 dark:bg-black/40 border-l border-black/5 dark:border-white/10 flex flex-col backdrop-blur-2xl">
                     <div className="p-6 border-b border-white/5 flex items-center justify-between">
                         <div className="flex items-center gap-2">
                             <ShoppingCart className="w-5 h-5 text-orange-500" />
@@ -239,10 +250,39 @@ export default function POSOrderPage() {
                                 <input
                                     type="text"
                                     placeholder="Customer Name (Optional)"
-                                    value={customerName}
-                                    onChange={(e) => setCustomerName(e.target.value)}
+                                    value={customerSearch}
+                                    onChange={(e) => {
+                                        setCustomerSearch(e.target.value)
+                                        setCustomerName(e.target.value)
+                                        setShowCustomerDropdown(true)
+                                    }}
+                                    onFocus={() => setShowCustomerDropdown(true)}
                                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all font-bold placeholder:text-zinc-700"
                                 />
+                                {showCustomerDropdown && filteredCustomers.length > 0 && (
+                                    <div className="absolute bottom-full left-0 right-0 mb-2 bg-zinc-800 border border-white/10 rounded-xl overflow-hidden shadow-2xl z-50 animate-in fade-in slide-in-from-bottom-2">
+                                        {filteredCustomers.map(customer => (
+                                            <button
+                                                key={customer.id}
+                                                onClick={() => {
+                                                    const name = customer.customer_name || ''
+                                                    setCustomerName(name)
+                                                    setCustomerSearch(name)
+                                                    setShowCustomerDropdown(false)
+                                                }}
+                                                className="w-full px-4 py-3 text-left hover:bg-orange-500/10 flex items-center justify-between border-b border-white/5 last:border-0 transition-colors"
+                                            >
+                                                <div>
+                                                    <p className="text-xs font-bold text-white">{customer.customer_name}</p>
+                                                    <p className="text-[10px] text-zinc-500 uppercase font-black">{customer.loyalty_points || 0} pts</p>
+                                                </div>
+                                                <div className="px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-500 text-[10px] font-black uppercase">
+                                                    Member
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="flex items-center justify-between">

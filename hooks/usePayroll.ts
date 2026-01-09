@@ -67,7 +67,37 @@ export function usePayroll(cafeId?: string) {
         }
     })
 
-    // 3. Attendance Mutations
+    // 3. Fetch Staff Advances
+    const { data: advances, isLoading: isAdvancesLoading } = useQuery({
+        queryKey: ['staff-advances', cafeId],
+        enabled: !!cafeId,
+        queryFn: async () => {
+            const { data, error } = await (supabase.from('staff_advances') as any)
+                .select('*, staff(*)')
+                .eq('cafe_id', cafeId!)
+                .order('created_at', { ascending: false })
+
+            if (error) throw error
+            return data
+        }
+    })
+
+    // 4. Fetch Payroll History
+    const { data: payrollHistory, isLoading: isPayrollLoading } = useQuery({
+        queryKey: ['payroll-history', cafeId],
+        enabled: !!cafeId,
+        queryFn: async () => {
+            const { data, error } = await (supabase.from('payroll_records') as any)
+                .select('*, staff(*)')
+                .eq('cafe_id', cafeId!)
+                .order('period_start', { ascending: false })
+
+            if (error) throw error
+            return data
+        }
+    })
+
+    // 5. Attendance Mutations
     const checkIn = useMutation({
         mutationFn: async ({ staffId, shiftId }: { staffId: string; shiftId?: string }) => {
             const { data, error } = await (supabase.from('staff_attendance') as any)
@@ -129,13 +159,94 @@ export function usePayroll(cafeId?: string) {
         }
     })
 
+    const addAdvance = useMutation({
+        mutationFn: async (newAdvance: { staff_id: string; amount: number; reason: string }) => {
+            const { data, error } = await (supabase.from('staff_advances') as any)
+                .insert({
+                    ...newAdvance,
+                    cafe_id: cafeId,
+                    status: 'paid'
+                })
+                .select()
+                .single()
+
+            if (error) throw error
+            return data
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['staff-advances', cafeId] })
+        }
+    })
+
+    const runPayroll = useMutation({
+        mutationFn: async ({ periodStart, periodEnd }: { periodStart: string; periodEnd: string }) => {
+            // 1. Fetch all staff
+            const { data: staffList } = await (supabase.from('staff') as any)
+                .select('*')
+                .eq('cafe_id', cafeId!)
+
+            if (!staffList) return
+
+            // 2. Fetch pending advances to deduct
+            const { data: pendingAdvances } = await (supabase.from('staff_advances') as any)
+                .select('*')
+                .eq('cafe_id', cafeId!)
+                .eq('status', 'paid')
+
+            const payrollEntries = staffList.map((member: any) => {
+                const memberAdvances = pendingAdvances?.filter((a: any) => a.staff_id === member.id) || []
+                const totalDeductions = memberAdvances.reduce((sum: number, a: any) => sum + Number(a.amount), 0)
+                const baseSalary = Number(member.monthly_salary) || 0
+
+                return {
+                    cafe_id: cafeId,
+                    staff_id: member.id,
+                    period_start: periodStart,
+                    period_end: periodEnd,
+                    base_salary: baseSalary,
+                    bonus: 0,
+                    deductions: totalDeductions,
+                    net_pay: baseSalary - totalDeductions,
+                    status: 'paid',
+                    processed_at: new Date().toISOString()
+                }
+            })
+
+            const { data, error } = await (supabase.from('payroll_records') as any)
+                .insert(payrollEntries)
+                .select()
+
+            if (error) throw error
+
+            // 3. Mark advances as recovered
+            const advanceIds = pendingAdvances?.map((a: any) => a.id) || []
+            if (advanceIds.length > 0) {
+                await (supabase.from('staff_advances') as any)
+                    .update({ status: 'recovered' })
+                    .in('id', advanceIds)
+            }
+
+            return data
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['payroll-history', cafeId] })
+            queryClient.invalidateQueries({ queryKey: ['staff-advances', cafeId] })
+        }
+    })
+
     return {
         metrics,
         isMetricsLoading,
         recentAttendance,
         isAttendanceLoading,
+        advances,
+        isAdvancesLoading,
+        payrollHistory,
+        isPayrollLoading,
         checkIn,
         checkOut,
-        toggleBreak
+        toggleBreak,
+        addAdvance,
+        runPayroll
     }
 }
