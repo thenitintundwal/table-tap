@@ -73,24 +73,24 @@ export default function PayrollDashboard() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
                     <div className="flex items-center gap-4 mb-2">
-                        <div className="p-2.5 bg-orange-500/10 rounded-2xl">
-                            <Users className="w-6 h-6 text-orange-500" />
+                        <div className="p-3 bg-orange-600/10 dark:bg-orange-500/10 rounded-2xl border border-orange-600/10">
+                            <Users className="w-6 h-6 text-orange-600 dark:text-orange-500" />
                         </div>
-                        <h1 className="text-4xl font-black tracking-tight text-foreground uppercase italic">Staff Command & Payroll</h1>
+                        <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-zinc-900 dark:text-white uppercase italic">Staff Command & Payroll</h1>
                     </div>
-                    <p className="text-zinc-500 font-medium text-lg">Real-time attendance tracking and payroll intelligence.</p>
+                    <p className="text-zinc-500 dark:text-zinc-400 font-medium text-lg">Real-time attendance tracking and payroll intelligence.</p>
                 </div>
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => setIsAdvanceModalOpen(true)}
-                        className="bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/5 px-6 py-3.5 rounded-2xl text-xs font-black text-zinc-500 dark:text-zinc-400 flex items-center gap-3 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all shadow-sm shadow-black/5 uppercase tracking-widest"
+                        className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 px-6 py-3.5 rounded-2xl text-[10px] font-black text-zinc-600 dark:text-zinc-400 flex items-center gap-3 hover:bg-zinc-50 dark:hover:bg-white/10 transition-all shadow-sm uppercase tracking-widest active:scale-95"
                     >
                         <Plane className="w-5 h-5 text-rose-500" />
                         Staff Advance
                     </button>
                     <button
                         onClick={() => setIsPayrollModalOpen(true)}
-                        className="bg-zinc-900 hover:bg-black text-white px-8 py-3.5 rounded-2xl font-black text-xs shadow-xl shadow-black/10 transition-all active:scale-95 uppercase italic tracking-widest"
+                        className="bg-zinc-900 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-950 px-8 py-3.5 rounded-2xl font-black text-[10px] shadow-xl shadow-black/10 dark:shadow-white/5 transition-all active:scale-95 uppercase italic tracking-widest"
                     >
                         Run Payroll
                     </button>
@@ -100,16 +100,17 @@ export default function PayrollDashboard() {
             {/* Metric Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                 {stats.map((stat) => (
-                    <div key={stat.label} className="bg-white dark:bg-zinc-900/50 backdrop-blur-xl border border-zinc-200/50 dark:border-white/5 p-6 rounded-[2rem] group hover:border-orange-500/30 transition-all shadow-sm shadow-black/5">
-                        <div className="flex items-center justify-between mb-5">
-                            <div className={`p-3 rounded-2xl bg-${stat.color}-500/10 text-${stat.color}-500 ring-1 ring-${stat.color}-500/20 shadow-sm`}>
+                    <div key={stat.label} className="bg-white dark:bg-zinc-900/50 backdrop-blur-xl border border-zinc-200 dark:border-white/10 p-6 rounded-[2rem] group hover:border-orange-500/30 transition-all shadow-sm dark:shadow-none relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-zinc-500/5 rounded-full -mr-12 -mt-12 blur-2xl group-hover:bg-orange-500/10 transition-all"></div>
+                        <div className="flex items-center justify-between mb-5 relative z-10">
+                            <div className={`p-3 rounded-2xl bg-${stat.color}-500/10 text-${stat.color}-600 dark:text-${stat.color}-500 ring-1 ring-${stat.color}-500/20 shadow-sm`}>
                                 <stat.icon className="w-6 h-6" />
                             </div>
                             <ArrowUpRight className="w-5 h-5 text-zinc-300 dark:text-zinc-600 group-hover:text-orange-500 transition-colors" />
                         </div>
-                        <div className="space-y-1">
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{stat.label}</p>
-                            <h3 className="text-4xl font-black text-foreground dark:text-white italic">{stat.value}</h3>
+                        <div className="space-y-1 relative z-10">
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500">{stat.label}</p>
+                            <h3 className="text-4xl font-black text-zinc-900 dark:text-white italic tracking-tighter">{stat.value}</h3>
                         </div>
                     </div>
                 ))}
@@ -122,32 +123,32 @@ export default function PayrollDashboard() {
                         <div className="flex items-center gap-10">
                             <button
                                 onClick={() => setActiveMainTab('attendance')}
-                                className={`text-2xl font-black uppercase italic tracking-tighter transition-all ${activeMainTab === 'attendance' ? 'text-foreground border-b-4 border-orange-500 pb-1' : 'text-zinc-400 hover:text-zinc-600'}`}
+                                className={`text-2xl font-black uppercase italic tracking-tighter transition-all ${activeMainTab === 'attendance' ? 'text-zinc-900 dark:text-white border-b-4 border-orange-500 pb-1' : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300'}`}
                             >
                                 Attendance
                             </button>
                             <button
                                 onClick={() => setActiveMainTab('advances')}
-                                className={`text-2xl font-black uppercase italic tracking-tighter transition-all ${activeMainTab === 'advances' ? 'text-foreground border-b-4 border-orange-500 pb-1' : 'text-zinc-400 hover:text-zinc-600'}`}
+                                className={`text-2xl font-black uppercase italic tracking-tighter transition-all ${activeMainTab === 'advances' ? 'text-zinc-900 dark:text-white border-b-4 border-orange-500 pb-1' : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300'}`}
                             >
                                 Advances
                             </button>
                             <button
                                 onClick={() => setActiveMainTab('salary')}
-                                className={`text-2xl font-black uppercase italic tracking-tighter transition-all ${activeMainTab === 'salary' ? 'text-foreground border-b-4 border-orange-500 pb-1' : 'text-zinc-400 hover:text-zinc-600'}`}
+                                className={`text-2xl font-black uppercase italic tracking-tighter transition-all ${activeMainTab === 'salary' ? 'text-zinc-900 dark:text-white border-b-4 border-orange-500 pb-1' : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300'}`}
                             >
                                 Salary History
                             </button>
                         </div>
                         {activeMainTab === 'attendance' && (
-                            <div className="flex items-center gap-2 p-1.5 bg-zinc-50 dark:bg-black/40 rounded-[1.5rem] border border-zinc-100 dark:border-white/5 w-fit shadow-inner">
+                            <div className="flex items-center gap-2 p-2 bg-zinc-100 dark:bg-black/40 rounded-[1.5rem] border border-zinc-200 dark:border-white/5 w-fit">
                                 {shiftTabs.map((tab) => (
                                     <button
                                         key={tab}
                                         onClick={() => setActiveShiftTab(tab)}
                                         className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${activeShiftTab === tab
-                                            ? 'bg-zinc-900 text-white shadow-lg shadow-black/10'
-                                            : 'text-zinc-400 hover:text-orange-500'
+                                            ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 shadow-lg'
+                                            : 'text-zinc-400 hover:text-orange-600 dark:hover:text-orange-500'
                                             }`}
                                     >
                                         {tab}
@@ -227,10 +228,10 @@ export default function PayrollDashboard() {
                                         </td>
                                         <td className="px-8 py-6">
                                             <div className="flex items-center gap-4">
-                                                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500/20 to-orange-400/20 border border-orange-500/10 flex items-center justify-center font-black text-orange-600 dark:text-orange-400 italic">
+                                                <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 flex items-center justify-center font-black text-zinc-900 dark:text-white italic text-lg shadow-sm">
                                                     {entry.staff?.name?.[0]}
                                                 </div>
-                                                <span className="font-bold text-foreground dark:text-white">{entry.staff?.name}</span>
+                                                <span className="font-black text-zinc-900 dark:text-white uppercase tracking-tight text-sm">{entry.staff?.name}</span>
                                             </div>
                                         </td>
                                         <td className="px-8 py-6 text-sm font-bold text-zinc-500 dark:text-zinc-400">{entry.staff?.department || 'Operations'}</td>
@@ -247,9 +248,9 @@ export default function PayrollDashboard() {
                                             {!entry.check_out && (
                                                 <button
                                                     onClick={() => handleCheckOut(entry.id)}
-                                                    className="text-[10px] font-black uppercase tracking-widest text-rose-500 hover:text-rose-600 transition-colors flex items-center gap-2 ml-auto bg-rose-50 dark:bg-rose-500/10 px-4 py-2 rounded-xl border border-rose-100 dark:border-rose-500/20"
+                                                    className="text-[10px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-500 hover:bg-rose-100 dark:hover:bg-rose-500/20 transition-all flex items-center gap-2 ml-auto bg-rose-50 dark:bg-rose-500/10 px-5 py-2.5 rounded-xl border border-rose-100 dark:border-rose-500/20 shadow-sm active:scale-95"
                                                 >
-                                                    <LogOut className="w-3.5 h-3.5" />
+                                                    <LogOut className="w-4 h-4" />
                                                     Check Out
                                                 </button>
                                             )}
@@ -277,9 +278,9 @@ export default function PayrollDashboard() {
                                         <td className="px-8 py-6 text-sm font-bold text-zinc-500 dark:text-zinc-400">{format(new Date(adv.created_at), 'dd MMM yyyy')}</td>
                                         <td className="px-8 py-6 font-bold text-foreground dark:text-white">{adv.staff?.name}</td>
                                         <td className="px-8 py-6 font-black text-rose-500 italic text-lg">₹{adv.amount}</td>
-                                        <td className="px-8 py-6 text-sm text-zinc-500 dark:text-zinc-400 italic font-medium">{adv.reason}</td>
+                                        <td className="px-8 py-6 text-sm font-bold text-zinc-500 dark:text-zinc-400 italic font-medium">{adv.reason}</td>
                                         <td className="px-8 py-6">
-                                            <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${adv.status === 'recovered' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-rose-50 text-rose-600 border border-rose-100'}`}>
+                                            <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${adv.status === 'recovered' ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 border border-emerald-100 dark:border-emerald-500/20' : 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-500 border border-rose-100 dark:border-rose-500/20'}`}>
                                                 {adv.status}
                                             </span>
                                         </td>
@@ -336,10 +337,10 @@ export default function PayrollDashboard() {
                         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 w-full max-w-2xl rounded-[3rem] shadow-2xl relative z-10 p-10 animate-in fade-in zoom-in-95 duration-200">
                             <div className="flex items-center justify-between mb-10">
                                 <div>
-                                    <h2 className="text-3xl font-black text-foreground dark:text-white uppercase italic tracking-tighter">Manual Attendance</h2>
-                                    <p className="text-zinc-500 text-sm font-medium mt-1">Select a staff member to check them in for today.</p>
+                                    <h2 className="text-3xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter">Manual Attendance</h2>
+                                    <p className="text-zinc-500 dark:text-zinc-400 text-sm font-medium mt-1">Select a staff member to check them in for today.</p>
                                 </div>
-                                <button onClick={() => setIsAttendanceModalOpen(false)} className="p-3 hover:bg-zinc-50 dark:hover:bg-white/5 rounded-full transition-all">
+                                <button onClick={() => setIsAttendanceModalOpen(false)} className="p-3 hover:bg-zinc-50 dark:hover:bg-white/5 rounded-2xl transition-all border border-zinc-100 dark:border-white/10">
                                     <X className="w-8 h-8 text-zinc-400" />
                                 </button>
                             </div>
@@ -357,12 +358,12 @@ export default function PayrollDashboard() {
                                             onClick={() => !isWorking && handleCheckIn(member.id)}
                                         >
                                             <div className="flex items-center gap-5">
-                                                <div className="w-14 h-14 rounded-2xl bg-white dark:bg-zinc-800 flex items-center justify-center font-black text-foreground dark:text-white italic text-lg shadow-sm border border-zinc-100 dark:border-white/5">
+                                                <div className="w-14 h-14 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center font-black text-zinc-900 dark:text-white italic text-lg shadow-sm border border-zinc-200 dark:border-white/5">
                                                     {member.name[0]}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h4 className="font-bold text-foreground dark:text-white truncate text-lg">{member.name}</h4>
-                                                    <p className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">{member.role}</p>
+                                                    <h4 className="font-black text-zinc-900 dark:text-white truncate text-lg uppercase tracking-tight">{member.name}</h4>
+                                                    <p className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.2em]">{member.role}</p>
                                                 </div>
                                                 {isWorking ? (
                                                     <CheckCircle2 className="w-6 h-6 text-emerald-500" />

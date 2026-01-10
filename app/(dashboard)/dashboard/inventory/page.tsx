@@ -62,11 +62,11 @@ export default function InventoryPage() {
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-black text-foreground italic tracking-tighter uppercase flex items-center gap-3">
-                        <LayoutGrid className="w-8 h-8 text-orange-500" />
+                    <h1 className="text-3xl font-black text-zinc-900 dark:text-white italic tracking-tighter uppercase flex items-center gap-3">
+                        <LayoutGrid className="w-8 h-8 text-orange-600 dark:text-orange-500" />
                         InventoryOS
                     </h1>
-                    <p className="text-zinc-500 font-medium mt-1">
+                    <p className="text-zinc-500 dark:text-zinc-400 font-medium mt-1">
                         Real-time stock tracking and smart alerts.
                     </p>
                 </div>
@@ -80,7 +80,7 @@ export default function InventoryPage() {
             </div>
 
             {/* View Toggle Tabs */}
-            <div className="flex items-center gap-2 bg-white dark:bg-zinc-900 border border-zinc-200/50 dark:border-white/5 p-1.5 rounded-2xl w-fit shadow-sm shadow-black/5">
+            <div className="flex items-center gap-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/5 p-1.5 rounded-2xl w-fit shadow-sm dark:shadow-none">
                 <button
                     onClick={() => setActiveTab('inventory')}
                     className={`px-5 py-2.5 rounded-xl text-sm font-black transition-all flex items-center gap-2 ${activeTab === 'inventory' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'text-zinc-500 hover:text-orange-500'}`}
@@ -99,27 +99,27 @@ export default function InventoryPage() {
 
             {/* Smart Stats Row - Placeholder for now, calculated from items */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200/50 dark:border-white/5 p-6 rounded-2xl shadow-sm shadow-black/5 transition-all">
-                    <p className="text-zinc-400 text-[10px] font-black uppercase tracking-[.2em]">Total Items</p>
-                    <p className="text-3xl font-black text-foreground mt-2">{items.length}</p>
+                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/5 p-6 rounded-2xl shadow-sm dark:shadow-none transition-all">
+                    <p className="text-zinc-400 dark:text-zinc-500 text-[10px] font-black uppercase tracking-[.2em]">Total Items</p>
+                    <p className="text-3xl font-black text-zinc-900 dark:text-white mt-2">{items.length}</p>
                 </div>
-                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200/50 dark:border-white/5 p-6 rounded-2xl shadow-sm shadow-black/5 transition-all">
+                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/5 p-6 rounded-2xl shadow-sm dark:shadow-none transition-all">
                     <p className="text-orange-500 text-[10px] font-black uppercase tracking-[.2em]">Low Stock Alerts</p>
-                    <p className="text-3xl font-black text-foreground mt-2">
+                    <p className="text-3xl font-black text-zinc-900 dark:text-white mt-2">
                         {items.filter(i => i.quantity <= i.min_threshold && i.quantity > 0).length}
                     </p>
                 </div>
-                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200/50 dark:border-white/5 p-6 rounded-2xl shadow-sm shadow-black/5 transition-all">
+                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/5 p-6 rounded-2xl shadow-sm dark:shadow-none transition-all">
                     <p className="text-red-500 text-[10px] font-black uppercase tracking-[.2em]">Out of Stock</p>
-                    <p className="text-3xl font-black text-foreground mt-2">
+                    <p className="text-3xl font-black text-zinc-900 dark:text-white mt-2">
                         {items.filter(i => i.quantity <= 0).length}
                     </p>
                 </div>
             </div>
 
             {/* Main Content */}
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200/50 dark:border-white/5 rounded-[2rem] overflow-hidden shadow-sm shadow-black/5">
-                <div className="p-6 border-b border-zinc-50 dark:border-white/5 flex items-center gap-4">
+            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/5 rounded-[2rem] overflow-hidden shadow-sm dark:shadow-none">
+                <div className="p-6 border-b border-zinc-100 dark:border-white/5 flex items-center gap-4">
                     <div className="relative flex-1 group">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 group-focus-within:text-orange-500 transition-colors" />
                         <input
@@ -127,7 +127,7 @@ export default function InventoryPage() {
                             placeholder="Search ingredients..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-100 dark:border-white/10 rounded-2xl pl-12 pr-4 py-4 text-foreground focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all font-medium"
+                            className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl pl-12 pr-4 py-4 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all font-medium"
                         />
                     </div>
                 </div>
@@ -135,7 +135,7 @@ export default function InventoryPage() {
                 {activeTab === 'inventory' ? (
                     <div className="overflow-x-auto">
                         <table className="w-full">
-                            <thead className="bg-black/5 dark:bg-black/20 text-xs font-black text-zinc-500 dark:text-zinc-400 uppercase tracking-widest text-left">
+                            <thead className="bg-zinc-50 dark:bg-black/20 text-xs font-black text-zinc-500 dark:text-zinc-400 uppercase tracking-widest text-left border-b border-zinc-100 dark:border-transparent">
                                 <tr>
                                     <th className="px-6 py-4">Item Name</th>
                                     <th className="px-6 py-4">Stock Status</th>
@@ -144,14 +144,14 @@ export default function InventoryPage() {
                                     <th className="px-6 py-4 text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-black/5 dark:divide-white/5">
+                            <tbody className="divide-y divide-zinc-100 dark:divide-white/5">
                                 {filteredItems.map(item => {
                                     const status = getStockStatus(item)
                                     const StatusIcon = status.icon
                                     return (
                                         <tr key={item.id} className="group hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors">
                                             <td className="px-6 py-4">
-                                                <div className="font-bold text-foreground group-hover:text-orange-600 transition-colors">{item.item_name}</div>
+                                                <div className="font-bold text-zinc-900 dark:text-white group-hover:text-orange-600 transition-colors">{item.item_name}</div>
                                                 <div className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Min: {item.min_threshold} {item.unit}</div>
                                             </td>
                                             <td className="px-6 py-4">
@@ -168,7 +168,7 @@ export default function InventoryPage() {
                                                     >
                                                         <Minus className="w-4 h-4" />
                                                     </button>
-                                                    <span className="font-black text-xl text-foreground w-16 text-center">
+                                                    <span className="font-black text-xl text-zinc-900 dark:text-white w-16 text-center">
                                                         {item.quantity}
                                                     </span>
                                                     <button
@@ -207,7 +207,7 @@ export default function InventoryPage() {
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
-                            <thead className="bg-black/20 text-xs font-black text-zinc-500 uppercase tracking-widest">
+                            <thead className="bg-zinc-50 dark:bg-black/20 text-xs font-black text-zinc-500 dark:text-zinc-400 uppercase tracking-widest border-b border-zinc-100 dark:border-transparent">
                                 <tr>
                                     <th className="px-6 py-4">Time</th>
                                     <th className="px-6 py-4">Item</th>
@@ -216,14 +216,14 @@ export default function InventoryPage() {
                                     <th className="px-6 py-4 text-right">Notes</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-white/5">
+                            <tbody className="divide-y divide-zinc-100 dark:divide-white/5">
                                 {logs.map(log => (
                                     <tr key={log.id} className="hover:bg-white/[0.02] transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="text-sm text-zinc-400">{format(new Date(log.created_at), 'MMM dd, HH:mm')}</div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="text-sm font-bold text-white">{log.inventory_item?.item_name || 'Deleted Item'}</div>
+                                            <div className="text-sm font-bold text-zinc-900 dark:text-white">{log.inventory_item?.item_name || 'Deleted Item'}</div>
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-2">
@@ -270,11 +270,11 @@ export default function InventoryPage() {
             {/* Add Item Modal */}
             {isAddModalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsAddModalOpen(false)} />
-                    <div className="bg-zinc-900 border border-white/10 w-full max-w-md rounded-3xl shadow-2xl relative z-10 p-6 animate-in fade-in zoom-in-95 duration-200">
+                    <div className="absolute inset-0 bg-white/60 dark:bg-black/60 backdrop-blur-sm" onClick={() => setIsAddModalOpen(false)} />
+                    <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 w-full max-w-md rounded-3xl shadow-2xl relative z-10 p-6 animate-in fade-in zoom-in-95 duration-200">
                         <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-xl font-bold text-white">Add Ingredient</h2>
-                            <button onClick={() => setIsAddModalOpen(false)}><X className="w-6 h-6 text-zinc-500 hover:text-white" /></button>
+                            <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Add Ingredient</h2>
+                            <button onClick={() => setIsAddModalOpen(false)}><X className="w-6 h-6 text-zinc-400 hover:text-zinc-900 dark:hover:text-white" /></button>
                         </div>
                         <form onSubmit={handleAddItem} className="space-y-4">
                             <div className="space-y-1">
@@ -283,7 +283,7 @@ export default function InventoryPage() {
                                     required
                                     value={newItem.item_name}
                                     onChange={e => setNewItem({ ...newItem, item_name: e.target.value })}
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                                    className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                                     placeholder="e.g. Milk, Coffee Beans"
                                 />
                             </div>
@@ -296,7 +296,7 @@ export default function InventoryPage() {
                                         step="0.001"
                                         value={newItem.quantity}
                                         onChange={e => setNewItem({ ...newItem, quantity: parseFloat(e.target.value) })}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                                        className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                                     />
                                 </div>
                                 <div className="space-y-1">
@@ -304,13 +304,13 @@ export default function InventoryPage() {
                                     <select
                                         value={newItem.unit}
                                         onChange={e => setNewItem({ ...newItem, unit: e.target.value })}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2371717a%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:0.7em_0.7em] bg-[right_1rem_center] bg-no-repeat"
+                                        className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2371717a%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:0.7em_0.7em] bg-[right_1rem_center] bg-no-repeat"
                                     >
-                                        <option value="kg" className="bg-zinc-900 text-white">kg</option>
-                                        <option value="g" className="bg-zinc-900 text-white">g</option>
-                                        <option value="l" className="bg-zinc-900 text-white">l</option>
-                                        <option value="ml" className="bg-zinc-900 text-white">ml</option>
-                                        <option value="pcs" className="bg-zinc-900 text-white">pcs</option>
+                                        <option value="kg" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">kg</option>
+                                        <option value="g" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">g</option>
+                                        <option value="l" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">l</option>
+                                        <option value="ml" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">ml</option>
+                                        <option value="pcs" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">pcs</option>
                                     </select>
                                 </div>
                             </div>
@@ -322,7 +322,7 @@ export default function InventoryPage() {
                                     step="0.001"
                                     value={newItem.min_threshold}
                                     onChange={e => setNewItem({ ...newItem, min_threshold: parseFloat(e.target.value) })}
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                                    className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                                 />
                             </div>
                             <button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl mt-2">

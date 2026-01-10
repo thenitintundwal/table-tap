@@ -34,9 +34,12 @@ import { useAccounts } from '@/hooks/useAccounts'
 import { useCafe } from '@/hooks/useCafe'
 import { format } from 'date-fns'
 import { toast } from 'sonner'
+import { useTheme } from 'next-themes'
 
 export default function InvoiceDashboard() {
-    const { cafe } = useCafe()
+    const { theme } = useTheme()
+    const isDark = theme === 'dark'
+
     const {
         metrics,
         trendData,
@@ -106,26 +109,29 @@ export default function InvoiceDashboard() {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Invoices & Accounts</h1>
-                    <p className="text-zinc-500 mt-1 font-medium text-sm">Comprehensive billing, purchase, and accounts intelligence.</p>
+                    <h1 className="text-3xl font-black text-zinc-900 dark:text-white italic tracking-tighter uppercase flex items-center gap-3">
+                        <FileText className="w-8 h-8 text-orange-600 dark:text-orange-500" />
+                        Accounts Command
+                    </h1>
+                    <p className="text-zinc-500 dark:text-zinc-400 mt-1 font-medium">Comprehensive billing, purchase, and accounts intelligence.</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <div className="flex items-center bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 rounded-xl p-1.5 shadow-sm shadow-black/5 transition-all">
+                    <div className="flex items-center bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-2xl p-2 shadow-sm">
                         <div className="flex items-center gap-2 px-3 py-1 text-[10px] font-black text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">
-                            <Calendar className="w-3.5 h-3.5 text-orange-500" />
+                            <Calendar className="w-4 h-4 text-orange-600 dark:text-orange-500" />
                             {currentMonth}
                         </div>
                     </div>
                     <button
                         onClick={() => setIsInvoiceModalOpen(true)}
-                        className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-xl font-bold text-sm shadow-lg shadow-orange-600/20 transition-all flex items-center gap-2 active:scale-95 uppercase tracking-wide"
+                        className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-2xl font-black text-[10px] shadow-lg shadow-orange-600/20 transition-all flex items-center gap-2 active:scale-95 uppercase tracking-[0.2em] italic"
                     >
                         <Plus className="w-4 h-4" />
                         Add Invoice
                     </button>
                     <button
                         onClick={() => setIsExpenseModalOpen(true)}
-                        className="bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 active:scale-95 uppercase tracking-widest shadow-lg shadow-black/5"
+                        className="bg-zinc-900 dark:bg-zinc-100 hover:bg-black dark:hover:bg-white text-white dark:text-zinc-950 px-8 py-3.5 rounded-2xl font-black text-[10px] transition-all flex items-center gap-2 active:scale-95 uppercase tracking-widest shadow-xl shadow-black/10 dark:shadow-white/5 italic"
                     >
                         <ShoppingCart className="w-4 h-4" />
                         Log Expense
@@ -136,21 +142,20 @@ export default function InvoiceDashboard() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat) => (
-                    <div key={stat.label} className="bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 p-6 rounded-[2rem] hover:shadow-xl hover:shadow-black/5 transition-all group relative overflow-hidden shadow-sm shadow-black/5">
-                        <div className="flex items-center justify-between mb-6">
-                            <div className={`p-4 rounded-2xl bg-zinc-50 dark:bg-black/40 ${stat.bgColor} dark:bg-transparent`}>
+                    <div key={stat.label} className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-6 rounded-[2.5rem] hover:bg-zinc-50 dark:hover:bg-white/[0.07] transition-all group relative overflow-hidden shadow-sm dark:shadow-none">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-zinc-500/5 rounded-full -mr-12 -mt-12 blur-2xl group-hover:bg-orange-500/10 transition-all"></div>
+                        <div className="flex items-center justify-between mb-6 relative z-10">
+                            <div className={`p-4 rounded-2xl ${stat.bgColor.replace('emerald', 'emerald').replace('orange', 'orange').replace('blue', 'blue').replace('rose', 'rose')} border border-current/10`}>
                                 <stat.icon className={`w-7 h-7 ${stat.color}`} />
                             </div>
-                            <div className={`text-[10px] font-bold px-2 py-1 rounded-full ${stat.change >= 0 ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'}`}>
+                            <div className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-xl ${stat.change >= 0 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-500' : 'bg-rose-500/10 text-rose-600 dark:text-rose-500'} border border-current/10`}>
                                 {stat.change >= 0 ? '+' : ''}{stat.change}%
                             </div>
                         </div>
-                        <div>
-                            <p className="text-zinc-500 dark:text-zinc-400 text-sm font-medium uppercase tracking-tight">{stat.label}</p>
-                            <p className="text-2xl font-bold mt-1 tracking-tight text-foreground">{formatCurrency(stat.value)}</p>
+                        <div className="relative z-10">
+                            <p className="text-zinc-400 dark:text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em]">{stat.label}</p>
+                            <p className="text-3xl font-black mt-1 tracking-tighter text-zinc-900 dark:text-white italic">{formatCurrency(stat.value)}</p>
                         </div>
-                        {/* Hover bar */}
-                        <div className={`absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-500 bg-gradient-to-r from-transparent via-orange-500/50 to-transparent`} />
                     </div>
                 ))}
             </div>
@@ -158,20 +163,20 @@ export default function InvoiceDashboard() {
             {/* Main Content Area */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Trend Chart */}
-                <div className="lg:col-span-2 bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 p-8 rounded-[2.5rem] shadow-sm shadow-black/5 min-h-[480px] flex flex-col">
+                <div className="lg:col-span-2 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-8 rounded-[2.5rem] shadow-sm dark:shadow-none min-h-[480px] flex flex-col">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                         <div>
-                            <h3 className="text-xl font-black text-foreground">Financial Trends</h3>
-                            <p className="text-xs text-zinc-500 font-medium">Tracking Sales vs Purchase vs Expense</p>
+                            <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter">Financial Trends</h3>
+                            <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-black uppercase tracking-widest">Tracking Sales vs Purchase vs Expense</p>
                         </div>
-                        <div className="flex items-center gap-1.5 p-1.5 bg-zinc-50 dark:bg-white/5 rounded-2xl border border-zinc-100 dark:border-white/10 shadow-inner">
+                        <div className="flex items-center gap-1.5 p-1.5 bg-zinc-100 dark:bg-black/40 rounded-2xl border border-zinc-200 dark:border-white/5">
                             {['Sales', 'Purchase', 'Expense'].map((tab) => (
                                 <button
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
-                                    className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === tab
-                                        ? 'bg-white dark:bg-white/10 text-orange-500 shadow-sm border border-zinc-100 dark:border-white/10'
-                                        : 'text-zinc-400 hover:text-orange-500'
+                                    className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === tab
+                                        ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 shadow-lg'
+                                        : 'text-zinc-400 hover:text-orange-600 dark:hover:text-orange-500'
                                         }`}
                                 >
                                     {tab}
@@ -189,28 +194,31 @@ export default function InvoiceDashboard() {
                                         <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-zinc-100 dark:text-white/5" />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? "#ffffff05" : "#00000005"} />
                                 <XAxis
                                     dataKey="date"
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: '#71717a', fontSize: 10, fontWeight: 500 }}
+                                    tick={{ fill: isDark ? '#71717a' : '#a1a1aa', fontSize: 10, fontWeight: 'bold' }}
                                     tickFormatter={(val: string) => format(new Date(val), 'd MMM')}
                                 />
                                 <YAxis
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: '#71717a', fontSize: 10, fontWeight: 500 }}
+                                    tick={{ fill: isDark ? '#71717a' : '#a1a1aa', fontSize: 10, fontWeight: 'bold' }}
                                     tickFormatter={(val) => `₹${val / 1000}k`}
                                 />
                                 <Tooltip
                                     contentStyle={{
-                                        backgroundColor: 'rgba(0,0,0,0.8)',
-                                        borderRadius: '12px',
-                                        border: '1px solid rgba(255,255,255,0.1)',
-                                        fontSize: '12px',
-                                        color: 'white'
+                                        backgroundColor: isDark ? '#18181b' : '#ffffff',
+                                        borderRadius: '16px',
+                                        border: isDark ? '1px solid #ffffff10' : '1px solid #00000005',
+                                        fontSize: '10px',
+                                        fontWeight: 'bold',
+                                        boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)',
+                                        color: isDark ? '#fff' : '#18181b'
                                     }}
+                                    itemStyle={{ color: '#f97316' }}
                                 />
                                 <Area
                                     type="monotone"
@@ -227,38 +235,38 @@ export default function InvoiceDashboard() {
                 </div>
 
                 {/* Simplified Profit & Loss */}
-                <div className="bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 p-8 rounded-[2.5rem] shadow-sm shadow-black/5 flex flex-col">
-                    <h3 className="text-xl font-black text-foreground mb-10">Financial Summary</h3>
+                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-8 rounded-[2.5rem] shadow-sm dark:shadow-none flex flex-col">
+                    <h3 className="text-xl font-black text-zinc-900 dark:text-white mb-10 uppercase italic tracking-tighter">Financial Summary</h3>
 
                     <div className="space-y-6 flex-1">
-                        <div className="p-6 rounded-2xl bg-zinc-50 dark:bg-black/20 border border-zinc-100 dark:border-white/5">
+                        <div className="p-6 rounded-3xl bg-zinc-50 dark:bg-black/20 border border-zinc-100 dark:border-white/5 group hover:border-emerald-500/30 transition-all">
                             <div className="flex items-center justify-between mb-4">
-                                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Gross Revenue</span>
-                                <TrendingUp className="w-4 h-4 text-emerald-500" />
+                                <span className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">Gross Revenue</span>
+                                <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-500" />
                             </div>
-                            <p className="text-xl font-bold text-foreground">{formatCurrency(metrics?.totalSales || 0)}</p>
+                            <p className="text-2xl font-black text-zinc-900 dark:text-white italic">{formatCurrency(metrics?.totalSales || 0)}</p>
                         </div>
 
-                        <div className="p-6 rounded-2xl bg-zinc-50 dark:bg-black/20 border border-zinc-100 dark:border-white/5">
+                        <div className="p-6 rounded-3xl bg-zinc-50 dark:bg-black/20 border border-zinc-100 dark:border-white/5 group hover:border-rose-500/30 transition-all">
                             <div className="flex items-center justify-between mb-4">
-                                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Total Expenses</span>
-                                <TrendingDown className="w-4 h-4 text-rose-500" />
+                                <span className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">Total Expenses</span>
+                                <TrendingDown className="w-5 h-5 text-rose-600 dark:text-rose-500" />
                             </div>
-                            <p className="text-2xl font-black text-foreground">{formatCurrency(metrics?.totalPurchase || 0)}</p>
+                            <p className="text-2xl font-black text-zinc-900 dark:text-white italic">{formatCurrency(metrics?.totalPurchase || 0)}</p>
                         </div>
 
-                        <div className="p-6 rounded-3xl bg-orange-500/5 border border-orange-500/10 mt-8 relative overflow-hidden group shadow-sm shadow-orange-500/5">
+                        <div className="p-8 rounded-[2rem] bg-orange-600 dark:bg-orange-500/10 border border-orange-600/20 dark:border-orange-500/10 mt-8 relative overflow-hidden group shadow-xl shadow-orange-600/10 dark:shadow-none">
                             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                                <PieChartIcon className="w-16 h-16 text-orange-500" />
+                                <PieChartIcon className="w-20 h-20 text-white dark:text-orange-500" />
                             </div>
-                            <span className="text-[10px] font-black text-orange-600 dark:text-orange-500 uppercase tracking-[.2em]">Estimated Net Profit</span>
-                            <p className="text-4xl font-black text-orange-600 dark:text-orange-500 mt-3 tracking-tighter">
+                            <span className="text-[10px] font-black text-orange-100 dark:text-orange-500 uppercase tracking-[.2em] relative z-10">Estimated Net Profit</span>
+                            <p className="text-4xl font-black text-white dark:text-orange-500 mt-3 tracking-tighter italic drop-shadow-sm relative z-10">
                                 {formatCurrency((metrics?.totalSales || 0) - (metrics?.totalPurchase || 0))}
                             </p>
                         </div>
                     </div>
 
-                    <button className="w-full mt-8 py-4 rounded-2xl bg-orange-500 text-white font-black text-[10px] uppercase tracking-[.2em] hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20 active:scale-95">
+                    <button className="w-full mt-8 py-5 rounded-2xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 font-black text-[10px] uppercase tracking-[.2em] hover:bg-black dark:hover:bg-white transition-all shadow-xl shadow-black/10 dark:shadow-white/5 active:scale-95 italic">
                         Generate Detailed P&L
                     </button>
                 </div>
@@ -267,46 +275,53 @@ export default function InvoiceDashboard() {
             {/* Bottom Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-10">
                 {/* Sales Projection Bar Chart */}
-                <div className="bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 p-8 rounded-[2.5rem] shadow-sm shadow-black/5">
+                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-8 rounded-[2.5rem] shadow-sm dark:shadow-none">
                     <div className="flex items-center justify-between mb-10">
-                        <h3 className="text-xl font-black text-foreground">Sales Projection</h3>
-                        <span className="text-[10px] font-black text-zinc-400 bg-zinc-50 dark:bg-white/5 px-3 py-1.5 rounded-xl border border-zinc-100 dark:border-white/10 uppercase tracking-widest">LAST 10 DAYS</span>
+                        <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter">Sales Projection</h3>
+                        <span className="text-[10px] font-black text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-black/40 px-4 py-2 rounded-xl border border-zinc-200 dark:border-white/5 uppercase tracking-widest">LAST 10 DAYS</span>
                     </div>
 
                     <div className="h-[300px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={trendData?.slice(-10) || []}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-zinc-100 dark:text-white/5" />
-                                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#a1a1aa', fontSize: 10, fontWeight: 700 }} tickFormatter={(val) => format(new Date(val), 'd MMM')} />
-                                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#a1a1aa', fontSize: 10, fontWeight: 700 }} tickFormatter={(val) => `₹${val / 1000}k`} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? "#ffffff05" : "#00000005"} />
+                                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: isDark ? '#71717a' : '#a1a1aa', fontSize: 10, fontWeight: 'bold' }} tickFormatter={(val) => format(new Date(val), 'd MMM')} />
+                                <YAxis axisLine={false} tickLine={false} tick={{ fill: isDark ? '#71717a' : '#a1a1aa', fontSize: 10, fontWeight: 'bold' }} tickFormatter={(val) => `₹${val / 1000}k`} />
                                 <Tooltip
-                                    cursor={{ fill: 'transparent' }}
-                                    contentStyle={{ backgroundColor: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(4px)', borderRadius: '16px', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                                    cursor={{ fill: isDark ? '#ffffff05' : '#00000005', radius: 8 }}
+                                    contentStyle={{
+                                        backgroundColor: isDark ? '#18181b' : '#ffffff',
+                                        borderRadius: '16px',
+                                        border: isDark ? '1px solid #ffffff10' : '1px solid #00000005',
+                                        fontSize: '10px',
+                                        fontWeight: 'bold',
+                                        boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)'
+                                    }}
                                 />
-                                <Bar dataKey="sales" fill="#f97316" radius={[6, 6, 0, 0]} name="Actual Sales" barSize={24} />
-                                <Bar dataKey="expense" fill="currentColor" className="text-zinc-100 dark:text-white/10" radius={[6, 6, 0, 0]} name="Budget" barSize={24} />
+                                <Bar dataKey="sales" fill={isDark ? "#f97316" : "#ea580c"} radius={[8, 8, 0, 0]} name="Actual Sales" barSize={28} />
+                                <Bar dataKey="expense" fill={isDark ? "#ffffff10" : "#00000005"} radius={[8, 8, 0, 0]} name="Budget" barSize={28} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
 
                 {/* Receivables List */}
-                <div className="bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 p-8 rounded-[2.5rem] shadow-sm shadow-black/5 flex flex-col">
+                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-8 rounded-[2.5rem] shadow-sm dark:shadow-none flex flex-col">
                     <div className="flex items-center justify-between mb-10">
-                        <h3 className="text-xl font-black text-foreground">Outstanding Balances</h3>
-                        <button className="text-zinc-400 hover:text-orange-500 text-[10px] font-black uppercase tracking-widest transition-colors">SEE ALL</button>
+                        <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter">Outstanding Balances</h3>
+                        <button className="text-zinc-500 dark:text-zinc-400 hover:text-orange-600 dark:hover:text-orange-500 text-[10px] font-black uppercase tracking-widest transition-all">SEE ALL</button>
                     </div>
 
                     <div className="space-y-4 flex-1">
                         {parties?.slice(0, 5).map((party) => (
-                            <div key={party.id} className="flex items-center justify-between p-5 rounded-3xl bg-zinc-50/50 dark:bg-white/5 border border-zinc-100 dark:border-white/5 hover:border-orange-500/20 hover:bg-white dark:hover:bg-white/10 transition-all group shadow-sm shadow-black/5 hover:shadow-orange-500/5">
+                            <div key={party.id} className="flex items-center justify-between p-5 rounded-3xl bg-zinc-50 dark:bg-black/20 border border-zinc-100 dark:border-white/5 hover:border-orange-500/30 hover:bg-white dark:hover:bg-white/10 transition-all group shadow-sm dark:shadow-none">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-2xl bg-white dark:bg-white/10 flex items-center justify-center font-black text-zinc-400 border border-zinc-100 dark:border-white/10 shadow-sm">
+                                    <div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 flex items-center justify-center font-black text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 shadow-sm italic text-lg">
                                         {party.name[0]}
                                     </div>
                                     <div>
-                                        <p className="text-sm font-bold text-foreground group-hover:text-orange-600 transition-colors">{party.name}</p>
-                                        <p className="text-[10px] text-zinc-400 uppercase font-black tracking-widest mt-0.5">{party.type}</p>
+                                        <p className="text-sm font-black text-zinc-900 dark:text-white group-hover:text-orange-600 transition-colors uppercase tracking-tight">{party.name}</p>
+                                        <p className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase font-black tracking-widest mt-0.5">{party.type}</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
@@ -379,10 +394,10 @@ function ManageInvoiceModal({ isOpen, onClose, onSubmit }: { isOpen: boolean; on
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-white/40 dark:bg-black/60 backdrop-blur-md" onClick={onClose} />
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200/50 dark:border-white/10 w-full max-w-md rounded-[2.5rem] shadow-2xl relative z-10 p-8 animate-in fade-in zoom-in-95 duration-300">
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 w-full max-w-md rounded-[2.5rem] shadow-2xl relative z-10 p-8 animate-in fade-in zoom-in-95 duration-300">
                 <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-2xl font-black italic tracking-tighter uppercase text-foreground">New Invoice</h2>
-                    <button onClick={onClose} className="p-2 hover:bg-zinc-100 dark:hover:bg-white/5 rounded-xl transition-colors"><X className="w-6 h-6 text-zinc-400 hover:text-orange-500" /></button>
+                    <h2 className="text-2xl font-black italic tracking-tighter uppercase text-zinc-900 dark:text-white">New Invoice</h2>
+                    <button onClick={onClose} className="p-3 hover:bg-zinc-50 dark:hover:bg-white/5 rounded-2xl transition-all border border-zinc-100 dark:border-white/10"><X className="w-6 h-6 text-zinc-400 hover:text-orange-600 dark:hover:text-orange-500" /></button>
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-2 gap-6">

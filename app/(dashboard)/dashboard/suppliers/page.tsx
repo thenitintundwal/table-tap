@@ -199,20 +199,20 @@ export default function SuppliersPage() {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-black text-white italic tracking-tighter uppercase flex items-center gap-3">
-                        <Truck className="w-8 h-8 text-emerald-500" />
+                    <h1 className="text-3xl font-black text-zinc-900 dark:text-white italic tracking-tighter uppercase flex items-center gap-3">
+                        <Truck className="w-8 h-8 text-emerald-600 dark:text-emerald-500" />
                         Supplier Hub
                     </h1>
                     <div className="flex items-center gap-4 mt-2">
                         <button
                             onClick={() => setActiveTab('suppliers')}
-                            className={`text-sm font-bold uppercase tracking-widest transition-all pb-1 border-b-2 ${activeTab === 'suppliers' ? 'border-emerald-500 text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
+                            className={`text-sm font-bold uppercase tracking-widest transition-all pb-1 border-b-2 ${activeTab === 'suppliers' ? 'border-emerald-500 text-zinc-900 dark:text-white' : 'border-transparent text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300'}`}
                         >
                             Suppliers
                         </button>
                         <button
                             onClick={() => setActiveTab('orders')}
-                            className={`text-sm font-bold uppercase tracking-widest transition-all pb-1 border-b-2 ${activeTab === 'orders' ? 'border-emerald-500 text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
+                            className={`text-sm font-bold uppercase tracking-widest transition-all pb-1 border-b-2 ${activeTab === 'orders' ? 'border-emerald-500 text-zinc-900 dark:text-white' : 'border-transparent text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300'}`}
                         >
                             Purchase Orders
                         </button>
@@ -244,13 +244,13 @@ export default function SuppliersPage() {
                     {/* Filters */}
                     <div className="flex flex-col md:flex-row gap-4">
                         <div className="relative flex-1">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 dark:text-zinc-500" />
                             <input
                                 type="text"
                                 placeholder="Search suppliers..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full bg-zinc-900 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+                                className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
                             />
                         </div>
                         <div className="flex gap-2 overflow-x-auto no-scrollbar">
@@ -260,7 +260,7 @@ export default function SuppliersPage() {
                                     onClick={() => setCategoryFilter(cat.value)}
                                     className={`px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-all ${categoryFilter === cat.value
                                         ? 'bg-emerald-500 text-white'
-                                        : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800'
+                                        : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800'
                                         }`}
                                 >
                                     {cat.label}
@@ -276,12 +276,12 @@ export default function SuppliersPage() {
                             return (
                                 <div
                                     key={supplier.id}
-                                    className={`bg-zinc-900 border border-white/5 rounded-3xl p-6 transition-all hover:border-white/10 ${!supplier.is_active ? 'opacity-50' : ''
+                                    className={`bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/5 rounded-3xl p-6 transition-all hover:border-emerald-500/30 shadow-sm dark:shadow-none ${!supplier.is_active ? 'opacity-50' : ''
                                         }`}
                                 >
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="flex-1">
-                                            <h3 className="text-lg font-bold text-white mb-1">{supplier.name}</h3>
+                                            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">{supplier.name}</h3>
                                             <span className={`text-xs font-bold uppercase tracking-wider ${category?.color}`}>
                                                 {category?.label}
                                             </span>
@@ -302,34 +302,34 @@ export default function SuppliersPage() {
 
                                     <div className="space-y-2 mb-4">
                                         {supplier.contact_person && (
-                                            <p className="text-sm text-zinc-400 flex items-center gap-2">
-                                                <span className="font-medium">Contact:</span> {supplier.contact_person}
+                                            <p className="text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
+                                                <span className="font-medium text-zinc-900 dark:text-zinc-300">Contact:</span> {supplier.contact_person}
                                             </p>
                                         )}
                                         {supplier.phone && (
-                                            <p className="text-sm text-zinc-400 flex items-center gap-2">
-                                                <Phone className="w-3 h-3" />
+                                            <p className="text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
+                                                <Phone className="w-3 h-3 text-zinc-400" />
                                                 {supplier.phone}
                                             </p>
                                         )}
                                         {supplier.email && (
-                                            <p className="text-sm text-zinc-400 flex items-center gap-2">
-                                                <Mail className="w-3 h-3" />
+                                            <p className="text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
+                                                <Mail className="w-3 h-3 text-zinc-400" />
                                                 {supplier.email}
                                             </p>
                                         )}
                                         {supplier.address && (
-                                            <p className="text-sm text-zinc-400 flex items-center gap-2">
-                                                <MapPin className="w-3 h-3" />
+                                            <p className="text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
+                                                <MapPin className="w-3 h-3 text-zinc-400" />
                                                 {supplier.address}
                                             </p>
                                         )}
                                     </div>
 
-                                    <div className="flex items-center gap-2 pt-4 border-t border-white/5">
+                                    <div className="flex items-center gap-2 pt-4 border-t border-zinc-100 dark:border-white/5">
                                         <button
                                             onClick={() => openModal(supplier)}
-                                            className="flex-1 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all"
+                                            className="flex-1 flex items-center justify-center gap-2 bg-zinc-100 dark:bg-white/5 hover:bg-zinc-200 dark:hover:bg-white/10 text-zinc-900 dark:text-white px-4 py-2 rounded-lg text-sm font-bold transition-all"
                                         >
                                             <Edit2 className="w-3 h-3" />
                                             Edit
@@ -357,10 +357,10 @@ export default function SuppliersPage() {
             ) : (
                 <div className="space-y-6">
                     {/* Orders List */}
-                    <div className="bg-zinc-900 border border-white/5 rounded-3xl overflow-hidden">
+                    <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/5 rounded-3xl overflow-hidden shadow-sm dark:shadow-none">
                         <table className="w-full text-left">
                             <thead>
-                                <tr className="border-b border-white/5 bg-white/5">
+                                <tr className="border-b border-zinc-100 dark:border-white/5 bg-zinc-50 dark:bg-white/5">
                                     <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Order No.</th>
                                     <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Supplier</th>
                                     <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Status</th>
@@ -369,14 +369,14 @@ export default function SuppliersPage() {
                                     <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-white/5">
+                            <tbody className="divide-y divide-zinc-100 dark:divide-white/5">
                                 {orders.map(order => (
-                                    <tr key={order.id} className="hover:bg-white/[0.02] transition-colors group">
+                                    <tr key={order.id} className="hover:bg-zinc-50 dark:hover:bg-white/[0.02] transition-colors group">
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">#{order.order_number}</span>
+                                            <span className="text-sm font-bold text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-500 transition-colors">#{order.order_number}</span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="text-sm text-zinc-400 font-medium">{order.supplier_name}</span>
+                                            <span className="text-sm text-zinc-600 dark:text-zinc-400 font-medium">{order.supplier_name}</span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full border ${getStatusColor(order.status)}`}>
@@ -384,7 +384,7 @@ export default function SuppliersPage() {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="text-sm font-black text-white">₹{order.total_amount.toLocaleString()}</span>
+                                            <span className="text-sm font-black text-zinc-900 dark:text-white">₹{order.total_amount.toLocaleString()}</span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className="text-sm text-zinc-400">{order.expected_delivery ? format(new Date(order.expected_delivery), 'MMM dd, yyyy') : '-'}</span>
@@ -437,14 +437,14 @@ export default function SuppliersPage() {
             {/* Add/Edit Modal */}
             {modalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setModalOpen(false)} />
-                    <div className="bg-zinc-900 border border-white/10 w-full max-w-2xl rounded-3xl p-6 relative z-10 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+                    <div className="absolute inset-0 bg-white/60 dark:bg-black/80 backdrop-blur-sm" onClick={() => setModalOpen(false)} />
+                    <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 w-full max-w-2xl rounded-3xl p-6 relative z-10 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto shadow-2xl">
                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                                <Truck className="w-5 h-5 text-emerald-500" />
+                            <h3 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+                                <Truck className="w-5 h-5 text-emerald-600 dark:text-emerald-500" />
                                 {editingSupplier ? 'Edit Supplier' : 'Add New Supplier'}
                             </h3>
-                            <button onClick={() => setModalOpen(false)} className="text-zinc-500 hover:text-white">
+                            <button onClick={() => setModalOpen(false)} className="text-zinc-400 hover:text-zinc-900 dark:hover:text-white">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
@@ -457,7 +457,7 @@ export default function SuppliersPage() {
                                         type="text"
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                                        className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                                         placeholder="ABC Suppliers Ltd."
                                         required
                                     />
@@ -469,7 +469,7 @@ export default function SuppliersPage() {
                                         type="text"
                                         value={formData.contact_person}
                                         onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                                        className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                                         placeholder="John Doe"
                                     />
                                 </div>
@@ -528,7 +528,7 @@ export default function SuppliersPage() {
                                         value={formData.notes}
                                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                                         rows={3}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none"
+                                        className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none"
                                         placeholder="Additional notes..."
                                     />
                                 </div>
@@ -549,14 +549,14 @@ export default function SuppliersPage() {
             {/* New Order Modal */}
             {orderModalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setOrderModalOpen(false)} />
-                    <div className="bg-zinc-900 border border-white/10 w-full max-w-3xl rounded-3xl p-6 relative z-10 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+                    <div className="absolute inset-0 bg-white/60 dark:bg-black/80 backdrop-blur-sm" onClick={() => setOrderModalOpen(false)} />
+                    <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 w-full max-w-3xl rounded-3xl p-6 relative z-10 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto shadow-2xl">
                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                                <Plus className="w-5 h-5 text-blue-500" />
+                            <h3 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+                                <Plus className="w-5 h-5 text-blue-600 dark:text-blue-500" />
                                 Create Purchase Order
                             </h3>
-                            <button onClick={() => setOrderModalOpen(false)} className="text-zinc-500 hover:text-white">
+                            <button onClick={() => setOrderModalOpen(false)} className="text-zinc-400 hover:text-zinc-900 dark:hover:text-white">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
@@ -595,7 +595,7 @@ export default function SuppliersPage() {
                                     <button
                                         type="button"
                                         onClick={addItemToOrder}
-                                        className="text-xs font-bold text-blue-500 hover:text-blue-400 flex items-center gap-1 bg-blue-500/10 px-3 py-1.5 rounded-lg transition-all"
+                                        className="text-xs font-bold text-blue-600 dark:text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 flex items-center gap-1 bg-blue-500/10 px-3 py-1.5 rounded-lg transition-all"
                                     >
                                         <Plus className="w-3 h-3" />
                                         Add Item
@@ -685,10 +685,10 @@ export default function SuppliersPage() {
                                 />
                             </div>
 
-                            <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                            <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-white/5">
                                 <div>
                                     <p className="text-xs text-zinc-500 uppercase font-bold tracking-widest">Total Amount</p>
-                                    <p className="text-2xl font-black text-white">₹{orderFormData.items.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0).toLocaleString()}</p>
+                                    <p className="text-2xl font-black text-zinc-900 dark:text-white">₹{orderFormData.items.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0).toLocaleString()}</p>
                                 </div>
                                 <button
                                     type="submit"

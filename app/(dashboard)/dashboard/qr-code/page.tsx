@@ -128,29 +128,32 @@ function QRCodeContent() {
         <div className="flex flex-col gap-8 animate-in fade-in duration-700">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl font-black tracking-tight text-foreground italic uppercase">Table QR Codes</h1>
-                    <p className="text-zinc-500 mt-1 font-medium">Generate and mass-print QR codes for your cafe tables.</p>
+                    <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-zinc-900 dark:text-white italic uppercase flex items-center gap-3">
+                        <QrCode className="w-8 h-8 text-orange-600 dark:text-orange-500" />
+                        QR Command Center
+                    </h1>
+                    <p className="text-zinc-500 dark:text-zinc-400 mt-1 font-medium">Generate and mass-print QR codes for your cafe tables.</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <button
                         onClick={printAll}
                         disabled={filteredTables.length === 0}
-                        className="bg-zinc-900 hover:bg-black disabled:opacity-50 text-white px-8 py-4 rounded-2xl font-black flex items-center gap-3 transition-all shadow-xl shadow-black/10 active:scale-95 uppercase italic text-xs tracking-widest"
+                        className="bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-950 hover:bg-black dark:hover:bg-white disabled:opacity-50 text-white px-8 py-4 rounded-2xl font-black flex items-center gap-3 transition-all shadow-xl shadow-black/10 dark:shadow-white/5 active:scale-95 uppercase italic text-[10px] tracking-[0.2em]"
                     >
-                        <Printer className="w-5 h-5 text-orange-500" /> Print All ({filteredTables.length})
+                        <Printer className="w-5 h-5 text-orange-600 dark:text-orange-500" /> Print All ({filteredTables.length})
                     </button>
                 </div>
             </div>
 
             {/* Section Filters */}
-            <div className="flex flex-wrap items-center gap-1.5 bg-white dark:bg-white/5 p-1.5 rounded-2xl border border-zinc-200/50 dark:border-white/10 w-fit shadow-sm shadow-black/5">
+            <div className="flex flex-wrap items-center gap-1.5 bg-zinc-100 dark:bg-black/40 p-1.5 rounded-2xl border border-zinc-200 dark:border-white/5 w-fit shadow-sm">
                 {sections.map((section) => (
                     <button
                         key={section}
                         onClick={() => setActiveSection(section)}
                         className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[.2em] transition-all ${activeSection === section
-                            ? 'bg-zinc-900 text-white shadow-lg shadow-black/10'
-                            : 'text-zinc-400 hover:text-orange-500 hover:bg-zinc-50 dark:hover:bg-white/5'
+                            ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 shadow-lg'
+                            : 'text-zinc-400 hover:text-orange-600 dark:hover:text-orange-500'
                             }`}
                     >
                         {section}
@@ -167,8 +170,8 @@ function QRCodeContent() {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {filteredTables.map((t) => (
-                        <div key={t.id} className="bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 rounded-[2.5rem] p-8 flex flex-col items-center group relative hover:border-orange-500/30 transition-all shadow-sm shadow-black/5">
-                            <div id={`qr-table-${t.section}-${t.table_number}`} className="bg-white p-6 rounded-[2rem] shadow-2xl mb-8 group-hover:scale-105 transition-all duration-700 border border-zinc-100">
+                        <div key={t.id} className="bg-white dark:bg-black/20 border border-zinc-200 dark:border-white/5 rounded-[2.5rem] p-8 flex flex-col items-center group relative hover:border-orange-500/30 transition-all shadow-sm">
+                            <div id={`qr-table-${t.section}-${t.table_number}`} className="bg-white p-6 rounded-[2rem] shadow-2xl mb-8 group-hover:scale-105 transition-all duration-700 border border-zinc-100 dark:border-transparent">
                                 {origin && (
                                     <QRCode
                                         value={`${origin}/menu/${cafe?.id}?table=${t.table_number}`}
@@ -181,12 +184,12 @@ function QRCodeContent() {
                             </div>
 
                             <div className="text-center mb-8">
-                                <h3 className="text-2xl font-black text-foreground italic uppercase mb-2">Table {t.table_number}</h3>
+                                <h3 className="text-2xl font-black text-zinc-900 dark:text-white italic uppercase mb-2 tracking-tighter">Table {t.table_number}</h3>
                                 <div className="flex items-center justify-center gap-2">
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1.5 bg-zinc-50 dark:bg-white/5 rounded-xl text-zinc-400 border border-zinc-100 dark:border-white/5">
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 bg-zinc-100 dark:bg-white/5 rounded-xl text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-white/10">
                                         {t.section}
                                     </span>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1.5 bg-zinc-50 dark:bg-white/5 rounded-xl text-zinc-400 border border-zinc-100 dark:border-white/5">
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 bg-zinc-100 dark:bg-white/5 rounded-xl text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-white/10">
                                         {t.capacity} Seats
                                     </span>
                                 </div>
@@ -195,17 +198,17 @@ function QRCodeContent() {
                             <div className="flex items-center gap-3 w-full">
                                 <button
                                     onClick={() => downloadSVG(t.table_number, t.section)}
-                                    className="flex-1 bg-zinc-50 dark:bg-white/5 hover:bg-zinc-100 dark:hover:bg-white/10 p-4 rounded-2xl flex items-center justify-center gap-2 transition-all border border-zinc-100 dark:border-white/5 group/btn"
+                                    className="flex-1 bg-zinc-100 dark:bg-white/5 hover:bg-zinc-200 dark:hover:bg-white/10 p-4 rounded-2xl flex items-center justify-center gap-2 transition-all border border-zinc-200 dark:border-white/10 group/btn active:scale-95 shadow-sm"
                                     title="Download SVG"
                                 >
-                                    <Download className="w-5 h-5 text-zinc-400 group-hover/btn:text-orange-500 transition-colors" />
+                                    <Download className="w-5 h-5 text-zinc-400 group-hover/btn:text-orange-600 dark:group-hover/btn:text-orange-500 transition-colors" />
                                 </button>
                                 <button
                                     onClick={() => printQR(t.table_number, t.section)}
-                                    className="flex-1 bg-zinc-50 dark:bg-white/5 hover:bg-zinc-100 dark:hover:bg-white/10 p-4 rounded-2xl flex items-center justify-center gap-2 transition-all border border-zinc-100 dark:border-white/5 group/btn"
+                                    className="flex-1 bg-zinc-100 dark:bg-white/5 hover:bg-zinc-200 dark:hover:bg-white/10 p-4 rounded-2xl flex items-center justify-center gap-2 transition-all border border-zinc-200 dark:border-white/10 group/btn active:scale-95 shadow-sm"
                                     title="Print QR"
                                 >
-                                    <Printer className="w-5 h-5 text-zinc-400 group-hover/btn:text-orange-500 transition-colors" />
+                                    <Printer className="w-5 h-5 text-zinc-400 group-hover/btn:text-orange-600 dark:group-hover/btn:text-orange-500 transition-colors" />
                                 </button>
                             </div>
                         </div>

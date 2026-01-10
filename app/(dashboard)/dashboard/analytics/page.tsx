@@ -9,11 +9,14 @@ import { useStats } from '@/hooks/useStats'
 import { useCafe } from '@/hooks/useCafe'
 import { useAnalytics, ViewMode } from '@/hooks/useAnalytics'
 import { format, addDays, subDays, addMonths, subMonths, addYears, subYears } from 'date-fns'
+import { useTheme } from 'next-themes'
 
 function AnalyticsContent() {
     const { cafe } = useCafe()
     const [viewMode, setViewMode] = useState<ViewMode>('month')
     const [currentDate, setCurrentDate] = useState(new Date())
+    const { theme } = useTheme()
+    const isDark = theme === 'dark'
 
     const { data: statsData, isLoading: isStatsLoading } = useStats(cafe?.id)
     const { data: analyticsData, isLoading: isAnalyticsLoading } = useAnalytics(cafe?.id, viewMode, currentDate)
@@ -61,19 +64,22 @@ function AnalyticsContent() {
         <div className="flex flex-col gap-8 animate-in fade-in duration-700">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Analytics</h1>
-                    <p className="text-zinc-500 mt-1">Discover insights about your cafe's performance.</p>
+                    <h1 className="text-3xl font-black text-zinc-900 dark:text-white italic tracking-tighter uppercase flex items-center gap-3">
+                        <TrendingUp className="w-8 h-8 text-orange-600 dark:text-orange-500" />
+                        Analytics
+                    </h1>
+                    <p className="text-zinc-500 dark:text-zinc-400 font-medium mt-1">Discover insights about your cafe's performance.</p>
                 </div>
 
-                <div className="flex items-center gap-4 bg-white dark:bg-zinc-900 p-1.5 rounded-xl border border-zinc-200 dark:border-white/10 shadow-sm">
-                    <div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800 rounded-lg p-1">
+                <div className="flex items-center gap-4 bg-white dark:bg-zinc-900/50 p-2 rounded-2xl border border-zinc-200 dark:border-white/10 shadow-sm">
+                    <div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800 rounded-xl p-1">
                         {(['day', 'month', 'year'] as ViewMode[]).map((mode) => (
                             <button
                                 key={mode}
                                 onClick={() => setViewMode(mode)}
-                                className={`px-3 py-1.5 text-xs font-semibold rounded-md capitalize transition-all ${viewMode === mode
-                                    ? 'bg-white dark:bg-black text-foreground shadow-sm'
-                                    : 'text-zinc-500 hover:text-foreground'
+                                className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${viewMode === mode
+                                    ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-lg'
+                                    : 'text-zinc-500 hover:text-orange-500'
                                     }`}
                             >
                                 {mode}
@@ -81,22 +87,22 @@ function AnalyticsContent() {
                         ))}
                     </div>
 
-                    <div className="flex items-center gap-2 pl-2 border-l border-zinc-200 dark:border-white/10">
+                    <div className="flex items-center gap-2 pl-4 border-l border-zinc-200 dark:border-white/10">
                         <button
                             onClick={handlePrev}
-                            className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-colors"
+                            className="w-8 h-8 flex items-center justify-center hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all text-zinc-400 hover:text-orange-500"
                         >
-                            <ChevronLeft className="w-4 h-4 text-zinc-500" />
+                            <ChevronLeft className="w-4 h-4" />
                         </button>
-                        <div className="flex items-center gap-2 min-w-[140px] justify-center">
-                            <Calendar className="w-4 h-4 text-orange-500" />
-                            <span className="text-sm font-medium text-foreground">{getDateLabel()}</span>
+                        <div className="flex items-center gap-3 min-w-[160px] justify-center">
+                            <Calendar className="w-4 h-4 text-orange-600 dark:text-orange-500" />
+                            <span className="text-xs font-black uppercase tracking-widest text-zinc-900 dark:text-white">{getDateLabel()}</span>
                         </div>
                         <button
                             onClick={handleNext}
-                            className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-colors"
+                            className="w-8 h-8 flex items-center justify-center hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all text-zinc-400 hover:text-orange-500"
                         >
-                            <ChevronRight className="w-4 h-4 text-zinc-500" />
+                            <ChevronRight className="w-4 h-4" />
                         </button>
                     </div>
                 </div>
@@ -104,27 +110,28 @@ function AnalyticsContent() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, i) => (
-                    <div key={i} className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-6 rounded-2xl hover:bg-zinc-50 dark:hover:bg-white/[0.07] transition-all shadow-sm dark:shadow-none">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className={`p-3 rounded-xl bg-zinc-100 dark:bg-black/40 ${stat.color.replace('text-', 'bg-').replace('500', '500/10')} dark:bg-transparent`}>
+                    <div key={i} className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-6 rounded-3xl hover:bg-zinc-50 dark:hover:bg-white/[0.07] transition-all shadow-sm dark:shadow-none relative group overflow-hidden">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-orange-500/10 transition-all"></div>
+                        <div className="flex items-center justify-between mb-4 relative z-10">
+                            <div className={`p-3 rounded-2xl ${stat.color.replace('text-', 'bg-').replace('500', '500/10')} border border-current/10`}>
                                 <stat.icon className={`w-6 h-6 ${stat.color}`} />
                             </div>
-                            <span className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
+                            <span className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
                                 {stat.trend}
                             </span>
                         </div>
-                        <p className="text-zinc-500 dark:text-zinc-400 text-sm font-medium">{stat.label}</p>
-                        <p className="text-2xl font-bold mt-1 tracking-tight text-foreground">{stat.value}</p>
+                        <p className="text-zinc-500 dark:text-zinc-400 text-[10px] font-black uppercase tracking-widest relative z-10">{stat.label}</p>
+                        <p className="text-3xl font-black mt-1 tracking-tighter text-zinc-900 dark:text-white relative z-10">{stat.value}</p>
                     </div>
                 ))}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Revenue Trend */}
-                <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-8 rounded-3xl h-[450px] flex flex-col shadow-sm dark:shadow-none">
+                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-8 rounded-[2.5rem] h-[450px] flex flex-col shadow-sm dark:shadow-none">
                     <div className="flex items-center justify-between mb-8">
-                        <h3 className="text-lg font-bold text-foreground">Revenue Trend</h3>
-                        <span className="text-xs text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-widest">
+                        <h3 className="text-xl font-black text-zinc-900 dark:text-white tracking-tighter uppercase italic">Revenue Trend</h3>
+                        <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-black uppercase tracking-widest">
                             {viewMode === 'day' ? 'Hourly' : viewMode === 'month' ? 'Daily' : 'Monthly'}
                         </span>
                     </div>
@@ -133,46 +140,53 @@ function AnalyticsContent() {
                             <AreaChart data={analyticsData?.chartData}>
                                 <defs>
                                     <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
+                                        <stop offset="5%" stopColor={isDark ? "#f97316" : "#ea580c"} stopOpacity={0.3} />
+                                        <stop offset="95%" stopColor={isDark ? "#f97316" : "#ea580c"} stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#88888820" />
-                                <XAxis dataKey="name" stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
-                                <YAxis stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? "#ffffff05" : "#00000005"} />
+                                <XAxis dataKey="name" stroke={isDark ? "#71717a" : "#a1a1aa"} fontSize={10} tickLine={false} axisLine={false} tick={{ fontWeight: 'bold' }} />
+                                <YAxis stroke={isDark ? "#71717a" : "#a1a1aa"} fontSize={10} tickLine={false} axisLine={false} tickFormatter={(value) => `₹${value}`} tick={{ fontWeight: 'bold' }} />
                                 <Tooltip
-                                    contentStyle={{ backgroundColor: '#18181b', border: '1px solid #ffffff10', borderRadius: '12px', fontSize: '12px' }}
-                                    itemStyle={{ color: '#f97316' }}
+                                    contentStyle={{
+                                        backgroundColor: isDark ? '#18181b' : '#ffffff',
+                                        border: isDark ? '1px solid #ffffff10' : '1px solid #00000005',
+                                        borderRadius: '16px',
+                                        fontSize: '10px',
+                                        fontWeight: 'bold',
+                                        boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)'
+                                    }}
+                                    itemStyle={{ color: isDark ? '#f97316' : '#ea580c' }}
                                 />
-                                <Area type="monotone" dataKey="revenue" stroke="#f97316" fillOpacity={1} fill="url(#colorRev)" strokeWidth={3} />
+                                <Area type="monotone" dataKey="revenue" stroke={isDark ? "#f97316" : "#ea580c"} fillOpacity={1} fill="url(#colorRev)" strokeWidth={4} dot={{ fill: isDark ? "#f97316" : "#ea580c", r: 4 }} activeDot={{ r: 6, strokeWidth: 0 }} />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
 
                 {/* Top Selling Items */}
-                <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-8 rounded-3xl h-[450px] flex flex-col shadow-sm dark:shadow-none">
+                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-8 rounded-[2.5rem] h-[450px] flex flex-col shadow-sm dark:shadow-none">
                     <div className="flex items-center justify-between mb-8">
-                        <h3 className="text-lg font-bold text-foreground">Top Selling Items</h3>
-                        <div className="p-2 bg-purple-500/10 rounded-lg">
-                            <TrendingUp className="w-4 h-4 text-purple-500" />
+                        <h3 className="text-xl font-black text-zinc-900 dark:text-white tracking-tighter uppercase italic">Top Items</h3>
+                        <div className="p-3 bg-purple-500/10 rounded-2xl border border-purple-500/10">
+                            <TrendingUp className="w-5 h-5 text-purple-600 dark:text-purple-500" />
                         </div>
                     </div>
-                    <div className="flex-1 space-y-4 overflow-y-auto pr-2">
+                    <div className="flex-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar">
                         {analyticsData?.topItems?.map((item: any, i: number) => (
-                            <div key={i} className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-black/20 rounded-2xl border border-zinc-100 dark:border-white/5 hover:border-orange-500/20 transition-all group">
+                            <div key={i} className="flex items-center justify-between p-5 bg-zinc-50 dark:bg-black/20 rounded-3xl border border-zinc-100 dark:border-white/5 hover:border-orange-500/30 transition-all group">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500 font-bold">
+                                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-orange-600 to-orange-400 flex items-center justify-center text-white font-black text-lg shadow-lg shadow-orange-500/20">
                                         #{i + 1}
                                     </div>
                                     <div>
-                                        <p className="font-bold text-foreground group-hover:text-orange-500 transition-colors uppercase text-sm">{item.name}</p>
-                                        <p className="text-xs text-zinc-500">{item.quantity} units sold</p>
+                                        <p className="font-black text-zinc-900 dark:text-white group-hover:text-orange-600 transition-colors uppercase text-sm tracking-tight">{item.name}</p>
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500">{item.quantity} units sold</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="font-black text-foreground">${item.revenue.toFixed(2)}</p>
-                                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-tight">Revenue</p>
+                                    <p className="font-black text-zinc-900 dark:text-white tabular-nums">₹{item.revenue.toLocaleString()}</p>
+                                    <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-black uppercase tracking-widest">Revenue</p>
                                 </div>
                             </div>
                         ))}
@@ -186,11 +200,11 @@ function AnalyticsContent() {
                 </div>
 
                 {/* Order Status Distribution */}
-                <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-8 rounded-3xl h-[450px] flex flex-col shadow-sm dark:shadow-none">
+                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-8 rounded-[2.5rem] h-[450px] flex flex-col shadow-sm dark:shadow-none">
                     <div className="flex items-center justify-between mb-8">
-                        <h3 className="text-lg font-bold text-foreground">Order Status</h3>
-                        <div className="p-2 bg-blue-500/10 rounded-lg">
-                            <Activity className="w-4 h-4 text-blue-500" />
+                        <h3 className="text-xl font-black text-zinc-900 dark:text-white tracking-tighter uppercase italic">Order Status</h3>
+                        <div className="p-3 bg-blue-500/10 rounded-2xl border border-blue-500/10">
+                            <Activity className="w-5 h-5 text-blue-600 dark:text-blue-500" />
                         </div>
                     </div>
                     <div className="flex-1 flex items-center justify-center relative">
@@ -202,29 +216,31 @@ function AnalyticsContent() {
                                     cy="50%"
                                     innerRadius={70}
                                     outerRadius={100}
-                                    paddingAngle={8}
+                                    paddingAngle={10}
                                     dataKey="value"
                                 >
                                     {analyticsData?.statusDistribution?.map((entry: any, index: number) => (
-                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                        <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
                                     ))}
                                 </Pie>
                                 <Tooltip
                                     contentStyle={{
-                                        backgroundColor: '#18181b',
-                                        border: '1px solid #ffffff10',
-                                        borderRadius: '12px',
-                                        fontSize: '12px',
-                                        padding: '8px 12px'
+                                        backgroundColor: isDark ? '#18181b' : '#ffffff',
+                                        border: isDark ? '1px solid #ffffff10' : '1px solid #00000005',
+                                        borderRadius: '16px',
+                                        fontSize: '10px',
+                                        padding: '12px',
+                                        fontWeight: 'bold',
+                                        boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)'
                                     }}
-                                    itemStyle={{ color: '#fff', fontWeight: 'bold' }}
+                                    itemStyle={{ color: isDark ? '#fff' : '#18181b' }}
                                     cursor={{ fill: 'transparent' }}
                                 />
                             </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span className="text-4xl font-black text-foreground">{analyticsData?.totalOrders}</span>
-                            <span className="text-[10px] uppercase font-black text-orange-500 tracking-[0.2em] -mt-1">Orders</span>
+                            <span className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter">{analyticsData?.totalOrders}</span>
+                            <span className="text-[10px] uppercase font-black text-orange-600 dark:text-orange-500 tracking-[0.3em] -mt-1">Orders</span>
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 mt-4">
@@ -238,24 +254,31 @@ function AnalyticsContent() {
                 </div>
 
                 {/* Table Performance */}
-                <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-8 rounded-3xl h-[450px] flex flex-col shadow-sm dark:shadow-none">
+                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-8 rounded-[2.5rem] h-[450px] flex flex-col shadow-sm dark:shadow-none">
                     <div className="flex items-center justify-between mb-8">
-                        <h3 className="text-lg font-bold text-foreground">Table Performance</h3>
-                        <div className="p-2 bg-emerald-500/10 rounded-lg">
-                            <Users className="w-4 h-4 text-emerald-500" />
+                        <h3 className="text-xl font-black text-zinc-900 dark:text-white tracking-tighter uppercase italic">Table Performance</h3>
+                        <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/10">
+                            <Users className="w-5 h-5 text-emerald-600 dark:text-emerald-500" />
                         </div>
                     </div>
                     <div className="flex-1 -ml-6">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={analyticsData?.tablePerformance}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#88888820" />
-                                <XAxis dataKey="table" stroke="#71717a" fontSize={10} tickLine={false} axisLine={false} />
-                                <YAxis stroke="#71717a" fontSize={10} tickLine={false} axisLine={false} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? "#ffffff05" : "#00000005"} />
+                                <XAxis dataKey="table" stroke={isDark ? "#71717a" : "#a1a1aa"} fontSize={10} tickLine={false} axisLine={false} tick={{ fontWeight: 'bold' }} />
+                                <YAxis stroke={isDark ? "#71717a" : "#a1a1aa"} fontSize={10} tickLine={false} axisLine={false} tick={{ fontWeight: 'bold' }} tickFormatter={(value) => `₹${value}`} />
                                 <Tooltip
-                                    contentStyle={{ backgroundColor: '#18181b', border: '1px solid #ffffff10', borderRadius: '12px', fontSize: '10px' }}
-                                    cursor={{ fill: '#ffffff05' }}
+                                    contentStyle={{
+                                        backgroundColor: isDark ? '#18181b' : '#ffffff',
+                                        border: isDark ? '1px solid #ffffff10' : '1px solid #00000005',
+                                        borderRadius: '16px',
+                                        fontSize: '10px',
+                                        fontWeight: 'bold',
+                                        boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)'
+                                    }}
+                                    cursor={{ fill: isDark ? '#ffffff05' : '#00000005', radius: 8 }}
                                 />
-                                <Bar dataKey="revenue" fill="#10b981" radius={[4, 4, 0, 0]} barSize={24} />
+                                <Bar dataKey="revenue" fill={isDark ? "#10b981" : "#059669"} radius={[8, 8, 0, 0]} barSize={28} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>

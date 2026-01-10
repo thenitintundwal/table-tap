@@ -56,62 +56,61 @@ function SettingsContent() {
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="flex flex-col gap-1">
-                <h1 className="text-3xl font-black tracking-tight text-foreground">Settings</h1>
-                <p className="text-zinc-500 font-medium">Manage your cafe profile and subscription.</p>
+                <h1 className="text-3xl md:text-4xl font-black text-zinc-900 dark:text-white italic tracking-tighter uppercase">Intelligence Settings</h1>
+                <p className="text-zinc-500 dark:text-zinc-400 font-medium">Manage your cafe profile, automated notifications, and subscription.</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Profile Settings */}
                 <div className="lg:col-span-2 space-y-6">
-                    <form onSubmit={handleSave} className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-3xl p-8 shadow-sm">
+                    <form onSubmit={handleSave} className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-[2.5rem] p-8 shadow-sm">
                         <div className="flex items-center gap-3 mb-8">
-                            <div className="p-2 bg-orange-500/10 rounded-lg">
-                                <Store className="w-5 h-5 text-orange-500" />
+                            <div className="p-3 bg-orange-600/10 dark:bg-orange-500/10 rounded-2xl border border-orange-600/10">
+                                <Store className="w-5 h-5 text-orange-600 dark:text-orange-500" />
                             </div>
-                            <h3 className="text-lg font-bold text-foreground">Cafe Profile</h3>
+                            <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter">Cafe Profile</h3>
                         </div>
 
                         <div className="space-y-6">
                             <div className="space-y-2">
-                                <label className="text-sm font-black uppercase tracking-widest text-zinc-500 pl-1">
-                                    Cafe Name
+                                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 pl-1">
+                                    Cafe Signature Name
                                 </label>
                                 <input
                                     type="text"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-2xl px-5 py-4 text-foreground focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all font-medium"
-                                    placeholder="e.g. The Coffee House"
+                                    className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-100 dark:border-white/5 rounded-2xl px-5 py-4 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all font-black uppercase italic tracking-tight"
+                                    placeholder="e.g. THE COFFEE HOUSE"
                                     required
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-black uppercase tracking-widest text-zinc-500 pl-1">
-                                    Description
+                                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 pl-1">
+                                    Business Intelligence Description
                                 </label>
                                 <textarea
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-2xl px-5 py-4 text-foreground focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all font-medium min-h-[120px] resize-none"
-                                    placeholder="Tell customers about your cafe..."
+                                    className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-100 dark:border-white/5 rounded-2xl px-5 py-4 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all font-medium min-h-[120px] resize-none"
+                                    placeholder="Tell customers about your cafe mission..."
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-black uppercase tracking-widest text-zinc-500 pl-1">
-                                    Logo URL
+                                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 pl-1">
+                                    Brand Identity (Logo URL)
                                 </label>
                                 <div className="relative group">
-                                    <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-zinc-400 group-focus-within:text-orange-500 transition-colors">
+                                    <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-zinc-400 group-focus-within:text-orange-600 dark:group-focus-within:text-orange-500 transition-colors">
                                         <Globe className="w-5 h-5" />
                                     </div>
                                     <input
                                         type="url"
                                         value={formData.logo_url}
                                         onChange={(e) => setFormData({ ...formData, logo_url: e.target.value })}
-                                        className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-2xl pl-14 pr-5 py-4 text-foreground focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all font-medium"
-                                        placeholder="https://example.com/logo.png"
+                                        className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-100 dark:border-white/5 rounded-2xl pl-14 pr-5 py-4 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all font-medium"
+                                        placeholder="https://brand.com/logo.png"
                                     />
                                 </div>
                             </div>
@@ -121,14 +120,14 @@ function SettingsContent() {
                             <button
                                 type="submit"
                                 disabled={updateCafe.isPending}
-                                className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest flex items-center gap-3 transition-all shadow-lg shadow-orange-500/20 active:scale-95 disabled:opacity-50"
+                                className="bg-orange-600 hover:bg-orange-700 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-[0.2em] flex items-center gap-3 transition-all shadow-xl shadow-orange-600/20 active:scale-95 disabled:opacity-50 italic text-[10px]"
                             >
                                 {updateCafe.isPending ? (
                                     <Loader2 className="w-5 h-5 animate-spin" />
                                 ) : (
                                     <Save className="w-5 h-5" />
                                 )}
-                                <span>Save Changes</span>
+                                <span>Commit Profile Changes</span>
                             </button>
                         </div>
                     </form>
@@ -136,66 +135,66 @@ function SettingsContent() {
 
                 {/* Telegram Notifications Settings */}
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-3xl p-8 shadow-sm">
+                    <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-[2.5rem] p-8 shadow-sm">
                         <div className="flex items-center gap-3 mb-8">
-                            <div className="p-2 bg-blue-500/10 rounded-lg">
-                                <Globe className="w-5 h-5 text-blue-500" />
+                            <div className="p-3 bg-blue-600/10 dark:bg-blue-500/10 rounded-2xl border border-blue-600/10">
+                                <Globe className="w-5 h-5 text-blue-600 dark:text-blue-500" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold text-foreground">Telegram Notifications</h3>
-                                <p className="text-sm text-zinc-500 font-medium mt-0.5">Receive real-time order alerts via Telegram Bot.</p>
+                                <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter">Command Alerts</h3>
+                                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-0.5">Receive real-time order alerts via Telegram Bot infrastructure.</p>
                             </div>
                         </div>
 
                         <div className="space-y-6">
                             <div className="space-y-2">
-                                <label className="text-sm font-black uppercase tracking-widest text-zinc-500 pl-1">
-                                    Telegram Bot Token
+                                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 pl-1">
+                                    Secured Bot Token
                                 </label>
                                 <input
                                     type="password"
                                     value={formData.telegram_bot_token}
                                     onChange={(e) => setFormData({ ...formData, telegram_bot_token: e.target.value })}
-                                    className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-2xl px-5 py-4 text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
+                                    className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-100 dark:border-white/5 rounded-2xl px-5 py-4 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
                                     placeholder="e.g. 1234567890:ABCdefGHI..."
                                 />
-                                <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest pl-1">
-                                    Get this from @BotFather on Telegram
+                                <p className="text-[10px] text-zinc-400 font-black uppercase tracking-widest pl-1 mt-1 opacity-60">
+                                    Acquire this from @BotFather on Telegram
                                 </p>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-black uppercase tracking-widest text-zinc-500 pl-1">
-                                    Telegram Chat ID
+                                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 pl-1">
+                                    Command Chat ID
                                 </label>
                                 <input
                                     type="text"
                                     value={formData.telegram_chat_id}
                                     onChange={(e) => setFormData({ ...formData, telegram_chat_id: e.target.value })}
-                                    className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-2xl px-5 py-4 text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
+                                    className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-100 dark:border-white/5 rounded-2xl px-5 py-4 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
                                     placeholder="e.g. -100123456789"
                                 />
-                                <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest pl-1">
-                                    Use @userinfobot to find your Chat ID
+                                <p className="text-[10px] text-zinc-400 font-black uppercase tracking-widest pl-1 mt-1 opacity-60">
+                                    Utilize @userinfobot to locate your ID
                                 </p>
                             </div>
                         </div>
 
-                        <div className="mt-10 flex justify-between items-center bg-blue-500/5 p-6 rounded-2xl border border-blue-500/10">
-                            <p className="text-xs text-blue-600 dark:text-blue-400/80 font-medium leading-relaxed max-w-[70%]">
-                                Make sure to start the bot and send /start to it before saving these settings.
+                        <div className="mt-10 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-blue-600/5 dark:bg-blue-500/5 p-8 rounded-[2rem] border border-blue-600/10 dark:border-blue-500/10">
+                            <p className="text-xs text-blue-700 dark:text-blue-400 font-black uppercase tracking-widest leading-relaxed max-w-md italic">
+                                Initialize the bot and dispatch /start prior to saving protocol settings.
                             </p>
                             <button
                                 onClick={handleSave}
                                 disabled={updateCafe.isPending}
-                                className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs flex items-center gap-2 transition-all shadow-lg shadow-blue-500/20 active:scale-95 disabled:opacity-50"
+                                className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 px-8 py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-3 transition-all shadow-xl shadow-black/10 dark:shadow-white/5 active:scale-95 disabled:opacity-50 italic"
                             >
                                 {updateCafe.isPending ? (
-                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    <Loader2 className="w-5 h-5 animate-spin" />
                                 ) : (
-                                    <Save className="w-4 h-4" />
+                                    <Save className="w-5 h-5" />
                                 )}
-                                <span>Save Telegram</span>
+                                <span>Save Intelligence</span>
                             </button>
                         </div>
                     </div>
@@ -203,28 +202,28 @@ function SettingsContent() {
 
                 {/* Subscription Sidebar */}
                 <div className="space-y-6">
-                    <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-3xl p-8 shadow-sm relative overflow-hidden group">
+                    <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-[2.5rem] p-8 shadow-sm relative overflow-hidden group">
                         {/* Background Decoration */}
-                        <div className={`absolute top-0 right-0 w-32 h-32 ${isPro ? 'bg-purple-500/10' : 'bg-zinc-500/10'} rounded-full blur-3xl -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700`} />
+                        <div className={`absolute top-0 right-0 w-32 h-32 ${isPro ? 'bg-purple-600/10' : 'bg-zinc-500/10'} rounded-full blur-3xl -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700`} />
 
                         <div className="relative z-10">
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className={`p-2 ${isPro ? 'bg-purple-500/10 text-purple-500' : 'bg-zinc-500/10 text-zinc-500'} rounded-lg`}>
-                                    <CreditCard className="w-5 h-5" />
+                            <div className="flex items-center gap-3 mb-10">
+                                <div className={`p-3 ${isPro ? 'bg-purple-600/10 text-purple-600' : 'bg-zinc-500/10 text-zinc-500'} rounded-2xl border border-current/10`}>
+                                    <CreditCard className="w-6 h-6" />
                                 </div>
-                                <h3 className="text-lg font-bold text-foreground">Subscription</h3>
+                                <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter">Plan Intelligence</h3>
                             </div>
 
                             <div className="space-y-4">
-                                <div className={`px-4 py-3 rounded-2xl border ${isPro
-                                    ? 'bg-purple-500/10 border-purple-500/20 text-purple-600 dark:text-purple-400'
-                                    : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-400'
+                                <div className={`p-6 rounded-3xl border ${isPro
+                                    ? 'bg-purple-600/10 border-purple-600/20 text-purple-600 dark:text-purple-400'
+                                    : 'bg-zinc-100 dark:bg-white/5 border-zinc-200 dark:border-white/10 text-zinc-600 dark:text-zinc-500'
                                     } flex items-center justify-between`}>
-                                    <span className="text-sm font-black uppercase tracking-widest">
-                                        Current Plan
+                                    <span className="text-[10px] font-black uppercase tracking-widest opacity-60">
+                                        Active tier
                                     </span>
-                                    <span className="font-black text-lg uppercase tracking-wider italic">
-                                        {cafe?.subscription_plan || 'Basic'}
+                                    <span className="font-black text-2xl uppercase tracking-tighter italic">
+                                        {cafe?.subscription_plan || 'Standard'}
                                     </span>
                                 </div>
 
@@ -259,9 +258,9 @@ function SettingsContent() {
                         </div>
                     </div>
 
-                    <div className="bg-orange-500/5 dark:bg-orange-500/[0.02] border border-orange-500/10 rounded-3xl p-6">
-                        <p className="text-xs text-orange-600 dark:text-orange-400/80 font-medium leading-relaxed">
-                            Need help with your business account? Contact our support team for assistance with multi-location management or custom enterprise solutions.
+                    <div className="bg-orange-600/5 dark:bg-orange-500/5 border border-orange-600/10 dark:border-orange-500/10 rounded-[2rem] p-8">
+                        <p className="text-xs text-orange-700 dark:text-orange-400 font-black uppercase tracking-widest italic leading-relaxed">
+                            Require assistance with enterprise-grade synchronization? Connect with our intelligence support for multi-location command or bespoke architecture solutions.
                         </p>
                     </div>
                 </div>

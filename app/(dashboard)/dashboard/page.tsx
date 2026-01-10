@@ -13,10 +13,10 @@ function DashboardContent() {
     const { data: statsData, isLoading } = useStats(cafe?.id)
 
     const stats = [
-        { label: 'Total Revenue', value: `$${statsData?.totalRevenue?.toFixed(2) || '0.00'}`, icon: TrendingUp, color: 'text-emerald-500', trend: 'Monthly', requiredPlan: 'pro' },
-        { label: 'Active Orders', value: statsData?.activeOrders.toString() || '0', icon: ShoppingBag, color: 'text-orange-500', trend: 'Live' },
-        { label: 'Total Orders', value: statsData?.totalOrders.toString() || '0', icon: Users, color: 'text-blue-500', trend: 'Overall' },
-        { label: 'Menu Items', value: statsData?.menuItemsCount.toString() || '0', icon: Coffee, color: 'text-purple-500', trend: 'Active' },
+        { label: 'Total Revenue', value: `₹${statsData?.totalRevenue?.toLocaleString() || '0.00'}`, icon: TrendingUp, color: 'text-emerald-600', trend: 'Monthly', requiredPlan: 'pro' },
+        { label: 'Active Orders', value: statsData?.activeOrders.toString() || '0', icon: ShoppingBag, color: 'text-orange-600', trend: 'Live' },
+        { label: 'Total Orders', value: statsData?.totalOrders.toString() || '0', icon: Users, color: 'text-blue-600', trend: 'Overall' },
+        { label: 'Menu Items', value: statsData?.menuItemsCount.toString() || '0', icon: Coffee, color: 'text-purple-600', trend: 'Active' },
     ]
 
     if (isLoading) {
@@ -31,17 +31,17 @@ function DashboardContent() {
     return (
         <div className="flex flex-col gap-8 animate-in fade-in duration-700">
             {/* Header */}
-            <div className="flex items-end justify-between">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Overview</h1>
-                    <p className="text-zinc-500 mt-1">Detailed statistics and performance of your cafe.</p>
+                    <h1 className="text-3xl md:text-4xl font-black text-zinc-900 dark:text-white italic tracking-tighter uppercase">Intelligence Command</h1>
+                    <p className="text-zinc-500 dark:text-zinc-400 font-medium mt-1">Detailed statistics and real-time performance of your TableTap terminal.</p>
                 </div>
-                <div className="flex items-center gap-2 text-[10px] font-medium text-zinc-500 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
+                <div className="flex items-center gap-2 text-[10px] font-black text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-4 py-2 rounded-full border border-zinc-200 dark:border-white/5 shadow-sm uppercase tracking-widest italic">
                     <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
                     </span>
-                    SYSTEM LIVE
+                    System Live
                 </div>
             </div>
 
@@ -55,19 +55,19 @@ function DashboardContent() {
                         requiredPlan={stat.requiredPlan as any || 'basic'}
                         featureName={stat.label}
                     >
-                        <div className="bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 p-6 rounded-[2rem] hover:shadow-xl hover:shadow-black/5 transition-all group relative overflow-hidden shadow-sm shadow-black/5 h-full">
-                            <div className="flex items-center justify-between mb-6">
-                                <div className={`p-4 rounded-2xl bg-zinc-50 dark:bg-white/5 ${stat.color.replace('text-', 'bg-').replace('500', '500/10')} dark:bg-transparent`}>
-                                    <stat.icon className={`w-7 h-7 ${stat.color}`} />
+                        <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-8 rounded-[2.5rem] hover:border-orange-500/30 transition-all group relative overflow-hidden shadow-sm h-full">
+                            <div className="flex items-center justify-between mb-8">
+                                <div className={`p-4 rounded-2xl bg-zinc-100 dark:bg-zinc-800 ${stat.color.replace('text-', 'bg-').replace('600', '600/10')} border border-zinc-200 dark:border-white/5 shadow-sm group-hover:scale-110 transition-transform`}>
+                                    <stat.icon className={`w-7 h-7 ${stat.color} dark:text-zinc-100`} />
                                 </div>
-                                <div className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full ${stat.trend === 'Live' ? 'bg-orange-500/10 text-orange-600' : 'bg-emerald-500/10 text-emerald-600'
+                                <div className={`text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-xl border ${stat.trend === 'Live' ? 'bg-orange-600/10 text-orange-600 border-orange-600/10' : 'bg-emerald-600/10 text-emerald-600 border-emerald-600/10'
                                     }`}>
                                     {stat.trend}
                                 </div>
                             </div>
                             <div>
-                                <p className="text-zinc-500 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">{stat.label}</p>
-                                <p className="text-3xl font-black mt-2 tracking-tight text-foreground transition-transform group-hover:scale-105 origin-left duration-300">{stat.value}</p>
+                                <p className="text-zinc-400 dark:text-zinc-500 text-[10px] font-black uppercase tracking-widest">{stat.label}</p>
+                                <p className="text-3xl font-black mt-2 tracking-tighter text-zinc-900 dark:text-white italic group-hover:translate-x-1 transition-transform duration-300">{stat.value}</p>
                             </div>
                         </div>
                     </FeatureGuard>
@@ -76,14 +76,14 @@ function DashboardContent() {
 
             {/* Charts / Activity Placeholders */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-10">
-                <div className="lg:col-span-2 bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 p-8 rounded-[2.5rem] min-h-[450px] flex flex-col group relative shadow-sm shadow-black/5">
+                <div className="lg:col-span-2 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-8 rounded-[2.5rem] min-h-[450px] flex flex-col group relative shadow-sm">
                     <div className="flex items-center justify-between mb-10">
                         <div>
-                            <h3 className="text-xl font-black text-foreground">Revenue Analytics</h3>
-                            <p className="text-xs text-zinc-500 font-medium">Performance over time</p>
+                            <h3 className="text-2xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter">Revenue Analysis</h3>
+                            <p className="text-[10px] text-zinc-400 font-black uppercase tracking-widest mt-1">Intelligence performance dataset</p>
                         </div>
-                        <button className="text-zinc-500 dark:text-zinc-400 hover:text-orange-500 flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-all">
-                            View Report <ArrowUpRight className="w-4 h-4" />
+                        <button className="text-zinc-400 dark:text-zinc-500 hover:text-orange-600 dark:hover:text-orange-500 flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] transition-all italic">
+                            FULL REPORT <ArrowUpRight className="w-4 h-4" />
                         </button>
                     </div>
                     <div className="flex-1 min-h-[350px]">
@@ -93,34 +93,35 @@ function DashboardContent() {
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-white/5 border border-zinc-200/50 dark:border-white/10 p-8 rounded-[2.5rem] min-h-[450px] flex flex-col group shadow-sm shadow-black/5">
+                <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 p-8 rounded-[2.5rem] min-h-[450px] flex flex-col group shadow-sm">
                     <div className="flex items-center justify-between mb-10">
-                        <h3 className="text-xl font-black text-foreground">Recent Orders</h3>
-                        <span className="text-[10px] font-black uppercase tracking-widest bg-orange-500/10 text-orange-600 px-3 py-1.5 rounded-full">Real-time</span>
+                        <h3 className="text-2xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter">Live Orders</h3>
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] bg-orange-600/10 text-orange-600 px-4 py-2 rounded-xl border border-orange-600/10 italic">Live Stream</span>
                     </div>
                     <div className="flex-1 space-y-6">
                         {statsData?.recentOrders.map((order: any) => (
-                            <div key={order.id} className="flex items-center gap-5 p-2 rounded-2xl hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors group/item">
-                                <div className="w-12 h-12 rounded-xl bg-zinc-100 dark:bg-white/5 flex items-center justify-center text-xs font-black text-zinc-500 group-hover/item:bg-white group-hover/item:shadow-sm transition-all">
-                                    T{order.table_number}
+                            <div key={order.id} className="flex items-center gap-5 p-3 rounded-[1.5rem] hover:bg-zinc-50 dark:hover:bg-white/[0.05] border border-transparent hover:border-zinc-100 dark:hover:border-white/5 transition-all group/item">
+                                <div className="w-12 h-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex flex-col items-center justify-center border border-zinc-200 dark:border-white/5 shadow-sm group-hover/item:scale-110 transition-transform">
+                                    <span className="text-[8px] font-black text-zinc-400 dark:text-zinc-500">T</span>
+                                    <span className="text-lg font-black text-zinc-900 dark:text-white italic leading-none">{order.table_number}</span>
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm font-bold text-foreground">{order.customer_name || 'Anonymous'}</p>
-                                    <p className="text-[10px] text-zinc-400 font-medium">{formatDistanceToNow(new Date(order.created_at), { addSuffix: true })}</p>
+                                    <p className="text-sm font-black text-zinc-900 dark:text-zinc-100 uppercase italic tracking-tight">{order.customer_name || 'Anonymous Protocol'}</p>
+                                    <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-black uppercase tracking-widest mt-0.5">{formatDistanceToNow(new Date(order.created_at), { addSuffix: true })}</p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-sm font-black text-foreground">${Number(order.total_amount).toFixed(2)}</p>
-                                    <p className={`text-[10px] uppercase font-black tracking-widest ${order.status === 'pending' ? 'text-orange-500' :
-                                        order.status === 'preparing' ? 'text-blue-500' :
-                                            order.status === 'completed' ? 'text-emerald-500' : 'text-red-500'
+                                    <p className="text-sm font-black text-zinc-900 dark:text-white italic">₹{Number(order.total_amount).toLocaleString()}</p>
+                                    <p className={`text-[8px] uppercase font-black tracking-[0.2em] mt-1 ${order.status === 'pending' ? 'text-orange-600' :
+                                        order.status === 'preparing' ? 'text-blue-600' :
+                                            order.status === 'completed' ? 'text-emerald-600' : 'text-rose-600'
                                         }`}>{order.status}</p>
                                 </div>
                             </div>
                         ))}
                         {statsData?.recentOrders.length === 0 && (
-                            <div className="flex flex-col items-center justify-center h-full text-zinc-500 dark:text-zinc-600 opacity-50">
-                                <ShoppingBag className="w-12 h-12 mb-3" />
-                                <p className="text-sm font-bold uppercase tracking-widest">No recent orders</p>
+                            <div className="flex-1 flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-600 opacity-20 py-20">
+                                <ShoppingBag className="w-16 h-16 mb-4" />
+                                <p className="text-[10px] font-black uppercase tracking-[0.3em]">No Intelligence Flux</p>
                             </div>
                         )}
                     </div>

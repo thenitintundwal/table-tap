@@ -59,20 +59,20 @@ function NotificationSettingsContent() {
         return (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
                 <div className="flex flex-col gap-1">
-                    <h1 className="text-3xl font-black tracking-tight text-foreground flex items-center gap-3">
-                        <Bell className="w-8 h-8 text-red-500" />
-                        Staff Notifications
+                    <h1 className="text-3xl font-black text-zinc-900 dark:text-white italic tracking-tighter uppercase flex items-center gap-3">
+                        <Bell className="w-8 h-8 text-rose-600 dark:text-rose-500" />
+                        Intelligence Alerts
                     </h1>
-                    <p className="text-zinc-500 font-medium">Get real-time order alerts.</p>
+                    <p className="text-zinc-500 dark:text-zinc-400 font-medium">Get real-time order protocol alerts.</p>
                 </div>
 
-                <div className="bg-red-500/10 border border-red-500/20 rounded-3xl p-8">
-                    <div className="flex items-start gap-4">
-                        <AlertCircle className="w-6 h-6 text-red-500 flex-shrink-0 mt-1" />
+                <div className="bg-rose-600/5 dark:bg-rose-500/5 border border-rose-600/10 dark:border-rose-500/10 rounded-[2.5rem] p-8">
+                    <div className="flex items-start gap-5">
+                        <AlertCircle className="w-8 h-8 text-rose-600 dark:text-rose-500 flex-shrink-0 mt-1" />
                         <div>
-                            <h3 className="text-lg font-bold text-red-500 mb-2">Browser Not Supported</h3>
-                            <p className="text-sm text-zinc-400">
-                                Your browser doesn't support push notifications. Please use a modern browser like Chrome, Firefox, or Edge.
+                            <h3 className="text-xl font-black text-rose-600 dark:text-rose-500 uppercase italic tracking-tighter mb-2">Protocol Unsupported</h3>
+                            <p className="text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">
+                                Your current browser architecture does not support push intelligence. Please utilize a modern environment like Chrome, Firefox, or Edge.
                             </p>
                         </div>
                     </div>
@@ -84,70 +84,70 @@ function NotificationSettingsContent() {
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="flex flex-col gap-1">
-                <div className="flex items-center gap-2 text-zinc-500 mb-2">
-                    <Link href="/dashboard/settings" className="hover:text-white transition-colors">Settings</Link>
-                    <span>/</span>
-                    <span>Notifications</span>
+                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500 mb-4">
+                    <Link href="/dashboard/settings" className="hover:text-orange-600 dark:hover:text-orange-500 transition-colors">Settings</Link>
+                    <span className="opacity-30">/</span>
+                    <span className="text-zinc-900 dark:text-white">Alerts</span>
                 </div>
-                <h1 className="text-3xl font-black tracking-tight text-foreground flex items-center gap-3">
-                    <Bell className="w-8 h-8 text-blue-500" />
-                    Staff Notifications
+                <h1 className="text-3xl md:text-4xl font-black text-zinc-900 dark:text-white italic tracking-tighter uppercase flex items-center gap-3">
+                    <Bell className="w-8 h-8 text-blue-600 dark:text-blue-500" />
+                    Intelligence Alerts
                 </h1>
-                <p className="text-zinc-500 font-medium">Get real-time order alerts on your device.</p>
+                <p className="text-zinc-500 dark:text-zinc-400 font-medium mt-1">Configure real-time order protocol alerts on your device.</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
                     {/* Status Card */}
-                    <div className="bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-3xl p-8 shadow-sm">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className={`p-2 rounded-lg ${permission === 'granted' ? 'bg-emerald-500/10' : 'bg-orange-500/10'}`}>
-                                <Bell className={`w-5 h-5 ${permission === 'granted' ? 'text-emerald-500' : 'text-orange-500'}`} />
+                    <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-[2.5rem] p-8 shadow-sm">
+                        <div className="flex items-center gap-3 mb-8">
+                            <div className={`p-3 rounded-2xl border ${permission === 'granted' ? 'bg-emerald-600/10 border-emerald-600/10 text-emerald-600' : 'bg-orange-600/10 border-orange-600/10 text-orange-600'}`}>
+                                <Bell className="w-5 h-5" />
                             </div>
-                            <h3 className="text-lg font-bold text-foreground">Notification Status</h3>
+                            <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter">Satellite Status</h3>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="space-y-6">
                             {permission === 'granted' ? (
-                                <div className="flex items-start gap-3 p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
-                                    <Check className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                                <div className="flex items-start gap-4 p-6 bg-emerald-600/5 dark:bg-emerald-500/5 rounded-[2rem] border border-emerald-600/10 dark:border-emerald-500/10">
+                                    <Check className="w-6 h-6 text-emerald-600 dark:text-emerald-500 flex-shrink-0 mt-0.5" />
                                     <div>
-                                        <p className="font-bold text-emerald-500">Notifications Enabled</p>
-                                        <p className="text-sm text-zinc-400 mt-1">
-                                            You'll receive alerts even when this tab is in the background or minimized.
+                                        <p className="font-black text-emerald-600 dark:text-emerald-500 uppercase italic tracking-tighter">Communication Link Active</p>
+                                        <p className="text-zinc-500 dark:text-zinc-400 font-medium text-sm mt-1 leading-relaxed">
+                                            Intelligence alerts will be dispatched even when the terminal is in hibernate mode.
                                         </p>
                                     </div>
                                 </div>
                             ) : permission === 'denied' ? (
-                                <div className="flex items-start gap-3 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
-                                    <X className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                                <div className="flex items-start gap-4 p-6 bg-rose-600/5 dark:bg-rose-500/5 rounded-[2rem] border border-rose-600/10 dark:border-rose-500/10">
+                                    <X className="w-6 h-6 text-rose-600 dark:text-rose-500 flex-shrink-0 mt-0.5" />
                                     <div>
-                                        <p className="font-bold text-red-500">Notifications Blocked</p>
-                                        <p className="text-sm text-zinc-400 mt-1">
-                                            You've blocked notifications. Please enable them in your browser settings.
+                                        <p className="font-black text-rose-600 dark:text-rose-500 uppercase italic tracking-tighter">Intelligence Blocked</p>
+                                        <p className="text-zinc-500 dark:text-zinc-400 font-medium text-sm mt-1 leading-relaxed">
+                                            Access protocols denied. Please re-authorize through your system architecture.
                                         </p>
                                     </div>
                                 </div>
                             ) : (
-                                <div className="flex items-start gap-3 p-4 bg-orange-500/10 rounded-xl border border-orange-500/20">
-                                    <AlertCircle className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                                <div className="flex items-start gap-4 p-6 bg-orange-600/5 dark:bg-orange-500/5 rounded-[2rem] border border-orange-600/10 dark:border-orange-500/10">
+                                    <AlertCircle className="w-6 h-6 text-orange-600 dark:text-orange-500 flex-shrink-0 mt-0.5" />
                                     <div>
-                                        <p className="font-bold text-orange-500">Notifications Not Enabled</p>
-                                        <p className="text-sm text-zinc-400 mt-1">
-                                            Enable notifications to receive real-time order alerts.
+                                        <p className="font-black text-orange-600 dark:text-orange-500 uppercase italic tracking-tighter">Connection Pending</p>
+                                        <p className="text-zinc-500 dark:text-zinc-400 font-medium text-sm mt-1 leading-relaxed">
+                                            Activate intelligence protocols to begin receiving real-time command alerts.
                                         </p>
                                     </div>
                                 </div>
                             )}
 
-                            <div className="flex items-center justify-between pt-4">
+                            <div className="flex items-center justify-between pt-6 border-t border-zinc-100 dark:border-white/5">
                                 {permission !== 'granted' && (
                                     <button
                                         onClick={handleEnableNotifications}
-                                        className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-2xl font-bold uppercase tracking-widest flex items-center gap-3 transition-all shadow-lg shadow-blue-500/20 active:scale-95"
+                                        className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 px-8 py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-3 transition-all shadow-xl shadow-black/10 dark:shadow-white/5 active:scale-95 italic"
                                     >
                                         <Bell className="w-5 h-5" />
-                                        Enable Notifications
+                                        Initialize Protocols
                                     </button>
                                 )}
 
@@ -155,10 +155,10 @@ function NotificationSettingsContent() {
                                     <button
                                         onClick={handleTestNotification}
                                         disabled={isTesting}
-                                        className="text-zinc-400 hover:text-white font-bold text-sm flex items-center gap-2 transition-colors disabled:opacity-50"
+                                        className="text-zinc-400 dark:text-zinc-500 hover:text-orange-600 dark:hover:text-orange-500 font-black uppercase tracking-widest text-[10px] flex items-center gap-3 transition-all disabled:opacity-50 italic"
                                     >
                                         {isTesting ? <Loader2 className="w-4 h-4 animate-spin" /> : <MessageSquare className="w-4 h-4" />}
-                                        Send Test Notification
+                                        Dispatch Signal Test
                                     </button>
                                 )}
                             </div>
@@ -166,28 +166,23 @@ function NotificationSettingsContent() {
                     </div>
 
                     {/* How it Works */}
-                    <div className="bg-blue-500/10 border border-blue-500/20 rounded-3xl p-6">
-                        <h4 className="font-bold text-blue-400 mb-3 flex items-center gap-2">
-                            <AlertCircle className="w-4 h-4" />
-                            How Browser Notifications Work
+                    <div className="bg-blue-600/5 dark:bg-blue-500/5 border border-blue-600/10 dark:border-blue-500/10 rounded-[2.5rem] p-8">
+                        <h4 className="font-black text-blue-700 dark:text-blue-400 uppercase italic tracking-tighter mb-6 flex items-center gap-3">
+                            <AlertCircle className="w-5 h-5" />
+                            Intelligence Protocol Information
                         </h4>
-                        <ul className="text-sm text-zinc-400 space-y-2">
-                            <li className="flex items-start gap-2">
-                                <span className="text-blue-500 mt-0.5">•</span>
-                                <span>Notifications appear even when the dashboard tab is minimized or in the background</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-blue-500 mt-0.5">•</span>
-                                <span>You'll see a system notification with order details (table number, amount, items)</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-blue-500 mt-0.5">•</span>
-                                <span>Click the notification to instantly focus the dashboard</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-blue-500 mt-0.5">•</span>
-                                <span>Works on desktop browsers (Chrome, Firefox, Edge, Safari)</span>
-                            </li>
+                        <ul className="space-y-4">
+                            {[
+                                "Alerts materialize even with the terminal architecture hibernated",
+                                "System intelligence payloads contain critical order datasets",
+                                "Single-action focus to refocus the intelligence dashboard",
+                                "Compatible with all modern command environments"
+                            ].map((text, i) => (
+                                <li key={i} className="flex items-start gap-4">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-600/40 dark:bg-blue-500/40 mt-2" />
+                                    <span className="text-zinc-500 dark:text-zinc-400 font-medium text-sm leading-relaxed">{text}</span>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>

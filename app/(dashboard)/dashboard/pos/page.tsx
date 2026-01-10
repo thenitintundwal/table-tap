@@ -7,8 +7,8 @@ import { Loader2 } from 'lucide-react'
 const POSContent = dynamic(() => import('./POSContent'), {
     ssr: false,
     loading: () => (
-        <div className="h-screen flex items-center justify-center bg-zinc-950">
-            <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+        <div className="h-[60vh] flex items-center justify-center bg-transparent">
+            <Loader2 className="w-8 h-8 text-orange-600 dark:text-orange-500 animate-spin" />
         </div>
     )
 })

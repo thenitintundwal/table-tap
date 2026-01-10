@@ -17,6 +17,7 @@ import {
     Cell
 } from 'recharts'
 import { Loader2, TrendingUp, AlertTriangle, Star, CheckCircle2, HelpCircle } from 'lucide-react'
+import { useTheme } from 'next-themes'
 
 // Types
 interface AnalyticItem {
@@ -32,6 +33,8 @@ interface AnalyticItem {
 
 function ProfitabilityMatrixContent() {
     const { cafe } = useCafe()
+    const { theme } = useTheme()
+    const isDark = theme === 'dark'
 
     // 1. Fetch Menu Items
     const { data: menuItems, isLoading: loadingMenu } = useQuery({
@@ -132,49 +135,60 @@ function ProfitabilityMatrixContent() {
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="flex flex-col gap-1">
-                <h1 className="text-3xl font-black tracking-tight text-foreground flex items-center gap-3">
-                    <TrendingUp className="w-8 h-8 text-purple-500" />
+                <h1 className="text-3xl font-black text-zinc-900 dark:text-white italic tracking-tighter uppercase flex items-center gap-3">
+                    <TrendingUp className="w-8 h-8 text-purple-600 dark:text-purple-500" />
                     Profitability Matrix
                 </h1>
-                <p className="text-zinc-500 font-medium">Menu Engineering Analysis (Stars, Plowhorses, Puzzles, Dogs)</p>
+                <p className="text-zinc-500 dark:text-zinc-400 font-medium">Menu Engineering Analysis (Stars, Plowhorses, Puzzles, Dogs)</p>
             </div>
 
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-3xl p-8 shadow-xl">
+            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/10 rounded-[2.5rem] p-8 shadow-xl shadow-black/5">
                 <div className="h-[500px] w-full relative">
                     {matrixData.length === 0 ? (
-                        <div className="absolute inset-0 flex items-center justify-center text-zinc-500">
-                            No sales data available yet.
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 gap-4">
+                            <TrendingUp className="w-12 h-12 opacity-20" />
+                            <p className="font-black uppercase tracking-widest text-xs">No sales data available yet.</p>
                         </div>
                     ) : (
                         <ResponsiveContainer width="100%" height="100%">
                             <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                                <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? "#ffffff05" : "#00000005"} />
                                 <XAxis
                                     type="number"
                                     dataKey="quantity_sold"
                                     name="Popularity"
                                     unit=" sold"
-                                    label={{ value: 'Popularity (Volume)', position: 'insideBottom', offset: -10, fill: '#666' }}
+                                    stroke={isDark ? "#71717a" : "#a1a1aa"}
+                                    fontSize={10}
+                                    tickLine={false}
+                                    axisLine={false}
+                                    tick={{ fontWeight: 'bold' }}
+                                    label={{ value: 'Popularity (Volume)', position: 'insideBottom', offset: -10, fill: isDark ? '#71717a' : '#a1a1aa', fontSize: 10, fontWeight: 'bold' }}
                                 />
                                 <YAxis
                                     type="number"
                                     dataKey="margin_per_item"
                                     name="Profitability"
-                                    unit="$"
-                                    label={{ value: 'Profitability (Margin $)', angle: -90, position: 'insideLeft', fill: '#666' }}
+                                    unit="₹"
+                                    stroke={isDark ? "#71717a" : "#a1a1aa"}
+                                    fontSize={10}
+                                    tickLine={false}
+                                    axisLine={false}
+                                    tick={{ fontWeight: 'bold' }}
+                                    label={{ value: 'Profitability (Margin ₹)', angle: -90, position: 'insideLeft', fill: isDark ? '#71717a' : '#a1a1aa', fontSize: 10, fontWeight: 'bold' }}
                                 />
                                 <Tooltip
-                                    cursor={{ strokeDasharray: '3 3' }}
+                                    cursor={{ strokeDasharray: '3 3', stroke: isDark ? '#ffffff20' : '#00000010' }}
                                     content={({ active, payload }) => {
                                         if (active && payload && payload.length) {
                                             const data = payload[0].payload
                                             return (
-                                                <div className="bg-zinc-900 border border-white/10 p-3 rounded-xl shadow-xl">
-                                                    <p className="font-bold text-white mb-1">{data.name}</p>
-                                                    <div className="text-xs text-zinc-400 space-y-1">
-                                                        <p>Sales: <span className="text-white">{data.quantity_sold}</span></p>
-                                                        <p>Margin: <span className="text-emerald-400">${data.margin_per_item.toFixed(2)}</span></p>
-                                                        <p>Cost: <span className="text-red-400">${data.cost_price.toFixed(2)}</span></p>
+                                                <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 p-4 rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+                                                    <p className="font-black text-zinc-900 dark:text-white mb-2 uppercase tracking-tight text-sm">{data.name}</p>
+                                                    <div className="text-[10px] text-zinc-500 space-y-1.5 font-bold uppercase">
+                                                        <p className="flex justify-between gap-8">Sales: <span className="text-zinc-900 dark:text-white">{data.quantity_sold}</span></p>
+                                                        <p className="flex justify-between gap-8">Margin: <span className="text-emerald-600 dark:text-emerald-400">₹{data.margin_per_item.toFixed(2)}</span></p>
+                                                        <p className="flex justify-between gap-8">Cost: <span className="text-rose-600 dark:text-rose-400">₹{data.cost_price.toFixed(2)}</span></p>
                                                     </div>
                                                 </div>
                                             )
@@ -182,8 +196,8 @@ function ProfitabilityMatrixContent() {
                                         return null
                                     }}
                                 />
-                                <ReferenceLine x={avgPopularity} stroke="#purple" strokeDasharray="3 3" label="Avg Vol" />
-                                <ReferenceLine y={avgProfit} stroke="#purple" strokeDasharray="3 3" label="Avg Margin" />
+                                <ReferenceLine x={avgPopularity} stroke={isDark ? "#ffffff20" : "#00000010"} strokeDasharray="3 3" />
+                                <ReferenceLine y={avgProfit} stroke={isDark ? "#ffffff20" : "#00000010"} strokeDasharray="3 3" />
                                 <Scatter name="Menu Items" data={matrixData} fill="#ec4899">
                                     {matrixData.map((entry: any, index: number) => {
                                         // Determine Quadrant color
@@ -205,34 +219,42 @@ function ProfitabilityMatrixContent() {
                 </div>
 
                 {/* Legend */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
-                    <div className="bg-emerald-500/10 p-4 rounded-xl border border-emerald-500/20">
-                        <div className="flex items-center gap-2 mb-2">
-                            <Star className="w-5 h-5 text-emerald-500 fill-emerald-500" />
-                            <h4 className="font-bold text-emerald-500">Stars</h4>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+                    <div className="bg-emerald-50 dark:bg-emerald-500/5 p-5 rounded-3xl border border-emerald-100 dark:border-emerald-500/20 group hover:border-emerald-500/40 transition-all">
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center">
+                                <Star className="w-6 h-6 text-emerald-600 dark:text-emerald-500 fill-emerald-500/20" />
+                            </div>
+                            <h4 className="font-black text-emerald-600 dark:text-emerald-500 uppercase tracking-tighter">Stars</h4>
                         </div>
-                        <p className="text-xs text-zinc-500">High Volume, High Profit. Promote these!</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 leading-relaxed">High Volume, High Profit. Promote these!</p>
                     </div>
-                    <div className="bg-yellow-500/10 p-4 rounded-xl border border-yellow-500/20">
-                        <div className="flex items-center gap-2 mb-2">
-                            <CheckCircle2 className="w-5 h-5 text-yellow-500" />
-                            <h4 className="font-bold text-yellow-500">Plowhorses</h4>
+                    <div className="bg-yellow-50 dark:bg-yellow-500/5 p-5 rounded-3xl border border-yellow-100 dark:border-yellow-500/20 group hover:border-yellow-500/40 transition-all">
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 bg-yellow-500/10 rounded-xl flex items-center justify-center">
+                                <CheckCircle2 className="w-6 h-6 text-yellow-600 dark:text-yellow-500" />
+                            </div>
+                            <h4 className="font-black text-yellow-600 dark:text-yellow-500 uppercase tracking-tighter">Plowhorses</h4>
                         </div>
-                        <p className="text-xs text-zinc-500">High Volume, Low Profit. Raise prices slightly?</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 leading-relaxed">High Volume, Low Profit. Raise prices slightly?</p>
                     </div>
-                    <div className="bg-purple-500/10 p-4 rounded-xl border border-purple-500/20">
-                        <div className="flex items-center gap-2 mb-2">
-                            <HelpCircle className="w-5 h-5 text-purple-500" />
-                            <h4 className="font-bold text-purple-500">Puzzles</h4>
+                    <div className="bg-purple-50 dark:bg-purple-500/5 p-5 rounded-3xl border border-purple-100 dark:border-purple-500/20 group hover:border-purple-500/40 transition-all">
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 bg-purple-500/10 rounded-xl flex items-center justify-center">
+                                <HelpCircle className="w-6 h-6 text-purple-600 dark:text-purple-500" />
+                            </div>
+                            <h4 className="font-black text-purple-600 dark:text-purple-500 uppercase tracking-tighter">Puzzles</h4>
                         </div>
-                        <p className="text-xs text-zinc-500">Low Volume, High Profit. Needs marketing.</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 leading-relaxed">Low Volume, High Profit. Needs marketing.</p>
                     </div>
-                    <div className="bg-red-500/10 p-4 rounded-xl border border-red-500/20">
-                        <div className="flex items-center gap-2 mb-2">
-                            <AlertTriangle className="w-5 h-5 text-red-500" />
-                            <h4 className="font-bold text-red-500">Dogs</h4>
+                    <div className="bg-rose-50 dark:bg-rose-500/5 p-5 rounded-3xl border border-rose-100 dark:border-rose-500/20 group hover:border-rose-500/40 transition-all">
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 bg-rose-500/10 rounded-xl flex items-center justify-center">
+                                <AlertTriangle className="w-6 h-6 text-rose-600 dark:text-rose-500" />
+                            </div>
+                            <h4 className="font-black text-rose-600 dark:text-rose-500 uppercase tracking-tighter">Dogs</h4>
                         </div>
-                        <p className="text-xs text-zinc-500">Low Volume, Low Profit. Remove from menu?</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 leading-relaxed">Low Volume, Low Profit. Remove from menu?</p>
                     </div>
                 </div>
             </div>
