@@ -39,6 +39,7 @@ import { useTheme } from 'next-themes'
 export default function InvoiceDashboard() {
     const { theme } = useTheme()
     const isDark = theme === 'dark'
+    const { cafe } = useCafe()
 
     const {
         metrics,
